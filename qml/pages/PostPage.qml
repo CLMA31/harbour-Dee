@@ -33,7 +33,6 @@ Page {
                 text: qsTr("Refresh")
                 onClicked: loadComments()
             }
-
         }
 
         PushUpMenu {
@@ -42,7 +41,6 @@ Page {
                 enabled: !api.busy
                 onClicked: api.loadMoreComments()
             }
-
         }
 
         ViewPlaceholder {
@@ -57,8 +55,7 @@ Page {
             running: api ? api.busy : false
         }
 
-        VerticalScrollDecorator {
-        }
+        VerticalScrollDecorator {}
 
         header: PageHeader {
             title: postTitle
@@ -93,21 +90,15 @@ Page {
                 Label {
                     width: parent.width
                     text: {
-                        var creator = modelData.creator || {
-                        };
-                        var counts = modelData.counts || {
-                        };
+                        var creator = modelData.creator || {};
+                        var counts = modelData.counts || {};
                         return (creator.name || "") + " - " + (counts.score || 0) + " pts";
                     }
                     font.pixelSize: Theme.fontSizeExtraSmall
                     color: Theme.secondaryColor
                     truncationMode: TruncationMode.Fade
                 }
-
             }
-
         }
-
     }
-
 }

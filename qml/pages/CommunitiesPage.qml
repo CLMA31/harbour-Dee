@@ -22,7 +22,6 @@ Page {
                     api.listCommunities("");
                 }
             }
-
         }
 
         PushUpMenu {
@@ -31,7 +30,6 @@ Page {
                 enabled: !api.busy
                 onClicked: api.loadMoreCommunities()
             }
-
         }
 
         ViewPlaceholder {
@@ -46,8 +44,7 @@ Page {
             running: api ? api.busy : false
         }
 
-        VerticalScrollDecorator {
-        }
+        VerticalScrollDecorator {}
 
         header: PageHeader {
             title: qsTr("Communities")
@@ -69,8 +66,7 @@ Page {
                 Label {
                     width: parent.width
                     text: {
-                        var community = modelData.community || {
-                        };
+                        var community = modelData.community || {};
                         return community.title || community.name || "";
                     }
                     font.pixelSize: Theme.fontSizeSmall
@@ -80,19 +76,14 @@ Page {
                 Label {
                     width: parent.width
                     text: {
-                        var counts = modelData.counts || {
-                        };
+                        var counts = modelData.counts || {};
                         return (counts.subscribers || 0) + " subscribers, " + (counts.posts || 0) + " posts";
                     }
                     font.pixelSize: Theme.fontSizeExtraSmall
                     color: Theme.secondaryColor
                     truncationMode: TruncationMode.Fade
                 }
-
             }
-
         }
-
     }
-
 }

@@ -11,9 +11,6 @@ ApplicationWindow {
     allowedOrientations: defaultAllowedOrientations
 
     initialPage: Component {
-        LoginPage {
-        }
-
+        LoginPage {}
     }
-
 }

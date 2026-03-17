@@ -11,7 +11,6 @@ Page {
     Component.onCompleted: {
         if (_api.loggedIn)
             replaceTimer.start();
-
     }
 
     LemmyAPI {
@@ -102,9 +101,7 @@ Page {
                 width: 1
                 height: Theme.paddingLarge
             }
-
         }
-
     }
 
     Connections {
@@ -114,8 +111,6 @@ Page {
         onLoginSuccess: {
             pageStack.replace(Qt.resolvedUrl("SubscribedPage.qml"));
         }
-        onLoginFailed: {
-        }
+        onLoginFailed: {}
     }
-
 }

@@ -47,7 +47,6 @@ Page {
                     api.listPosts("");
                 }
             }
-
         }
 
         PushUpMenu {
@@ -56,7 +55,6 @@ Page {
                 enabled: !api.busy
                 onClicked: api.loadMorePosts()
             }
-
         }
 
         ViewPlaceholder {
@@ -71,8 +69,7 @@ Page {
             running: api.busy
         }
 
-        VerticalScrollDecorator {
-        }
+        VerticalScrollDecorator {}
 
         header: PageHeader {
             title: qsTr("Subscribed")
@@ -83,8 +80,7 @@ Page {
 
             height: contentColumn.height + 2 * Theme.paddingMedium
             onClicked: {
-                var post = modelData.post || {
-                };
+                var post = modelData.post || {};
                 if (post.id)
                     pageStack.animatorPush(Qt.resolvedUrl("PostPage.qml"), {
                         "api": api,
@@ -92,7 +88,6 @@ Page {
                         "postTitle": post.name || "",
                         "postBody": post.body || ""
                     });
-
             }
 
             Column {
@@ -106,8 +101,7 @@ Page {
                 Label {
                     width: parent.width
                     text: {
-                        var post = modelData.post || {
-                        };
+                        var post = modelData.post || {};
                         return post.name || "";
                     }
                     font.pixelSize: Theme.fontSizeSmall
@@ -118,21 +112,15 @@ Page {
                 Label {
                     width: parent.width
                     text: {
-                        var community = modelData.community || {
-                        };
-                        var counts = modelData.counts || {
-                        };
+                        var community = modelData.community || {};
+                        var counts = modelData.counts || {};
                         return (community.name || "") + " - " + (counts.score || 0) + " pts, " + (counts.comments || 0) + " comments";
                     }
                     font.pixelSize: Theme.fontSizeExtraSmall
                     color: Theme.secondaryColor
                     truncationMode: TruncationMode.Fade
                 }
-
             }
-
         }
-
     }
-
 }

@@ -20,7 +20,5 @@ CoverBackground {
             font.pixelSize: Theme.fontSizeMedium
             text: appWindow.postTitle
         }
-
     }
-
 }
