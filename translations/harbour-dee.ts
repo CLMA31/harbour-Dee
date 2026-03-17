@@ -65,6 +65,10 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Load more</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>No comments</source>
         <translation type="unfinished"></translation>
     </message>
@@ -73,7 +77,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Load more</source>
+        <source>Comments</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -105,6 +109,14 @@
     </message>
     <message>
         <source>Pull down to refresh</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>points</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>comments</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

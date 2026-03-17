@@ -80,13 +80,17 @@ Page {
 
             height: contentColumn.height + 2 * Theme.paddingMedium
             onClicked: {
-                var post = modelData.post || {};
+                var post = modelData.post;
                 if (post.id)
                     pageStack.animatorPush(Qt.resolvedUrl("PostPage.qml"), {
                         "api": api,
                         "postId": post.id,
-                        "postTitle": post.name || "",
-                        "postBody": post.body || ""
+                        "postTitle": post.name,
+                        "postBody": post.body,
+                        "postAuthor": modelData.creator.name,
+                        "postScore": modelData.counts.score,
+                        "postDate": post.published,
+                        "postComments": modelData.counts.comments
                     });
             }
 
@@ -114,7 +118,7 @@ Page {
                     text: {
                         var community = modelData.community || {};
                         var counts = modelData.counts || {};
-                        return (community.name || "") + " - " + (counts.score || 0) + " pts, " + (counts.comments || 0) + " comments";
+                        return "c/" + (community.name || "") + " - " + (counts.score || 0) + " " + qsTr("points") + " - " + (counts.comments || 0) + " " + qsTr("comments");
                     }
                     font.pixelSize: Theme.fontSizeExtraSmall
                     color: Theme.secondaryColor

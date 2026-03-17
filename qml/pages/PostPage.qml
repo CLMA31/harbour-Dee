@@ -9,6 +9,11 @@ Page {
     property int postId
     property string postTitle
     property string postBody
+    property string postDate
+    property var postData
+    property string postAuthor
+    property int postScore
+    property int postComments
 
     function loadComments() {
         if (api && postId > 0) {
@@ -19,19 +24,29 @@ Page {
         }
     }
 
+    function loadPostDetails() {
+        if (api && postId > 0) {
+            api.getPost(postId);
+        }
+    }
+
     Component.onCompleted: {
+        loadPostDetails();
         loadComments();
         appWindow.postTitle = postTitle;
     }
 
-    SilicaListView {
+    SilicaFlickable {
         anchors.fill: parent
-        model: api ? api.comments : []
+        contentHeight: col.height
 
         PullDownMenu {
             MenuItem {
                 text: qsTr("Refresh")
-                onClicked: loadComments()
+                onClicked: {
+                    loadPostDetails();
+                    loadComments();
+                }
             }
         }
 
@@ -57,46 +72,83 @@ Page {
 
         VerticalScrollDecorator {}
 
-        header: PageHeader {
-            title: postTitle
-        }
+        Column {
+            id: col
 
-        delegate: BackgroundItem {
-            id: commentDelegate
+            x: Theme.horizontalPageMargin
+            width: parent.width - Theme.horizontalPageMargin * 2
+            spacing: Theme.paddingMedium
 
-            property var commentData: modelData.comment || modelData
-            property int depth: {
-                var path = commentData.path || "";
-                return path ? path.split('.').length : 1;
+            SectionHeader {}
+
+            Label {
+                width: parent.width
+                text: postTitle
+                color: Theme.primaryColor
+                font.pixelSize: Theme.fontSizeMedium
+                wrapMode: Text.Wrap
             }
 
-            height: contentColumn.height + 2 * Theme.paddingMedium
+            Label {
+                width: parent.width
+                text: postBody || ""
+                wrapMode: Text.Wrap
+                font.pixelSize: Theme.fontSizeSmall
+                color: Theme.primaryColor
+                visible: postBody && postBody.length > 0
+            }
 
-            Column {
-                id: contentColumn
+            Label {
+                width: parent.width
+                color: Theme.secondaryHighlightColor
+                font.pixelSize: Theme.fontSizeSmall
+                horizontalAlignment: Text.AlignRight
+                text: postAuthor + " - " + Qt.formatDateTime(postDate, "ddd, hh:mm")
+            }
 
-                x: Theme.horizontalPageMargin + (depth > 1 ? (depth - 1) * Theme.paddingLarge : 0)
-                width: parent.width - 2 * Theme.horizontalPageMargin - (depth > 1 ? (depth - 1) * Theme.paddingLarge : 0)
-                spacing: Theme.paddingSmall
+            SectionHeader {
+                text: qsTr("Comments") + " (" + (api ? api.comments.length : 0) + "/" + postComments + ")"
+            }
 
-                Label {
-                    width: parent.width
-                    text: commentData.content || ""
-                    wrapMode: Text.Wrap
-                    font.pixelSize: Theme.fontSizeSmall
-                    color: commentDelegate.highlighted ? Theme.highlightColor : Theme.primaryColor
-                }
+            Repeater {
+                model: api ? api.comments : []
 
-                Label {
-                    width: parent.width
-                    text: {
-                        var creator = modelData.creator || {};
-                        var counts = modelData.counts || {};
-                        return (creator.name || "") + " - " + (counts.score || 0) + " pts";
+                delegate: BackgroundItem {
+                    property var commentData: modelData.comment || modelData
+                    property int depth: {
+                        var path = commentData.path || "";
+                        return path ? path.split('.').length : 1;
                     }
-                    font.pixelSize: Theme.fontSizeExtraSmall
-                    color: Theme.secondaryColor
-                    truncationMode: TruncationMode.Fade
+
+                    height: commentColumn.height + 2 * Theme.paddingMedium
+
+                    Column {
+                        id: commentColumn
+
+                        x: Theme.horizontalPageMargin + (depth > 1 ? (depth - 1) * Theme.paddingLarge : 0)
+                        width: parent.width - 2 * Theme.horizontalPageMargin - (depth > 1 ? (depth - 1) * Theme.paddingLarge : 0)
+                        spacing: Theme.paddingSmall
+
+                        Label {
+                            width: parent.width
+                            text: commentData.content || ""
+                            color: Theme.secondaryColor
+                            font.pixelSize: Theme.fontSizeSmall
+                            wrapMode: Text.Wrap
+                        }
+
+                        Label {
+                            width: parent.width
+                            text: {
+                                var creator = commentData.creator || modelData.creator || {};
+                                var counts = modelData.counts || {};
+                                return (creator.name || "") + " - " + (counts.score || 0) + " pts";
+                            }
+                            font.pixelSize: Theme.fontSizeExtraSmall
+                            color: Theme.secondaryColor
+                            truncationMode: TruncationMode.Fade
+                        }
+                    }
                 }
             }
         }
