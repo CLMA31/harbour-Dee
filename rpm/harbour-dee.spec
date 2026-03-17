@@ -15,7 +15,7 @@ BuildRequires:  pkgconfig(Qt5Quick)
 BuildRequires:  pkgconfig(openssl)
 BuildRequires:  pkgconfig(sailfishsecrets)
 BuildRequires:  desktop-file-utils
-BuildRequires:  rust >= 1.78
+BuildRequires:  rust >= 1.85
 BuildRequires:  cargo
 
 %description
@@ -60,17 +60,6 @@ export CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER=aarch64-meego-linux-gnu-gcc
 export CC_aarch64_unknown_linux_gnu=aarch64-meego-linux-gnu-gcc
 export CXX_aarch64_unknown_linux_gnu=aarch64-meego-linux-gnu-g++
 export AR_aarch64_unknown_linux_gnu=aarch64-meego-linux-gnu-ar
-
-# Build Rust library with appropriate target
-CARGO_TARGET_ARGS=""
-if [ -n "${SB2_RUST_TARGET_TRIPLE:-}" ]; then
-    CARGO_TARGET_ARGS="--target ${SB2_RUST_TARGET_TRIPLE}"
-fi
-cargo build --release \
-  --target-dir=rust/target/${SB2_RUST_TARGET_TRIPLE} \
-  ${CARGO_TARGET_ARGS} \
-  --locked \
-  --manifest-path %{_sourcedir}/../rust/Cargo.toml
 
 %qmake5
 

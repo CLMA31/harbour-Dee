@@ -58,10 +58,11 @@ isEmpty(TARGET_TRIPLE) {
 }
 
 # Construct the correct target directory
+SOURCE_DIR = $$_PRO_FILE_PWD_
 isEmpty(TARGET_TRIPLE) {
-    RUST_TARGET_DIR = $$PWD/rust/target/release
+    RUST_TARGET_DIR = $$SOURCE_DIR/rust/target/release
 } else {
-    RUST_TARGET_DIR = $$PWD/rust/target/$$TARGET_TRIPLE/release
+    RUST_TARGET_DIR = $$SOURCE_DIR/rust/target/$$TARGET_TRIPLE/release
 }
 
 message("Building for target: $$TARGET_TRIPLE")
@@ -72,7 +73,15 @@ LIBS += -L$$RUST_TARGET_DIR -llemmy_bridge
 # Rust's static library pulls in system deps; link them explicitly.
 LIBS += -lssl -lcrypto -lpthread -ldl -lm
 
-INCLUDEPATH += $$PWD/src
+INCLUDEPATH += $$SOURCE_DIR/src
+
+# Build Rust library automatically before linking
+rust_cargo.target = $$RUST_TARGET_DIR/liblemmy_bridge.a
+rust_cargo.commands = cd $$SOURCE_DIR && cargo build --release --target-dir rust/target --manifest-path rust/Cargo.toml --locked
+!isEmpty(TARGET_TRIPLE): rust_cargo.commands += --target $$TARGET_TRIPLE
+rust_cargo.depends = $$SOURCE_DIR/rust/Cargo.toml $$SOURCE_DIR/rust/src/lib.rs $$SOURCE_DIR/rust/build.rs
+QMAKE_EXTRA_TARGETS += rust_cargo
+PRE_TARGETDEPS += $$RUST_TARGET_DIR/liblemmy_bridge.a
 
 # ---------------------------------------------------------------------------
 # Translations

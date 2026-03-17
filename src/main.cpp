@@ -1,9 +1,7 @@
-#ifdef QT_QML_DEBUG
-#include <QtQuick>
-#endif
 
 #include "lemmyapi.h"
 #include <QQmlEngine>
+#include <QtQuick>
 #include <sailfishapp.h>
 
 int main(int argc, char *argv[]) {
