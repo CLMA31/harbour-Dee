@@ -87,6 +87,7 @@ Page {
                         "postId": post.id,
                         "postTitle": post.name,
                         "postBody": post.body,
+                        "postUrl": post.url,
                         "postAuthor": modelData.creator.name,
                         "postScore": modelData.counts.score,
                         "postDate": post.published,

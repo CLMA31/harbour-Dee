@@ -1,4 +1,5 @@
 import QtQuick 2.0
+import Sailfish.Share 1.0
 import Sailfish.Silica 1.0
 import harbour.dee 1.0
 
@@ -9,6 +10,7 @@ Page {
     property int postId
     property string postTitle
     property string postBody
+    property string postUrl
     property string postDate
     property var postData
     property string postAuthor
@@ -25,9 +27,8 @@ Page {
     }
 
     function loadPostDetails() {
-        if (api && postId > 0) {
+        if (api && postId > 0)
             api.getPost(postId);
-        }
     }
 
     Component.onCompleted: {
@@ -41,6 +42,20 @@ Page {
         contentHeight: col.height
 
         PullDownMenu {
+            MenuItem {
+                text: qsTr("Copy external URL")
+                onClicked: {
+                    Clipboard.text = postUrl;
+                }
+            }
+
+            MenuItem {
+                text: qsTr("Share")
+                onClicked: {
+                    share.trigger();
+                }
+            }
+
             MenuItem {
                 text: qsTr("Refresh")
                 onClicked: {
@@ -87,6 +102,24 @@ Page {
                 color: Theme.primaryColor
                 font.pixelSize: Theme.fontSizeMedium
                 wrapMode: Text.Wrap
+            }
+
+            // Workaround for Label that does not provide onClick?
+            Text {
+                width: parent.implicitWidth
+                visible: (postUrl && !(/^\s*$/.test(postUrl)))
+                textFormat: Text.RichText
+                font.pixelSize: Theme.fontSizeSmall
+                wrapMode: Text.WrapAnywhere
+                text: {
+                    var txt = "<style>a:link{color: " + Theme.secondaryHighlightColor + ";}</style>";
+                    txt += "<a href=\"" + postUrl + "\" rel=\"nofollow\">" + postUrl + "</a>";
+                    return txt;
+                }
+                onLinkActivated: {
+                    console.log("Opening external browser: " + link);
+                    Qt.openUrlExternally(link);
+                }
             }
 
             Label {
@@ -152,5 +185,19 @@ Page {
                 }
             }
         }
+    }
+
+    ShareAction {
+        id: share
+
+        title: qsTr("Share url")
+        mimeType: "text/x-url"
+        resources: [
+            {
+                "type": "text/x-url",
+                "linkTitle": postTitle,
+                "status": postUrl.toString()
+            }
+        ]
     }
 }
