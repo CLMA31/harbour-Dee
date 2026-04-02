@@ -43,6 +43,15 @@ Page {
         loadComments();
     }
 
+    onStatusChanged: {
+        if (status == PageStatus.Active) {
+            if (postUrl && !(/^\s*$/.test(postUrl)))
+                pageStack.pushAttached(Qt.resolvedUrl("PostWebView.qml"), {
+                    "postUrl": postUrl
+                });
+        }
+    }
+
     SilicaFlickable {
         anchors.fill: parent
         contentHeight: col.height

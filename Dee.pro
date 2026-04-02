@@ -34,6 +34,7 @@ DISTFILES += qml/Dee.qml \
     qml/pages/LoginPage.qml \
     qml/pages/CommunitiesPage.qml \
     qml/pages/PostPage.qml \
+    qml/pages/PostWebView.qml \
     qml/pages/SubscribedPage.qml \
     rpm/harbour-dee.changes.in \
     rpm/harbour-dee.changes.run.in \
