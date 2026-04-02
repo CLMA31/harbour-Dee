@@ -7,4 +7,3 @@ RPMS
 # Rust build artifacts
 src/lemmy_bridge.h
 rust/target/
-rust/.cargo_build.stamp

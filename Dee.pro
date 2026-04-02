@@ -1,15 +1,3 @@
-# NOTICE:
-#
-# Application name defined in TARGET has a corresponding QML filename.
-# If name defined in TARGET is changed, the following needs to be done
-# to match new name:
-#   - corresponding QML filename must be changed
-#   - desktop icon filename must be changed
-#   - desktop filename must be changed
-#   - icon definition filename in desktop file must be changed
-#   - translation filenames have to be changed
-
-# The name of your application
 TARGET = harbour-dee
 
 CONFIG += sailfishapp link_pkgconfig
@@ -55,9 +43,7 @@ isEmpty(TARGET_TRIPLE) {
     TARGET_TRIPLE = $$(RUST_TARGET)
 }
 
-SOURCE_DIR   = $$_PRO_FILE_PWD_
-RUST_STAMP   = $$SOURCE_DIR/rust/.cargo_build.stamp
-
+SOURCE_DIR = $$_PRO_FILE_PWD_
 isEmpty(TARGET_TRIPLE) {
     RUST_TARGET_DIR = $$SOURCE_DIR/rust/target/release
 } else {
@@ -78,41 +64,28 @@ CARGO_CMD = cd $$SOURCE_DIR && \
         --locked
 !isEmpty(TARGET_TRIPLE): CARGO_CMD += --target $$TARGET_TRIPLE
 
-# ---------------------------------------------------------------------------
-# Step 1 — qmake-time bootstrap
-#
-# Runs cargo once, synchronously, so lemmy_bridge.h exists before make
-# starts any parallel compilation. Guarded by the stamp file so that
-# subsequent qmake runs (e.g. IDE refreshes) don't rebuild from scratch.
-# ---------------------------------------------------------------------------
-!exists($$RUST_STAMP) {
-    message("Stamp not found — running cargo build at qmake time...")
-    system($$CARGO_CMD && touch $$RUST_STAMP)
+!exists($$SOURCE_DIR/src/lemmy_bridge.h) {
+    message("lemmy_bridge.h not found — running cargo build at qmake time...")
+    system($$CARGO_CMD)
 }
 
-# ---------------------------------------------------------------------------
-# Step 2 — make-time incremental rule
-#
-# Targets the stamp file, not the .so. The stamp is touched *after* cargo
-# succeeds, so its mtime is always strictly newer than the Rust sources that
-# triggered the rebuild. This prevents make from seeing the freshly-built
-# .so as same-age as the sources and re-launching cargo a second time.
-# ---------------------------------------------------------------------------
-rust_cargo.target   = $$RUST_STAMP
-rust_cargo.commands = $$CARGO_CMD && touch $$RUST_STAMP
-rust_cargo.depends  = $$SOURCE_DIR/rust/Cargo.toml \
-                      $$SOURCE_DIR/rust/src/lib.rs
-QMAKE_EXTRA_TARGETS += rust_cargo
-
-# The linker waits for the stamp, which is only written after the .so exists.
-PRE_TARGETDEPS += $$RUST_STAMP
+rust_so.target   = $$RUST_TARGET_DIR/liblemmy_bridge.so
+rust_so.commands = $$CARGO_CMD
+rust_so.depends  = $$SOURCE_DIR/rust/Cargo.toml \
+                   $$SOURCE_DIR/rust/src/lib.rs
+QMAKE_EXTRA_TARGETS += rust_so
+PRE_TARGETDEPS  += $$RUST_TARGET_DIR/liblemmy_bridge.so
 
 QMAKE_CLEAN += \
-    $$RUST_STAMP \
     $$SOURCE_DIR/src/lemmy_bridge.h \
     $$RUST_TARGET_DIR/liblemmy_bridge.so
 
-rust_so_install.path  = /usr/lib
+INSTALL_LIBDIR = /usr/lib
+contains(TARGET_TRIPLE, .*aarch64.*) {
+    INSTALL_LIBDIR = /usr/lib64
+}
+
+rust_so_install.path  = $$INSTALL_LIBDIR
 rust_so_install.files = $$RUST_TARGET_DIR/liblemmy_bridge.so
 INSTALLS += rust_so_install
 

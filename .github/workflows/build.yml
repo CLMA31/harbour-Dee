@@ -19,7 +19,13 @@ jobs:
 
     strategy:
       matrix:
-        arch: ['armv7hl', 'aarch64', 'i486']
+        include:
+          - arch: armv7hl
+            target: armv7-unknown-linux-gnueabihf
+          - arch: aarch64
+            target: aarch64-unknown-linux-gnu
+          - arch: i486
+            target: i686-unknown-linux-gnu
 
     steps:
     - uses: actions/checkout@v5
@@ -34,25 +40,13 @@ jobs:
             mkdir -p build ;
             cd build ;
             cp -r /workspace/* . ;
+            export OPENSSL_DIR=/usr ;
+            sb2 -t SailfishOS-$RELEASE-${{ matrix.arch }} -m sdk-build cargo build --release --target ${{ matrix.target }} --target-dir rust/target --manifest-path rust/Cargo.toml --locked ;
             mb2 -t SailfishOS-$RELEASE-${{ matrix.arch }} build ;
-            cp -r RPMS/*.rpm /workspace/RPMS"
+            sudo cp -r RPMS/*.rpm /workspace/RPMS"
 
     - name: Upload build result
       uses: actions/upload-artifact@v5
       with:
-        name: rpms
+        name: rpms-${{ matrix.arch }}
         path: RPMS
-
-    - name: Create release
-      if: contains(github.ref, 'release')
-      run: |
-        set -x
-        assets=()
-        for asset in RPMS/*.rpm; do
-          assets+=("-a" "$asset")
-        done
-        tag_name="${GITHUB_REF##*/}"
-        hub release create "${assets[@]}" -m "$tag_name" "$tag_name"
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-

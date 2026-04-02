@@ -69,13 +69,20 @@ export AR_aarch64_unknown_linux_gnu=aarch64-meego-linux-gnu-ar
 %install
 %qmake5_install
 
+ln -sf %{_libdir}/liblemmy_bridge.so %{buildroot}%{_libdir}/liblemmy_bridge.so.0
+ln -sf %{_libdir}/liblemmy_bridge.so %{buildroot}%{_libdir}/liblemmy_bridge.so.0.0
+
 
 desktop-file-install --delete-original         --dir %{buildroot}%{_datadir}/applications                %{buildroot}%{_datadir}/applications/*.desktop
+
+%post -p /sbin/ldconfig
+
+%postun -p /sbin/ldconfig
 
 %files
 %defattr(-,root,root,-)
 %{_bindir}/%{name}
-%{_libdir}/liblemmy_bridge.so
+%{_libdir}/liblemmy_bridge.so*
 %{_datadir}/%{name}
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/icons/hicolor/*/apps/%{name}.png
