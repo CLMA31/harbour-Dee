@@ -5,11 +5,11 @@
     <name>CommunitiesPage</name>
     <message>
         <source>Communities</source>
-        <translation type="unfinished"></translation>
+        <translation>Comunità</translation>
     </message>
     <message>
         <source>Refresh</source>
-        <translation type="unfinished"></translation>
+        <translation>Aggiorna</translation>
     </message>
     <message>
         <source>Pull down to refresh</source>
