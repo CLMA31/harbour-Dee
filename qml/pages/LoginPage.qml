@@ -84,7 +84,7 @@ Page {
                 x: Theme.horizontalPageMargin
                 width: parent.width - 2 * Theme.horizontalPageMargin
                 enabled: !_api.busy && instanceField.text.length > 0 && usernameField.text.length > 0 && passwordField.text.length > 0
-                text: _api.busy ? qsTr("Logging in...") : qsTr("Login")
+                text: _api.busy ? qsTr("Logging in…") : qsTr("Login")
                 onClicked: _api.login()
             }
 
@@ -105,8 +105,8 @@ Page {
     }
 
     Connections {
-        // Error is already displayed via binding
 
+        // Error is already displayed via binding
         target: _api
         onLoginSuccess: {
             pageStack.replace(Qt.resolvedUrl("SubscribedPage.qml"));
