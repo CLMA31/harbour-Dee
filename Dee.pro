@@ -1,11 +1,10 @@
 TARGET = harbour-dee
 
-CONFIG += sailfishapp link_pkgconfig
+CONFIG += sailfishapp
 
 QT += core network
 
 PKGCONFIG += sailfishsecrets
-LIBS += -lsailfishapp
 
 INCLUDEPATH += /usr/include/Sailfish
 
@@ -80,12 +79,7 @@ QMAKE_CLEAN += \
     $$SOURCE_DIR/src/lemmy_bridge.h \
     $$RUST_TARGET_DIR/liblemmy_bridge.so
 
-INSTALL_LIBDIR = /usr/lib
-contains(TARGET_TRIPLE, .*aarch64.*) {
-    INSTALL_LIBDIR = /usr/lib64
-}
-
-rust_so_install.path  = $$INSTALL_LIBDIR
+rust_so_install.path  = /usr/share/harbour-dee/lib
 rust_so_install.files = $$RUST_TARGET_DIR/liblemmy_bridge.so
 INSTALLS += rust_so_install
 
