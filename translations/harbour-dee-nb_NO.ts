@@ -55,7 +55,7 @@
     </message>
     <message>
         <source>Logging in…</source>
-        <translation>Logger inn...</translation>
+        <translation>Logger inn…</translation>
     </message>
     <message>
         <source>Email or Username</source>
