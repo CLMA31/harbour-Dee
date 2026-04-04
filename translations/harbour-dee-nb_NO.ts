@@ -13,7 +13,7 @@
     </message>
     <message>
         <source>Pull down to refresh</source>
-        <translation type="unfinished"></translation>
+        <translation>Dra ned for å oppdatere</translation>
     </message>
     <message>
         <source>Load more</source>
@@ -21,7 +21,7 @@
     </message>
     <message>
         <source>You aren&apos;t following any communities</source>
-        <translation type="unfinished"></translation>
+        <translation>Du følger ingen nettsamfunn</translation>
     </message>
 </context>
 <context>
@@ -32,14 +32,14 @@
     </message>
     <message>
         <source>Login succeeded but no token received</source>
-        <translation type="unfinished"></translation>
+        <translation>Vellykket innlogging, men ingen token ble mottatt</translation>
     </message>
 </context>
 <context>
     <name>LoginPage</name>
     <message>
         <source>Login</source>
-        <translation type="unfinished"></translation>
+        <translation>Innlogging</translation>
     </message>
     <message>
         <source>https://lemmy.world</source>
@@ -51,7 +51,7 @@
     </message>
     <message>
         <source>Logging in...</source>
-        <translation type="unfinished"></translation>
+        <translation>Logger inn...</translation>
     </message>
     <message>
         <source>Email or Username</source>
@@ -70,7 +70,7 @@
     </message>
     <message>
         <source>Pull down to refresh</source>
-        <translation type="unfinished"></translation>
+        <translation>Dra ned for å oppdatere</translation>
     </message>
     <message>
         <source>Comments</source>
@@ -94,7 +94,7 @@
     </message>
     <message>
         <source>Undo upvote</source>
-        <translation type="unfinished">Angre oppstemming</translation>
+        <translation>Fjern stemme</translation>
     </message>
     <message>
         <source>Downvote</source>
@@ -102,7 +102,7 @@
     </message>
     <message>
         <source>Undo downvote</source>
-        <translation type="unfinished">Angre nedstemming</translation>
+        <translation>Fjern nedstemme</translation>
     </message>
 </context>
 <context>
@@ -129,15 +129,15 @@
     </message>
     <message>
         <source>Pull down to refresh</source>
-        <translation type="unfinished"></translation>
+        <translation>Dra ned for å oppdatere</translation>
     </message>
     <message>
         <source>Subscribed</source>
-        <translation type="unfinished"></translation>
+        <translation>Abonnerer</translation>
     </message>
     <message>
         <source>points</source>
-        <translation type="unfinished"></translation>
+        <translation>Poeng</translation>
     </message>
     <message>
         <source>comments</source>
@@ -149,7 +149,7 @@
     </message>
     <message>
         <source>Undo upvote</source>
-        <translation type="unfinished"></translation>
+        <translation>Fjern stemme</translation>
     </message>
     <message>
         <source>Downvote</source>
@@ -157,7 +157,7 @@
     </message>
     <message>
         <source>Undo downvote</source>
-        <translation type="unfinished"></translation>
+        <translation>Fjern nedstemme</translation>
     </message>
 </context>
 </TS>
