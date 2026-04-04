@@ -50,7 +50,7 @@
         <translation>Salasõna</translation>
     </message>
     <message>
-        <source>Logging in...</source>
+        <source>Logging in…</source>
         <translation>Login sisse…</translation>
     </message>
     <message>

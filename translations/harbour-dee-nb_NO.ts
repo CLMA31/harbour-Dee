@@ -50,7 +50,7 @@
         <translation>Passord</translation>
     </message>
     <message>
-        <source>Logging in...</source>
+        <source>Logging in…</source>
         <translation>Logger inn...</translation>
     </message>
     <message>

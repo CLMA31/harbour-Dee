@@ -50,7 +50,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Logging in...</source>
+        <source>Logging in…</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
