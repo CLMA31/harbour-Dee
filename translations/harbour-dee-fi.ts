@@ -5,23 +5,23 @@
     <name>CommunitiesPage</name>
     <message>
         <source>Communities</source>
-        <translation type="unfinished"></translation>
+        <translation>Yhteisöt</translation>
     </message>
     <message>
         <source>Refresh</source>
-        <translation type="unfinished"></translation>
+        <translation>Päivitä</translation>
     </message>
     <message>
         <source>Pull down to refresh</source>
-        <translation type="unfinished"></translation>
+        <translation>Päivitä vetämällä alaspäin</translation>
     </message>
     <message>
         <source>Load more</source>
-        <translation type="unfinished"></translation>
+        <translation>Lataa lisää</translation>
     </message>
     <message>
         <source>You aren&apos;t following any communities</source>
-        <translation type="unfinished"></translation>
+        <translation>Et seuraa yhtään yhteisöä</translation>
     </message>
     <message>
         <source>Subscribed</source>
