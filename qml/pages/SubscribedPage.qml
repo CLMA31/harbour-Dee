@@ -25,6 +25,12 @@ Page {
         }
     }
 
+    onStatusChanged: {
+        if (status === PageStatus.Active) {
+            appWindow.postTitle = "";
+        }
+    }
+
     SilicaListView {
         id: listView
 
