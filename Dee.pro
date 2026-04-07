@@ -10,10 +10,12 @@ INCLUDEPATH += /usr/include/Sailfish
 
 SOURCES += src/main.cpp \
     src/lemmyapi.cpp \
+    src/postsmodel.cpp \
     src/securestorage.cpp
 
 HEADERS += src/lemmyapi.h \
     src/lemmy_bridge.h \
+    src/postsmodel.h \
     src/securestorage.h
 
 DISTFILES += qml/Dee.qml \
@@ -95,7 +97,8 @@ CONFIG += sailfishapp_i18n
 # planning to localize your app, remember to comment out the
 # following TRANSLATIONS line. And also do not forget to
 # modify the localized app name in the the .desktop file.
-TRANSLATIONS += translations/harbour-dee-et.ts \
+TRANSLATIONS += translations/harbour-dee-de.ts \
+                translations/harbour-dee-et.ts \
                 translations/harbour-dee-fi.ts \
                 translations/harbour-dee-it.ts \
                 translations/harbour-dee-nb_NO.ts

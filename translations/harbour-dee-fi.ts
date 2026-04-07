@@ -66,7 +66,7 @@
     <name>PostPage</name>
     <message>
         <source>Refresh</source>
-        <translation>Päivitä</translation>
+        <translation type="unfinished">Päivitä</translation>
     </message>
     <message>
         <source>No comments</source>
@@ -74,7 +74,7 @@
     </message>
     <message>
         <source>Pull down to refresh</source>
-        <translation>Päivitä vetämällä alaspäin</translation>
+        <translation type="unfinished">Päivitä vetämällä alaspäin</translation>
     </message>
     <message>
         <source>Comments</source>
@@ -90,7 +90,7 @@
     </message>
     <message>
         <source>Load more</source>
-        <translation>Lataa lisää</translation>
+        <translation type="unfinished">Lataa lisää</translation>
     </message>
     <message>
         <source>Upvote</source>
@@ -116,8 +116,12 @@
         <translation>Kirjaudu ulos</translation>
     </message>
     <message>
+        <source>Subscribed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Communities</source>
-        <translation>Yhteisöt</translation>
+        <translation type="unfinished">Yhteisöt</translation>
     </message>
     <message>
         <source>Refresh</source>
@@ -128,16 +132,24 @@
         <translation>Lataa lisää</translation>
     </message>
     <message>
+        <source>Load more</source>
+        <translation type="unfinished">Päivitä</translation>
+    </message>
+    <message>
         <source>No posts</source>
         <translation>Ei julkaisuja</translation>
     </message>
     <message>
         <source>Pull down to refresh</source>
-        <translation>Päivitä vetämällä alaspäin</translation>
+        <translation type="unfinished">Päivitä vetämällä alaspäin</translation>
     </message>
     <message>
         <source>Subscribed</source>
         <translation>Tilaukset</translation>
+    </message>
+    <message>
+        <source>Loading more…</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>points</source>
