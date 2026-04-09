@@ -113,39 +113,15 @@
     </message>
     <message>
         <source>Communities</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Refresh</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Load more</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>No posts</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Pull down to refresh</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Loading more…</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Communities</source>
         <translation type="unfinished">Yhteisöt</translation>
     </message>
     <message>
         <source>Refresh</source>
-        <translation>Päivitä</translation>
+        <translation type="unfinished">Päivitä</translation>
     </message>
     <message>
         <source>No posts</source>
-        <translation>Ei julkaisuja</translation>
+        <translation type="unfinished">Ei julkaisuja</translation>
     </message>
     <message>
         <source>Pull down to refresh</source>
@@ -178,6 +154,10 @@
     <message>
         <source>Undo downvote</source>
         <translation>Peru, äänestä vastaan</translation>
+    </message>
+    <message>
+        <source>Subscribed</source>
+        <translation type="unfinished">Tilaukset</translation>
     </message>
 </context>
 <context>

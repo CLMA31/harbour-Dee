@@ -36,6 +36,16 @@ Page {
         }
     }
 
+    function refresh() {
+        var params = {
+            "limit": 50
+        };
+        if (communityId > 0) {
+            params.community_id = communityId;
+        }
+        api.listPosts(JSON.stringify(params));
+    }
+
     SilicaListView {
         id: listView
 
@@ -66,15 +76,7 @@ Page {
 
             MenuItem {
                 text: qsTr("Refresh")
-                onClicked: {
-                    var params = {
-                        "limit": 50
-                    };
-                    if (communityId > 0) {
-                        params.community_id = communityId;
-                    }
-                    api.listPosts(JSON.stringify(params));
-                }
+                onClicked: refresh()
             }
         }
 
@@ -199,6 +201,13 @@ Page {
                     }
                 }
             }
+        }
+    }
+
+    Connections {
+        target: api
+        onRequestFinished: {
+            method === "likePost" && refresh();
         }
     }
 }

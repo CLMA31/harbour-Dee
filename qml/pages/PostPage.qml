@@ -19,30 +19,25 @@ Page {
     property int postMyVote
 
     function loadComments() {
-        if (api && postId > 0) {
-            var params = JSON.stringify({
-                "post_id": postId,
-                "limit": 50
-            });
-            api.listComments(params);
-        }
+        var params = JSON.stringify({
+            "post_id": postId,
+            "limit": 50
+        });
+        api.listComments(params);
     }
 
-    function loadPostDetails() {
-        if (api && postId > 0)
-            api.getPost(postId);
+    function refresh() {
+        api.getPost(postId);
+
+        loadComments();
     }
 
     Component.onCompleted: {
-        loadPostDetails();
-        loadComments();
+        refresh();
         appWindow.postTitle = postTitle;
     }
 
-    onPostIdChanged: {
-        loadPostDetails();
-        loadComments();
-    }
+    onPostIdChanged: refresh()
 
     onStatusChanged: {
         if (status == PageStatus.Active) {
@@ -67,10 +62,7 @@ Page {
 
             MenuItem {
                 text: qsTr("Refresh")
-                onClicked: {
-                    loadPostDetails();
-                    loadComments();
-                }
+                onClicked: refresh()
             }
 
             MenuItem {
@@ -251,6 +243,13 @@ Page {
                     }
                 }
             }
+        }
+    }
+
+    Connections {
+        target: api
+        onRequestFinished: {
+            (method === "likePost" || method === "likeComment") && refresh();
         }
     }
 
