@@ -44,7 +44,7 @@ Page {
 
                 x: Theme.horizontalPageMargin
                 width: parent.width - 2 * Theme.horizontalPageMargin
-                placeholderText: qsTr("https://lemmy.world")
+                placeholderText: "https://lemmy.world"
                 inputMethodHints: Qt.ImhUrlCharactersOnly
                 text: _api.instanceUrl
                 onTextChanged: _api.instanceUrl = text

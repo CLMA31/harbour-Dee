@@ -46,10 +46,6 @@
         <translation>Innlogging</translation>
     </message>
     <message>
-        <source>https://lemmy.world</source>
-        <translation>https://lemmy.world</translation>
-    </message>
-    <message>
         <source>Password</source>
         <translation>Passord</translation>
     </message>
