@@ -46,10 +46,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>https://lemmy.world</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Password</source>
         <translation type="unfinished"></translation>
     </message>
