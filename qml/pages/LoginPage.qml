@@ -40,52 +40,60 @@ Page {
             }
 
             TextField {
-                id: instanceField
+                id: instance
 
                 x: Theme.horizontalPageMargin
                 width: parent.width - 2 * Theme.horizontalPageMargin
                 placeholderText: "https://lemmy.world"
                 inputMethodHints: Qt.ImhUrlCharactersOnly
                 text: _api.instanceUrl
-                onTextChanged: _api.instanceUrl = text
                 EnterKey.enabled: text.length > 0
                 EnterKey.iconSource: "image://theme/icon-m-enter-next"
-                EnterKey.onClicked: usernameField.focus = true
+                EnterKey.onClicked: username.focus = true
             }
 
             TextField {
-                id: usernameField
+                id: username
 
                 x: Theme.horizontalPageMargin
                 width: parent.width - 2 * Theme.horizontalPageMargin
                 placeholderText: qsTr("Email or Username")
                 text: _api.username
-                onTextChanged: _api.username = text
-                EnterKey.enabled: text.length > 0
+                EnterKey.enabled: text.length > 0 && instance.text.length > 0
                 EnterKey.iconSource: "image://theme/icon-m-enter-next"
-                EnterKey.onClicked: passwordField.focus = true
+                EnterKey.onClicked: password.focus = true
             }
 
             TextField {
-                id: passwordField
+                id: password
 
                 x: Theme.horizontalPageMargin
                 width: parent.width - 2 * Theme.horizontalPageMargin
                 placeholderText: qsTr("Password")
                 echoMode: TextInput.Password
-                text: _api.password
-                onTextChanged: _api.password = text
-                EnterKey.enabled: text.length > 0 && usernameField.text.length > 0
+                EnterKey.enabled: text.length > 0 && username.text.length > 0
                 EnterKey.iconSource: "image://theme/icon-m-enter-accept"
                 EnterKey.onClicked: _api.login()
+            }
+
+            TextField {
+                id: totp
+
+                x: Theme.horizontalPageMargin
+                width: parent.width - 2 * Theme.horizontalPageMargin
+                placeholderText: qsTr("2-factor authentication")
+                inputMethodHints: Qt.ImhDigitsOnly
+                EnterKey.enabled: text.length > 0 && username.text.length > 0 && password.text.length > 0
+                EnterKey.iconSource: "image://theme/icon-m-enter-accept"
+                EnterKey.onClicked: _api.login(instance.text, username.text, password.text, text)
             }
 
             Button {
                 x: Theme.horizontalPageMargin
                 width: parent.width - 2 * Theme.horizontalPageMargin
-                enabled: !_api.busy && instanceField.text.length > 0 && usernameField.text.length > 0 && passwordField.text.length > 0
+                enabled: !_api.busy && instance.text.length > 0 && username.text.length > 0 && password.text.length > 0
                 text: _api.busy ? qsTr("Logging in…") : qsTr("Login")
-                onClicked: _api.login()
+                onClicked: _api.login(instance.text, username.text, password.text, totp.text)
             }
 
             Label {

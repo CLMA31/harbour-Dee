@@ -61,6 +61,10 @@
         <source>Logging in…</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>2-factor authentication</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PostPage</name>

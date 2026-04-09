@@ -73,12 +73,8 @@ class LemmyAPI : public QObject {
   Q_OBJECT
 
   // Auth properties
-  Q_PROPERTY(QString instanceUrl READ instanceUrl WRITE setInstanceUrl NOTIFY
-                 instanceUrlChanged)
-  Q_PROPERTY(
-      QString username READ username WRITE setUsername NOTIFY usernameChanged)
-  Q_PROPERTY(
-      QString password READ password WRITE setPassword NOTIFY passwordChanged)
+  Q_PROPERTY(QString instanceUrl READ instanceUrl NOTIFY instanceUrlChanged)
+  Q_PROPERTY(QString username READ username NOTIFY usernameChanged)
   Q_PROPERTY(bool loggedIn READ loggedIn NOTIFY loggedInChanged)
   Q_PROPERTY(QString error READ error WRITE setError NOTIFY errorChanged)
   Q_PROPERTY(bool busy READ busy WRITE setBusy NOTIFY busyChanged)
@@ -96,7 +92,6 @@ public:
   // Property getters
   QString instanceUrl() const { return m_instanceUrl; }
   QString username() const { return m_username; }
-  QString password() const { return m_password; }
   bool loggedIn() const { return m_loggedIn; }
   QString error() const { return m_error; }
   bool busy() const { return m_busy; }
@@ -110,12 +105,13 @@ public:
   // Property setters
   void setInstanceUrl(const QString &url);
   void setUsername(const QString &username);
-  void setPassword(const QString &password);
   void setPostsPage(int page);
   void setCommunitiesPage(int page);
 
   // Invokable from QML
-  Q_INVOKABLE void login();
+  Q_INVOKABLE void login(const QString instanceUrl, const QString username,
+                         const QString password,
+                         const QString totp = QString());
   Q_INVOKABLE void logout();
   Q_INVOKABLE void clearError();
   Q_INVOKABLE void setPostsModel(PostsModel *model);
@@ -138,7 +134,6 @@ public:
 signals:
   void instanceUrlChanged();
   void usernameChanged();
-  void passwordChanged();
   void loggedInChanged();
   void errorChanged();
   void busyChanged();
@@ -182,7 +177,6 @@ private:
   QSettings *m_settings;
   QString m_instanceUrl;
   QString m_username;
-  QString m_password;
   QString m_jwt;
   bool m_loggedIn;
   QString m_error;

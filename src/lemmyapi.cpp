@@ -390,29 +390,6 @@ void LemmyAPI::setError(const QString &error) {
   }
 }
 
-void LemmyAPI::setInstanceUrl(const QString &url) {
-  if (m_instanceUrl != url) {
-    m_instanceUrl = url;
-    m_settings->setValue(QStringLiteral("instanceUrl"), url);
-    emit instanceUrlChanged();
-    ensureClient();
-  }
-}
-
-void LemmyAPI::setUsername(const QString &username) {
-  if (m_username != username) {
-    m_username = username;
-    emit usernameChanged();
-  }
-}
-
-void LemmyAPI::setPassword(const QString &password) {
-  if (m_password != password) {
-    m_password = password;
-    emit passwordChanged();
-  }
-}
-
 void LemmyAPI::setPostsPage(int page) {
   if (m_postsPage != page) {
     m_postsPage = page;
@@ -427,11 +404,12 @@ void LemmyAPI::setPostsModel(PostsModel *model) {
   }
 }
 
-void LemmyAPI::login() {
+void LemmyAPI::login(const QString instanceUrl, const QString username,
+                     const QString password, const QString totp) {
   if (m_busy)
     return;
 
-  if (m_instanceUrl.isEmpty() || m_username.isEmpty() || m_password.isEmpty()) {
+  if (instanceUrl.isEmpty() || username.isEmpty() || password.isEmpty()) {
     setError(tr("Please fill in all fields"));
     emit loginFailed(error());
     return;
@@ -439,11 +417,15 @@ void LemmyAPI::login() {
 
   setBusy(true);
   setError(QString());
+
+  m_username = username;
+  m_instanceUrl = instanceUrl;
+
   ensureClient();
 
-  QMetaObject::invokeMethod(
-      m_worker, "doLogin", Qt::QueuedConnection, Q_ARG(QString, m_username),
-      Q_ARG(QString, m_password), Q_ARG(QString, QString()));
+  QMetaObject::invokeMethod(m_worker, "doLogin", Qt::QueuedConnection,
+                            Q_ARG(QString, username), Q_ARG(QString, password),
+                            Q_ARG(QString, totp));
 }
 
 void LemmyAPI::logout() {
@@ -623,8 +605,9 @@ void LemmyAPI::onLoginFinished(const QString &json) {
     m_jwt = jwt;
     // Store JWT securely
     m_secureStorage->saveAccessToken(jwt);
-    // Store username in QSettings (non-sensitive)
+    // Store details in QSettings
     m_settings->setValue(QStringLiteral("username"), m_username);
+    m_settings->setValue(QStringLiteral("instanceUrl"), m_instanceUrl);
 
     // Set the JWT on the Rust client for subsequent requests
     QMetaObject::invokeMethod(m_worker, "setJwt", Qt::QueuedConnection,
@@ -633,10 +616,6 @@ void LemmyAPI::onLoginFinished(const QString &json) {
     setLoggedIn(true);
     setBusy(false);
     emit loginSuccess();
-
-    // Clear sensitive data
-    m_password.clear();
-    emit passwordChanged();
   } else {
     setError(tr("Login succeeded but no token received"));
     setBusy(false);
@@ -653,7 +632,6 @@ void LemmyAPI::onLogoutFinished(const QString &json) {
   m_settings->remove(QStringLiteral("username"));
   m_settings->remove(QStringLiteral("instanceUrl"));
   m_username.clear();
-  m_password.clear();
   m_instanceUrl.clear();
   setLoggedIn(false);
   setBusy(false);
