@@ -41,7 +41,7 @@ jobs:
             cd build ;
             cp -r /workspace/* . ;
             export OPENSSL_DIR=/usr ;
-            sb2 -t SailfishOS-$RELEASE-${{ matrix.arch }} -m sdk-build cargo build --release --target ${{ matrix.target }} --target-dir rust/target --manifest-path rust/Cargo.toml --locked ;
+            sb2 -t SailfishOS-$RELEASE-${{ matrix.arch }} -m sdk-build cargo build --jobs 1 --release --target ${{ matrix.target }} --target-dir rust/target --manifest-path rust/Cargo.toml --locked ;
             mb2 -t SailfishOS-$RELEASE-${{ matrix.arch }} build ;
             sudo cp -r RPMS/*.rpm /workspace/RPMS"
 
