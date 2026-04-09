@@ -17,16 +17,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        include:
-          - arch: armv7hl
-            target: armv7-unknown-linux-gnueabihf
-          - arch: aarch64
-            target: aarch64-unknown-linux-gnu
-          - arch: i486
-            target: i686-unknown-linux-gnu
-
     steps:
     - uses: actions/checkout@v5
       with:
@@ -35,18 +25,38 @@ jobs:
     - name: prepare
       run: mkdir RPMS
 
-    - name: Build ${{ matrix.arch }}
-      run: docker run --rm --privileged -v $PWD:/workspace registry.gitlab.com/whisperfish/sailo-rs/rust-${{ matrix.arch }}-$RELEASE /bin/bash -c "
+    - name: Build armv7hl
+      run: docker run --rm --privileged -v $PWD:/workspace registry.gitlab.com/whisperfish/sailo-rs/rust-armv7hl-$RELEASE /bin/bash -c "
             mkdir -p build ;
             cd build ;
             cp -r /workspace/* . ;
             export OPENSSL_DIR=/usr ;
-            sb2 -t SailfishOS-$RELEASE-${{ matrix.arch }} -m sdk-build cargo build --release --target ${{ matrix.target }} --target-dir rust/target --manifest-path rust/Cargo.toml --locked ;
-            mb2 -t SailfishOS-$RELEASE-${{ matrix.arch }} build ;
+            sb2 -t SailfishOS-$RELEASE-armv7hl -m sdk-build cargo build --release --target armv7-unknown-linux-gnueabihf --target-dir rust/target --manifest-path rust/Cargo.toml --locked ;
+            mb2 -t SailfishOS-$RELEASE-armv7hl build ;
+            sudo cp -r RPMS/*.rpm /workspace/RPMS"
+
+    - name: Build aarch64
+      run: docker run --rm --privileged -v $PWD:/workspace registry.gitlab.com/whisperfish/sailo-rs/rust-aarch64-$RELEASE /bin/bash -c "
+            mkdir -p build ;
+            cd build ;
+            cp -r /workspace/* . ;
+            export OPENSSL_DIR=/usr ;
+            sb2 -t SailfishOS-$RELEASE-aarch64 -m sdk-build cargo build --release --target aarch64-unknown-linux-gnu --target-dir rust/target --manifest-path rust/Cargo.toml --locked ;
+            mb2 -t SailfishOS-$RELEASE-aarch64 build ;
+            sudo cp -r RPMS/*.rpm /workspace/RPMS"
+
+    - name: Build i486
+      run: docker run --rm --privileged -v $PWD:/workspace registry.gitlab.com/whisperfish/sailo-rs/rust-i486-$RELEASE /bin/bash -c "
+            mkdir -p build ;
+            cd build ;
+            cp -r /workspace/* . ;
+            export OPENSSL_DIR=/usr ;
+            sb2 -t SailfishOS-$RELEASE-i486 -m sdk-build cargo build --release --target i686-unknown-linux-gnu --target-dir rust/target --manifest-path rust/Cargo.toml --locked ;
+            mb2 -t SailfishOS-$RELEASE-i486 build ;
             sudo cp -r RPMS/*.rpm /workspace/RPMS"
 
     - name: Upload build result
       uses: actions/upload-artifact@v5
       with:
-        name: rpms-${{ matrix.arch }}
+        name: rpms
         path: RPMS
