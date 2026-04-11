@@ -41,6 +41,8 @@ Page {
     Component.onCompleted: {
         loadComments();
         appWindow.postTitle = postTitle;
+        appWindow.postScore = postScore;
+        appWindow.postComments = postComments;
     }
 
     onStatusChanged: {
@@ -289,6 +291,8 @@ Page {
 
                 postTitle = result.post_view.post.name;
                 appWindow.postTitle = postTitle;
+                appWindow.postScore = postScore;
+                appWindow.postComments = postComments;
             } else if (method === "likeComment") {
                 loadComments();
             }

@@ -6,6 +6,8 @@ ApplicationWindow {
     id: appWindow
 
     property string postTitle: ""
+    property int postScore: 0
+    property int postComments: 0
 
     cover: Qt.resolvedUrl("cover/CoverPage.qml")
     allowedOrientations: defaultAllowedOrientations

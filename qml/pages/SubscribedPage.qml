@@ -31,6 +31,8 @@ Page {
     onStatusChanged: {
         if (status === PageStatus.Active) {
             appWindow.postTitle = "";
+            appWindow.postScore = 0;
+            appWindow.postComments = 0;
         }
     }
 

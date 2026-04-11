@@ -20,5 +20,34 @@ CoverBackground {
             font.pixelSize: Theme.fontSizeMedium
             text: appWindow.postTitle
         }
+
+        Label {
+            width: parent.width
+            color: Theme.secondaryHighlightColor
+            font.pixelSize: Theme.fontSizeSmall
+            horizontalAlignment: Text.AlignRight
+            text: {
+                var txt = appWindow.postScore + ' ';
+                if (appWindow.postScore === 1)
+                    txt += qsTr("point");
+                else
+                    txt += qsTr("points");
+            }
+        }
+
+        Label {
+            width: parent.width
+            color: Theme.secondaryHighlightColor
+            font.pixelSize: Theme.fontSizeSmall
+            horizontalAlignment: Text.AlignRight
+            visible: appWindow.postComments > 0
+            text: {
+                var txt = appWindow.postComments + ' ';
+                if (appWindow.postComments === 1)
+                    txt += qsTr("comment");
+                else
+                    txt += qsTr("comments");
+            }
+        }
     }
 }
