@@ -3,10 +3,11 @@ import Sailfish.Silica 1.0
 import harbour.dee 1.0
 
 Page {
+    id: page
+
     property var api
 
     allowedOrientations: Orientation.All
-
     Component.onCompleted: {
         api.listCommunities(JSON.stringify({
             "type_": "Subscribed",
@@ -30,18 +31,14 @@ Page {
 
             MenuItem {
                 text: qsTr("Subscribed")
-                onClicked: {
-                    pageStack.animatorPush(Qt.resolvedUrl("SubscribedPage.qml"));
-                }
+                onClicked: pageStack.animatorPush(Qt.resolvedUrl("SubscribedPage.qml"))
             }
 
             MenuItem {
                 text: qsTr("Refresh")
-                onClicked: {
-                    api.listCommunities(JSON.stringify({
-                        "type_": "Subscribed"
-                    }));
-                }
+                onClicked: api.listCommunities(JSON.stringify({
+                    "type_": "Subscribed"
+                }))
             }
         }
 
@@ -55,7 +52,7 @@ Page {
 
         ViewPlaceholder {
             enabled: (!api || api.communities.length === 0) && (!api || !api.busy)
-            text: qsTr("You aren't following any communities")
+            text: qsTr("No subscribed communities")
             hintText: qsTr("Pull down to refresh")
         }
 
@@ -67,61 +64,80 @@ Page {
 
         VerticalScrollDecorator {}
 
-        header: Column {
-            width: parent.width
-
-            PageHeader {
-                title: qsTr("Communities")
-            }
+        header: PageHeader {
+            title: qsTr("Communities")
         }
 
         delegate: BackgroundItem {
             id: delegate
 
-            height: contentRow.height + 2 * Theme.paddingMedium
-
-            Row {
-                id: contentRow
-
-                anchors.verticalCenter: parent.verticalCenter
-                spacing: Theme.paddingMedium
-                x: Theme.horizontalPageMargin
-                width: parent.width - 2 * Theme.horizontalPageMargin
-
-                Column {
-                    id: contentColumn
-
-                    width: parent.width - Theme.itemSizeExtraSmall - Theme.paddingMedium
-                    spacing: Theme.paddingSmall
-
-                    Label {
-                        width: parent.width
-                        text: {
-                            var community = modelData.community || {};
-                            return community.title || community.name || "";
-                        }
-                        font.pixelSize: Theme.fontSizeSmall
-                        color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
-                    }
-
-                    Label {
-                        width: parent.width
-                        text: {
-                            var counts = modelData.counts || {};
-                            return (counts.subscribers || 0) + " subscribers, " + (counts.posts || 0) + " posts";
-                        }
-                        font.pixelSize: Theme.fontSizeExtraSmall
-                        color: Theme.secondaryColor
-                        truncationMode: TruncationMode.Fade
-                    }
-                }
-            }
+            width: ListView.view.width
+            height: contentColumn.height + 2 * Theme.paddingMedium
             onClicked: {
                 var community = modelData.community || {};
                 pageStack.animatorPush(Qt.resolvedUrl("SubscribedPage.qml"), {
                     "communityId": community.id,
                     "pageTitle": community.title || community.name
                 });
+            }
+
+            Column {
+                id: contentColumn
+
+                x: Theme.horizontalPageMargin
+                width: parent.width - 2 * Theme.horizontalPageMargin
+                anchors.verticalCenter: parent.verticalCenter
+                spacing: Theme.paddingSmall / 2
+
+                Label {
+                    width: parent.width
+                    text: {
+                        var c = modelData.community || {};
+                        return c.title || c.name || "";
+                    }
+                    font.pixelSize: Theme.fontSizeSmall
+                    color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
+                    truncationMode: TruncationMode.Fade
+                }
+
+                Row {
+                    spacing: Theme.paddingSmall
+
+                    Label {
+                        text: {
+                            var n = (modelData.counts || {}).subscribers || 0;
+                            return n + " " + qsTr("subscribers");
+                        }
+                        font.pixelSize: Theme.fontSizeExtraSmall
+                        color: Theme.secondaryColor
+                    }
+
+                    Label {
+                        text: "·"
+                        font.pixelSize: Theme.fontSizeExtraSmall
+                        color: Theme.secondaryColor
+                    }
+
+                    Label {
+                        text: {
+                            var n = (modelData.counts || {}).posts || 0;
+                            return n + " " + qsTr("posts");
+                        }
+                        font.pixelSize: Theme.fontSizeExtraSmall
+                        color: Theme.secondaryColor
+                    }
+                }
+            }
+
+            Image {
+                source: "image://theme/icon-m-right"
+                opacity: delegate.highlighted ? 1 : 0.4
+
+                anchors {
+                    right: parent.right
+                    rightMargin: Theme.horizontalPageMargin
+                    verticalCenter: parent.verticalCenter
+                }
             }
         }
     }

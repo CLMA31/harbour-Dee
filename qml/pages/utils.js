@@ -1,3 +1,5 @@
+.pragma library
+
 function getRelativeTime(dateString) {
     var date = new Date(dateString)
     var now = new Date()
@@ -10,12 +12,22 @@ function getRelativeTime(dateString) {
     if (diffSec < 60) {
         return qsTr("just now")
     } else if (diffMin < 60) {
-        return qsTr("%1 min(s) ago").arg(diffMin)
+        return diffMin === 1 ? qsTr("1 minute ago") : qsTr("%1 minutes ago").arg(diffMin)
     } else if (diffHour < 24) {
-        return qsTr("%1 hour(s) ago").arg(diffHour)
+        return diffHour === 1 ? qsTr("1 hour ago") : qsTr("%1 hours ago").arg(diffHour)
     } else if (diffDay < 7) {
-        return qsTr("%1 day(s) ago").arg(diffDay)
+        return diffDay === 1 ? qsTr("1 day ago") : qsTr("%1 days ago").arg(diffDay)
     } else {
         return Qt.formatDateTime(date)
     }
+}
+
+function formatAuthor(actorId) {
+    if (!actorId) return ""
+    var parts = actorId.split("/u/")
+    if (parts.length < 2) return actorId
+    var username = parts[1]
+    var urlParts = actorId.split("://")
+    var domain = urlParts.length >= 2 ? urlParts[1].split("/")[0] : ""
+    return domain ? username + "@" + domain : username
 }

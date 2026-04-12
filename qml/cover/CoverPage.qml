@@ -9,44 +9,41 @@ CoverBackground {
     }
 
     Column {
-        anchors.centerIn: parent
-        x: Theme.paddingSmall
-        width: parent.width - Theme.paddingSmall * 2
         visible: appWindow.postTitle.length > 0
+        spacing: Theme.paddingSmall
+
+        anchors {
+            left: parent.left
+            leftMargin: Theme.paddingSmall
+            right: parent.right
+            rightMargin: Theme.paddingSmall
+            verticalCenter: parent.verticalCenter
+        }
 
         Label {
             width: parent.width
             wrapMode: Text.Wrap
-            font.pixelSize: Theme.fontSizeMedium
+            maximumLineCount: 4
+            elide: Text.ElideRight
+            font.pixelSize: Theme.fontSizeSmall
+            color: Theme.primaryColor
             text: appWindow.postTitle
         }
 
-        Label {
-            width: parent.width
-            color: Theme.secondaryHighlightColor
-            font.pixelSize: Theme.fontSizeSmall
-            horizontalAlignment: Text.AlignRight
-            text: {
-                var txt = appWindow.postScore + ' ';
-                if (appWindow.postScore === 1)
-                    txt += qsTr("point");
-                else
-                    txt += qsTr("points");
-            }
-        }
+        Row {
+            spacing: Theme.paddingSmall
 
-        Label {
-            width: parent.width
-            color: Theme.secondaryHighlightColor
-            font.pixelSize: Theme.fontSizeSmall
-            horizontalAlignment: Text.AlignRight
-            visible: appWindow.postComments > 0
-            text: {
-                var txt = appWindow.postComments + ' ';
-                if (appWindow.postComments === 1)
-                    txt += qsTr("comment");
-                else
-                    txt += qsTr("comments");
+            Label {
+                text: appWindow.postScore + " " + qsTr("pts")
+                font.pixelSize: Theme.fontSizeExtraSmall
+                color: Theme.secondaryHighlightColor
+            }
+
+            Label {
+                visible: appWindow.postComments > 0
+                text: "· " + appWindow.postComments + " " + (appWindow.postComments === 1 ? qsTr("comment") : qsTr("comments"))
+                font.pixelSize: Theme.fontSizeExtraSmall
+                color: Theme.secondaryColor
             }
         }
     }

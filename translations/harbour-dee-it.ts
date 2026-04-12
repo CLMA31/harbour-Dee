@@ -20,10 +20,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>You aren&apos;t following any communities</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Subscribed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -31,23 +27,31 @@
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>No subscribed communities</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>subscribers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>posts</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CoverPage</name>
-    <message>
-        <source>point</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>points</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>comment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>comments</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pts</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -65,10 +69,6 @@
 <context>
     <name>LoginPage</name>
     <message>
-        <source>Login</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Password</source>
         <translation type="unfinished"></translation>
     </message>
@@ -77,11 +77,35 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Logging in…</source>
+        <source>Sign in</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>2-factor authentication</source>
+        <source>Instance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Instance URL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Credentials</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Two-factor authentication</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Authentication code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>6-digit code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Signing in…</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -101,10 +125,6 @@
     </message>
     <message>
         <source>Share url</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Load more</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -135,6 +155,14 @@
         <source>No comments yet.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Load more comments</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pts</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ReplyPage</name>
@@ -147,15 +175,19 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Type here to comment…</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Post</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Reply</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Write your comment…</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Posting…</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Post comment</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -178,7 +210,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Logout</source>
+        <source>Sign out</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -209,10 +241,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>points</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>comments</source>
         <translation type="unfinished"></translation>
     </message>
@@ -236,6 +264,10 @@
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>pts</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>utils</name>
@@ -244,15 +276,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>%1 min(s) ago</source>
+        <source>1 minute ago</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>%1 hour(s) ago</source>
+        <source>%1 minutes ago</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>%1 day(s) ago</source>
+        <source>1 hour ago</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 hours ago</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>1 day ago</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 days ago</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

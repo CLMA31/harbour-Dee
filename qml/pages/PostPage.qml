@@ -1,9 +1,12 @@
-import QtQuick 2.0
+import QtQuick 2.6
 import Sailfish.Share 1.0
 import Sailfish.Silica 1.0
 import harbour.dee 1.0
+import "utils.js" as Utils
 
 Page {
+    id: page
+
     property var api
     property int postId
     property string postTitle
@@ -15,25 +18,23 @@ Page {
     property int postScore
     property int postComments
     property int postMyVote
+    readonly property var threadColors: [Theme.highlightColor, Theme.secondaryHighlightColor, Theme.primaryColor, Theme.secondaryColor]
 
     function loadComments() {
-        var params = JSON.stringify({
+        api.listComments(JSON.stringify({
             "post_id": postId,
             "limit": 50
-        });
-        api.listComments(params);
+        }));
     }
 
     function refresh() {
         api.getPost(postId);
-
         loadComments();
     }
 
     function previewText(text) {
-        if (text.trim().length === 0) {
-            return text;
-        }
+        if (!text || text.trim().length === 0)
+            return "";
 
         return text.trim().substring(0, 200);
     }
@@ -44,10 +45,9 @@ Page {
         appWindow.postScore = postScore;
         appWindow.postComments = postComments;
     }
-
     onStatusChanged: {
-        if (status == PageStatus.Active) {
-            if (postUrl && !(/^\s*$/.test(postUrl)))
+        if (status === PageStatus.Active) {
+            if (postUrl && !/^\s*$/.test(postUrl))
                 pageStack.pushAttached(Qt.resolvedUrl("PostWebView.qml"), {
                     "postUrl": postUrl
                 });
@@ -56,14 +56,12 @@ Page {
 
     SilicaFlickable {
         anchors.fill: parent
-        contentHeight: col.height
+        contentHeight: col.height + Theme.paddingLarge
 
         PullDownMenu {
             MenuItem {
                 text: qsTr("Share")
-                onClicked: {
-                    share.trigger();
-                }
+                onClicked: share.trigger()
             }
 
             MenuItem {
@@ -73,14 +71,12 @@ Page {
 
             MenuItem {
                 text: qsTr("Reply")
-                onClicked: {
-                    pageStack.push(Qt.resolvedUrl("ReplyPage.qml"), {
-                        "api": api,
-                        "postId": postId,
-                        "parentId": 0,
-                        "previewText": qsTr("In reply to \"%1\"").arg(previewText(postTitle))
-                    });
-                }
+                onClicked: pageStack.push(Qt.resolvedUrl("ReplyPage.qml"), {
+                    "api": api,
+                    "postId": postId,
+                    "parentId": 0,
+                    "previewText": qsTr("In reply to \"%1\"").arg(previewText(postTitle))
+                })
             }
 
             MenuItem {
@@ -97,9 +93,11 @@ Page {
         }
 
         PushUpMenu {
+            visible: api.comments.length < postComments
+
             MenuItem {
-                text: qsTr("Load more")
-                enabled: !api.busy && api.comments.length < postComments
+                text: qsTr("Load more comments")
+                enabled: !api.busy
                 onClicked: api.loadMoreComments()
             }
         }
@@ -117,9 +115,12 @@ Page {
 
             x: Theme.horizontalPageMargin
             width: parent.width - Theme.horizontalPageMargin * 2
-            spacing: Theme.paddingMedium
+            spacing: 0
 
-            SectionHeader {}
+            Item {
+                width: 1
+                height: Theme.paddingLarge * 2
+            }
 
             Label {
                 width: parent.width
@@ -129,155 +130,233 @@ Page {
                 wrapMode: Text.Wrap
             }
 
-            // Workaround for Label that does not provide onClick?
-            Text {
-                width: parent.implicitWidth
-                visible: (postUrl && !(/^\s*$/.test(postUrl)))
-                textFormat: Text.RichText
-                font.pixelSize: Theme.fontSizeSmall
-                wrapMode: Text.WrapAnywhere
-                text: {
-                    var txt = "<style>a:link{color: " + Theme.secondaryHighlightColor + ";}</style>";
-                    txt += "<a href=\"" + postUrl + "\" rel=\"nofollow\">" + postUrl + "</a>";
-                    return txt;
-                }
-                onLinkActivated: {
-                    console.log("Opening external browser: " + link);
-                    Qt.openUrlExternally(link);
+            Rectangle {
+                visible: postUrl && !/^\s*$/.test(postUrl)
+                width: parent.width
+                height: urlLabel.implicitHeight + Theme.paddingMedium * 2
+                color: Theme.rgba(Theme.highlightBackgroundColor, 0.1)
+                radius: Theme.paddingSmall
+                anchors.topMargin: Theme.paddingMedium
+
+                Text {
+                    id: urlLabel
+
+                    textFormat: Text.RichText
+                    font.pixelSize: Theme.fontSizeExtraSmall
+                    wrapMode: Text.WrapAnywhere
+                    text: {
+                        var c = Theme.secondaryHighlightColor;
+                        return "<style>a:link{color:" + c + ";}</style>" + "<a href=\"" + postUrl + "\">" + postUrl + "</a>";
+                    }
+                    onLinkActivated: Qt.openUrlExternally(link)
+
+                    anchors {
+                        left: parent.left
+                        right: parent.right
+                        verticalCenter: parent.verticalCenter
+                        margins: Theme.paddingMedium
+                    }
                 }
             }
 
             Label {
+                visible: postBody && postBody.length > 0
                 width: parent.width
+                topPadding: Theme.paddingMedium
                 text: postBody || ""
                 wrapMode: Text.Wrap
                 font.pixelSize: Theme.fontSizeSmall
                 color: Theme.primaryColor
-                visible: postBody && postBody.length > 0
             }
 
-            Label {
+            Row {
                 width: parent.width
-                color: Theme.secondaryHighlightColor
-                font.pixelSize: Theme.fontSizeSmall
-                horizontalAlignment: Text.AlignRight
-                text: {
-                    var actorId = postAuthor || "";
-                    var username = "";
-                    var domain = "";
-                    if (actorId) {
-                        var parts = actorId.split("/u/");
-                        if (parts.length >= 2) {
-                            username = parts[1];
-                            var urlParts = actorId.split("://");
-                            if (urlParts.length >= 2) {
-                                domain = urlParts[1].split("/")[0];
-                            }
-                        }
+                topPadding: Theme.paddingMedium
+                spacing: Theme.paddingSmall
+
+                Label {
+                    text: {
+                        if (postMyVote > 0)
+                            return "▲ " + postScore;
+
+                        if (postMyVote < 0)
+                            return "▼ " + postScore;
+
+                        return postScore + " " + qsTr("pts");
                     }
-                    return (username + "@" + domain) + " - " + Qt.formatDateTime(postDate);
+                    font.pixelSize: Theme.fontSizeExtraSmall
+                    color: postMyVote > 0 ? Theme.highlightColor : postMyVote < 0 ? "#e05050" : Theme.secondaryColor
+                }
+
+                Label {
+                    text: "·"
+                    font.pixelSize: Theme.fontSizeExtraSmall
+                    color: Theme.secondaryColor
+                }
+
+                Label {
+                    text: Utils.formatAuthor(postAuthor)
+                    font.pixelSize: Theme.fontSizeExtraSmall
+                    color: Theme.secondaryHighlightColor
+                    elide: Text.ElideRight
+                    width: Math.min(implicitWidth, col.width * 0.5)
+                }
+
+                Label {
+                    text: "·"
+                    font.pixelSize: Theme.fontSizeExtraSmall
+                    color: Theme.secondaryColor
+                }
+
+                Label {
+                    text: Utils.getRelativeTime(postDate)
+                    font.pixelSize: Theme.fontSizeExtraSmall
+                    color: Theme.secondaryColor
                 }
             }
 
             SectionHeader {
                 text: qsTr("Comments") + " (" + (api ? api.comments.length : 0) + "/" + postComments + ")"
+                topPadding: Theme.paddingLarge
             }
 
             Label {
                 width: parent.width
-                visible: api && api.comments.length === 0
+                visible: api && api.comments.length === 0 && !api.busy
                 text: qsTr("No comments yet.")
                 color: Theme.secondaryColor
-                font.pixelSize: Theme.fontSizeMedium
+                font.pixelSize: Theme.fontSizeSmall
+                horizontalAlignment: Text.AlignHCenter
+                topPadding: Theme.paddingLarge
+                bottomPadding: Theme.paddingLarge
             }
 
             Repeater {
                 model: api ? api.comments : []
 
-                visible: api && api.comments.length > 0
-
-                delegate: ListItem {
-                    id: listItem
+                delegate: Item {
+                    id: commentItem
 
                     property var commentData: modelData.commentData
                     property var counts: modelData.counts
                     property int depth: modelData.depth
                     property int myVote: modelData.myVote
 
-                    menu: contextMenu
+                    width: col.width
+                    height: (commentMenu.active ? commentMenu.height : 0) + commentRow.height + Theme.paddingSmall * 2
 
-                    contentHeight: commentColumn.height + 2 * Theme.paddingMedium
+                    Rectangle {
+                        visible: depth > 1
+                        x: (depth - 1) * Theme.paddingLarge - Theme.paddingSmall
+                        width: 2
+                        height: parent.height
+                        color: threadColors[Math.min((depth - 1) % threadColors.length, threadColors.length - 1)]
+                        opacity: Math.max(0.3, 1 - (depth - 1) * 0.15)
+                    }
 
-                    Column {
-                        id: commentColumn
+                    BackgroundItem {
+                        id: commentBg
 
-                        x: (depth > 1 ? (depth - 1) * Theme.horizontalPageMargin : 0)
-                        width: parent.width - (depth > 1 ? (depth - 1) * Theme.horizontalPageMargin : 0)
-                        spacing: Theme.paddingSmall
+                        anchors.fill: parent
+                        onPressAndHold: commentMenu.open(commentBg)
+                    }
 
-                        Label {
+                    Row {
+                        id: commentRow
+
+                        x: depth > 1 ? (depth - 1) * Theme.paddingLarge + Theme.paddingSmall : 0
+                        width: col.width - x
+                        y: Theme.paddingSmall
+                        spacing: 0
+
+                        Column {
                             width: parent.width
-                            text: commentData.content || ""
-                            color: listItem.highlighted ? Theme.highlightColor : Theme.secondaryColor
-                            font.pixelSize: Theme.fontSizeSmall
-                            wrapMode: Text.Wrap
-                        }
+                            spacing: Theme.paddingSmall / 2
 
-                        Label {
-                            width: parent.width
-                            text: {
-                                var creator = modelData.creator || {};
-                                var actorId = creator.actor_id || "";
-                                var username = "";
-                                var domain = "";
-                                if (actorId) {
-                                    var parts = actorId.split("/u/");
-                                    if (parts.length >= 2) {
-                                        username = parts[1];
-                                        var urlParts = actorId.split("://");
-                                        if (urlParts.length >= 2) {
-                                            domain = urlParts[1].split("/")[0];
-                                        }
-                                    }
-                                }
-                                return (username + "@" + domain) + " - " + (counts.score || 0) + " pts";
+                            // Comment body
+                            Label {
+                                width: parent.width
+                                text: commentData.content || ""
+                                color: commentBg.highlighted ? Theme.highlightColor : Theme.primaryColor
+                                font.pixelSize: Theme.fontSizeSmall
+                                wrapMode: Text.Wrap
                             }
-                            font.pixelSize: Theme.fontSizeExtraSmall
-                            color: Theme.secondaryColor
-                            truncationMode: TruncationMode.Fade
+
+                            Row {
+                                spacing: Theme.paddingSmall
+
+                                Label {
+                                    text: Utils.formatAuthor((modelData.creator || {}).actor_id || "")
+                                    font.pixelSize: Theme.fontSizeExtraSmall
+                                    color: Theme.secondaryHighlightColor
+                                }
+
+                                Label {
+                                    text: "·"
+                                    font.pixelSize: Theme.fontSizeExtraSmall
+                                    color: Theme.secondaryColor
+                                }
+
+                                Label {
+                                    text: {
+                                        if (myVote > 0)
+                                            return "▲ " + (counts.score || 0);
+
+                                        if (myVote < 0)
+                                            return "▼ " + (counts.score || 0);
+
+                                        return (counts.score || 0) + " " + qsTr("pts");
+                                    }
+                                    font.pixelSize: Theme.fontSizeExtraSmall
+                                    color: myVote > 0 ? Theme.highlightColor : myVote < 0 ? Theme.highlightDimmerColor : Theme.secondaryColor
+                                }
+
+                                Label {
+                                    text: "·"
+                                    font.pixelSize: Theme.fontSizeExtraSmall
+                                    color: Theme.secondaryColor
+                                }
+
+                                Label {
+                                    text: Utils.getRelativeTime(commentData.published || "")
+                                    font.pixelSize: Theme.fontSizeExtraSmall
+                                    color: Theme.secondaryColor
+                                }
+                            }
                         }
                     }
 
-                    Component {
-                        id: contextMenu
+                    ContextMenu {
+                        id: commentMenu
 
-                        ContextMenu {
-                            MenuItem {
-                                text: myVote === 0 ? qsTr("Upvote") : qsTr("Undo upvote")
-                                onClicked: api.likeComment(commentData.id, myVote === 0 ? 1 : 0)
-                                enabled: myVote >= 0
-                            }
+                        MenuItem {
+                            text: myVote === 0 ? qsTr("Upvote") : qsTr("Undo upvote")
+                            onClicked: api.likeComment(commentData.id, myVote === 0 ? 1 : 0)
+                            enabled: myVote >= 0
+                        }
 
-                            MenuItem {
-                                text: myVote === 0 ? qsTr("Downvote") : qsTr("Undo downvote")
-                                onClicked: api.likeComment(commentData.id, myVote === 0 ? -1 : 0)
-                                enabled: myVote <= 0
-                            }
+                        MenuItem {
+                            text: myVote === 0 ? qsTr("Downvote") : qsTr("Undo downvote")
+                            onClicked: api.likeComment(commentData.id, myVote === 0 ? -1 : 0)
+                            enabled: myVote <= 0
+                        }
 
-                            MenuItem {
-                                text: qsTr("Reply")
-                                onClicked: {
-                                    pageStack.push(Qt.resolvedUrl("ReplyPage.qml"), {
-                                        "api": api,
-                                        "postId": postId,
-                                        "parentId": commentData.id,
-                                        "previewText": qsTr("In reply to \"%1\"").arg(previewText(commentData.content))
-                                    });
-                                }
-                            }
+                        MenuItem {
+                            text: qsTr("Reply")
+                            onClicked: pageStack.push(Qt.resolvedUrl("ReplyPage.qml"), {
+                                "api": api,
+                                "postId": postId,
+                                "parentId": commentData.id,
+                                "previewText": qsTr("In reply to \"%1\"").arg(previewText(commentData.content))
+                            })
                         }
                     }
                 }
+            }
+
+            Item {
+                width: 1
+                height: Theme.paddingLarge * 2
             }
         }
     }
@@ -286,10 +365,11 @@ Page {
         target: api
         onRequestFinished: {
             if (method === "likePost" || method === "getPost") {
-                postMyVote = result.post_view.my_vote ? result.post_view.my_vote : 0;
-                postComments = result.post_view.counts.comments;
-
-                postTitle = result.post_view.post.name;
+                var pv = result.post_view;
+                postMyVote = pv.my_vote ? pv.my_vote : 0;
+                postComments = pv.counts.comments;
+                postScore = pv.counts.score;
+                postTitle = pv.post.name;
                 appWindow.postTitle = postTitle;
                 appWindow.postScore = postScore;
                 appWindow.postComments = postComments;

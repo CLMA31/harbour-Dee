@@ -7,6 +7,10 @@ Page {
 
     property alias api: _api
 
+    function doLogin() {
+        _api.login(instance.text, username.text, password.text, useTwoFactor.checked ? totp.text : "");
+    }
+
     allowedOrientations: Orientation.All
     Component.onCompleted: {
         if (_api.loggedIn)
@@ -27,16 +31,22 @@ Page {
 
     SilicaFlickable {
         anchors.fill: parent
-        contentHeight: column.height
+        contentHeight: column.height + Theme.paddingLarge
+
+        VerticalScrollDecorator {}
 
         Column {
             id: column
 
             width: page.width
-            spacing: Theme.paddingLarge
+            spacing: 0
 
             PageHeader {
-                title: qsTr("Login")
+                title: qsTr("Sign in")
+            }
+
+            SectionHeader {
+                text: qsTr("Instance")
             }
 
             TextField {
@@ -44,6 +54,7 @@ Page {
 
                 x: Theme.horizontalPageMargin
                 width: parent.width - 2 * Theme.horizontalPageMargin
+                label: qsTr("Instance URL")
                 placeholderText: "https://lemmy.world"
                 inputMethodHints: Qt.ImhUrlCharactersOnly
                 text: _api.instanceUrl
@@ -52,11 +63,16 @@ Page {
                 EnterKey.onClicked: username.focus = true
             }
 
+            SectionHeader {
+                text: qsTr("Credentials")
+            }
+
             TextField {
                 id: username
 
                 x: Theme.horizontalPageMargin
                 width: parent.width - 2 * Theme.horizontalPageMargin
+                label: qsTr("Email or Username")
                 placeholderText: qsTr("Email or Username")
                 text: _api.username
                 EnterKey.enabled: text.length > 0 && instance.text.length > 0
@@ -69,56 +85,77 @@ Page {
 
                 x: Theme.horizontalPageMargin
                 width: parent.width - 2 * Theme.horizontalPageMargin
+                label: qsTr("Password")
                 placeholderText: qsTr("Password")
                 echoMode: TextInput.Password
                 EnterKey.enabled: text.length > 0 && username.text.length > 0
-                EnterKey.iconSource: "image://theme/icon-m-enter-accept"
-                EnterKey.onClicked: _api.login()
+                EnterKey.iconSource: useTwoFactor.checked ? "image://theme/icon-m-enter-next" : "image://theme/icon-m-enter-accept"
+                EnterKey.onClicked: {
+                    if (useTwoFactor.checked)
+                        totp.focus = true;
+                    else
+                        doLogin();
+                }
+            }
+
+            // 2FA toggle – hidden by default
+            TextSwitch {
+                id: useTwoFactor
+
+                x: Theme.horizontalPageMargin
+                width: parent.width - 2 * Theme.horizontalPageMargin
+                text: qsTr("Two-factor authentication")
+                checked: false
             }
 
             TextField {
                 id: totp
 
+                visible: useTwoFactor.checked
                 x: Theme.horizontalPageMargin
                 width: parent.width - 2 * Theme.horizontalPageMargin
-                placeholderText: qsTr("2-factor authentication")
+                label: qsTr("Authentication code")
+                placeholderText: qsTr("6-digit code")
                 inputMethodHints: Qt.ImhDigitsOnly
-                EnterKey.enabled: text.length > 0 && username.text.length > 0 && password.text.length > 0
+                EnterKey.enabled: text.length > 0
                 EnterKey.iconSource: "image://theme/icon-m-enter-accept"
-                EnterKey.onClicked: _api.login(instance.text, username.text, password.text, text)
-            }
-
-            Button {
-                x: Theme.horizontalPageMargin
-                width: parent.width - 2 * Theme.horizontalPageMargin
-                enabled: !_api.busy && instance.text.length > 0 && username.text.length > 0 && password.text.length > 0
-                text: _api.busy ? qsTr("Logging in…") : qsTr("Login")
-                onClicked: _api.login(instance.text, username.text, password.text, totp.text)
-            }
-
-            Label {
-                x: Theme.horizontalPageMargin
-                width: parent.width - 2 * Theme.horizontalPageMargin
-                wrapMode: Text.Wrap
-                color: _api.error.length > 0 ? Theme.errorColor : Theme.secondaryColor
-                text: _api.error
-                visible: _api.error.length > 0
+                EnterKey.onClicked: doLogin()
             }
 
             Item {
                 width: 1
                 height: Theme.paddingLarge
             }
+
+            Button {
+                x: Theme.horizontalPageMargin
+                width: parent.width - 2 * Theme.horizontalPageMargin
+                enabled: !_api.busy && instance.text.length > 0 && username.text.length > 0 && password.text.length > 0
+                text: _api.busy ? qsTr("Signing in…") : qsTr("Sign in")
+                onClicked: doLogin()
+            }
+
+            Label {
+                x: Theme.horizontalPageMargin
+                width: parent.width - 2 * Theme.horizontalPageMargin
+                topPadding: Theme.paddingMedium
+                wrapMode: Text.Wrap
+                color: Theme.errorColor
+                text: _api.error
+                visible: _api.error.length > 0
+                font.pixelSize: Theme.fontSizeSmall
+            }
+
+            Item {
+                width: 1
+                height: Theme.paddingLarge * 2
+            }
         }
     }
 
     Connections {
-
-        // Error is already displayed via binding
         target: _api
-        onLoginSuccess: {
-            pageStack.replace(Qt.resolvedUrl("SubscribedPage.qml"));
-        }
+        onLoginSuccess: pageStack.replace(Qt.resolvedUrl("SubscribedPage.qml"))
         onLoginFailed: {}
     }
 }

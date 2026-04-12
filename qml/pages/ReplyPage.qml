@@ -3,71 +3,111 @@ import Sailfish.Silica 1.0
 import harbour.dee 1.0
 
 Page {
+    id: page
+
     property var api
     property int postId
     property int parentId
     property string previewText
-
-    // Internal state
     property bool submitting: false
 
     function submit() {
+        if (comment.text.trim().length === 0)
+            return;
+
         submitting = true;
-        var jsonObj = {
-            "post_id": postId,
-            "content": comment.text.trim()
-        };
-        if (parentId > 0) {
-            jsonObj.parent_id = parentId;
-        }
-        var jsonParams = JSON.stringify(jsonObj);
         api.createComment(postId, comment.text.trim(), parentId);
     }
 
+    allowedOrientations: Orientation.All
+
     SilicaFlickable {
         anchors.fill: parent
-        contentHeight: column.height
+        contentHeight: column.height + Theme.paddingLarge
 
         VerticalScrollDecorator {}
 
         Column {
             id: column
 
-            x: Theme.horizontalPageMargin
-            width: parent.width - Theme.horizontalPageMargin * 2
-            spacing: Theme.paddingLarge
+            width: page.width
+            spacing: 0
 
-            SectionHeader {
-                text: parentId === 0 ? qsTr("Reply to post") : qsTr("Reply to comment")
+            PageHeader {
+                title: parentId === 0 ? qsTr("Reply to post") : qsTr("Reply to comment")
             }
 
-            Label {
-                width: parent.width
-                text: previewText
-                elide: Text.ElideRight
-                wrapMode: Text.Wrap
-                maximumLineCount: 5
-                color: Theme.secondaryColor
-                font.pixelSize: Theme.fontSizeSmall
-                opacity: previewText ? 0.8 : 0.0
+            Rectangle {
                 visible: previewText.length > 0
+                x: Theme.horizontalPageMargin
+                width: parent.width - 2 * Theme.horizontalPageMargin
+                height: quoteLabel.implicitHeight + 2 * Theme.paddingSmall
+                color: Theme.rgba(Theme.highlightBackgroundColor, 0.08)
+                radius: Theme.paddingSmall
+
+                Rectangle {
+                    width: 3
+                    height: parent.height
+                    color: Theme.secondaryHighlightColor
+                    opacity: 0.6
+                    radius: 1
+                }
+
+                Label {
+                    id: quoteLabel
+
+                    x: Theme.paddingMedium + 3
+                    y: Theme.paddingSmall
+                    width: parent.width - x - Theme.paddingSmall
+                    text: previewText
+                    wrapMode: Text.Wrap
+                    maximumLineCount: 4
+                    elide: Text.ElideRight
+                    color: Theme.secondaryColor
+                    font.pixelSize: Theme.fontSizeSmall
+                }
+            }
+
+            Item {
+                width: 1
+                height: Theme.paddingMedium
             }
 
             TextArea {
                 id: comment
 
-                width: parent.width
+                x: Theme.horizontalPageMargin
+                width: parent.width - 2 * Theme.horizontalPageMargin
                 focus: true
-                placeholderText: qsTr("Type here to comment…")
+                placeholderText: qsTr("Write your comment…")
                 font.pixelSize: Theme.fontSizeSmall
                 wrapMode: Text.Wrap
+                enabled: !submitting
+            }
+
+            Item {
+                width: 1
+                height: Theme.paddingMedium
             }
 
             Button {
-                width: parent.width
-                text: parentId === 0 ? qsTr("Post") : qsTr("Reply")
+                x: Theme.horizontalPageMargin
+                width: parent.width - 2 * Theme.horizontalPageMargin
+                text: submitting ? qsTr("Posting…") : parentId === 0 ? qsTr("Post comment") : qsTr("Reply")
                 enabled: !submitting && comment.text.trim().length > 0
                 onClicked: submit()
+            }
+
+            Label {
+                id: errorLabel
+
+                x: Theme.horizontalPageMargin
+                width: parent.width - 2 * Theme.horizontalPageMargin
+                topPadding: Theme.paddingSmall
+                wrapMode: Text.Wrap
+                color: Theme.errorColor
+                font.pixelSize: Theme.fontSizeSmall
+                visible: text.length > 0
             }
         }
     }
@@ -76,16 +116,6 @@ Page {
         anchors.centerIn: parent
         size: BusyIndicatorSize.Large
         running: submitting
-    }
-
-    Label {
-        id: error
-
-        x: Theme.horizontalPageMargin
-        width: parent.width - 2 * Theme.horizontalPageMargin
-        wrapMode: Text.Wrap
-        color: Theme.errorColor
-        visible: text.length > 0
     }
 
     Connections {
@@ -97,10 +127,9 @@ Page {
                 pageStack.pop();
             }
         }
-
         onRequestFailed: {
             if (method === "createComment") {
-                error.text = message;
+                errorLabel.text = message;
                 submitting = false;
             }
         }

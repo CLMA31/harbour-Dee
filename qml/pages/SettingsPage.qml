@@ -10,13 +10,15 @@ Page {
 
     SilicaFlickable {
         anchors.fill: parent
-        contentHeight: column.height
+        contentHeight: column.height + Theme.paddingLarge
+
+        VerticalScrollDecorator {}
 
         Column {
             id: column
 
             width: page.width
-            spacing: Theme.paddingLarge
+            spacing: 0
 
             PageHeader {
                 title: qsTr("Settings")
@@ -26,46 +28,34 @@ Page {
                 text: qsTr("Account")
             }
 
-            Label {
-                x: Theme.horizontalPageMargin
-                width: parent.width - 2 * Theme.horizontalPageMargin
-                text: qsTr("Username")
-                font.pixelSize: Theme.fontSizeExtraSmall
-                color: Theme.secondaryColor
+            DetailItem {
+                label: qsTr("Username")
+                value: api.username
             }
 
-            Label {
-                x: Theme.horizontalPageMargin
-                width: parent.width - 2 * Theme.horizontalPageMargin
-                text: api.username
-                font.pixelSize: Theme.fontSizeMedium
-                color: Theme.primaryColor
+            DetailItem {
+                label: qsTr("Instance")
+                value: api.instanceUrl
             }
 
-            Label {
-                x: Theme.horizontalPageMargin
-                width: parent.width - 2 * Theme.horizontalPageMargin
-                text: qsTr("Instance")
-                font.pixelSize: Theme.fontSizeExtraSmall
-                color: Theme.secondaryColor
-            }
-
-            Label {
-                x: Theme.horizontalPageMargin
-                width: parent.width - 2 * Theme.horizontalPageMargin
-                text: api.instanceUrl
-                font.pixelSize: Theme.fontSizeMedium
-                color: Theme.primaryColor
+            Item {
+                width: 1
+                height: Theme.paddingLarge
             }
 
             Button {
                 x: Theme.horizontalPageMargin
                 width: parent.width - 2 * Theme.horizontalPageMargin
-                text: qsTr("Logout")
+                text: qsTr("Sign out")
                 onClicked: {
                     api.logout();
                     pageStack.replace(Qt.resolvedUrl("LoginPage.qml"));
                 }
+            }
+
+            Item {
+                width: 1
+                height: Theme.paddingLarge * 2
             }
         }
     }
