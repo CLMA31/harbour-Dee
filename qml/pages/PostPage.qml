@@ -309,13 +309,13 @@ Page {
                                 Label {
                                     text: Utils.formatAuthor((modelData.creator || {}).actor_id || "")
                                     font.pixelSize: Theme.fontSizeExtraSmall
-                                    color: Theme.secondaryHighlightColor
+                                    color: commentBg.highlighted ? Theme.highlightColor : Theme.secondaryHighlightColor
                                 }
 
                                 Label {
                                     text: "·"
                                     font.pixelSize: Theme.fontSizeExtraSmall
-                                    color: Theme.secondaryColor
+                                    color: commentBg.highlighted ? Theme.highlightColor : Theme.secondaryColor
                                 }
 
                                 Row {
@@ -332,7 +332,7 @@ Page {
                                             return (counts.score || 0);
                                         }
                                         font.pixelSize: Theme.fontSizeExtraSmall
-                                        color: myVote > 0 ? Theme.highlightColor : myVote < 0 ? Theme.highlightDimmerColor : Theme.secondaryColor
+                                        color: myVote > 0 ? Theme.highlightColor : myVote < 0 ? Theme.highlightDimmerColor : commentBg.highlighted ? Theme.highlightColor : Theme.secondaryColor
                                     }
 
                                     Image {
@@ -347,13 +347,13 @@ Page {
                                 Label {
                                     text: "·"
                                     font.pixelSize: Theme.fontSizeExtraSmall
-                                    color: Theme.secondaryColor
+                                    color: commentBg.highlighted ? Theme.highlightColor : Theme.secondaryColor
                                 }
 
                                 Label {
                                     text: Utils.getRelativeTime(commentData.published || "")
                                     font.pixelSize: Theme.fontSizeExtraSmall
-                                    color: Theme.secondaryColor
+                                    color: commentBg.highlighted ? Theme.highlightColor : Theme.secondaryColor
                                 }
                             }
                         }
