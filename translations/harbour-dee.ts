@@ -51,7 +51,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>pts</source>
+        <source>point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>points</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
