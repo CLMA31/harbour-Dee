@@ -124,14 +124,6 @@
         <translation>Kommentare</translation>
     </message>
     <message>
-        <source>Share</source>
-        <translation>Teilen</translation>
-    </message>
-    <message>
-        <source>Share url</source>
-        <translation>URL teilen</translation>
-    </message>
-    <message>
         <source>Upvote</source>
         <translation>Hochwählen</translation>
     </message>
@@ -161,6 +153,14 @@
     </message>
     <message>
         <source>Load more comments</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Share link</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Share link to post</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

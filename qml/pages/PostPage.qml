@@ -62,7 +62,7 @@ Page {
 
         PullDownMenu {
             MenuItem {
-                text: qsTr("Share")
+                text: qsTr("Share link")
                 onClicked: share.trigger()
             }
 
@@ -416,13 +416,13 @@ Page {
     ShareAction {
         id: share
 
-        title: qsTr("Share url")
+        title: qsTr("Share link to post")
         mimeType: "text/x-url"
         resources: [
             {
                 "type": "text/x-url",
                 "linkTitle": postTitle,
-                "status": postUrl.toString()
+                "status": "https://" + api.instanceUrl + "/post/" + postId.toString()
             }
         ]
     }
