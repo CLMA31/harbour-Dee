@@ -161,7 +161,7 @@
     </message>
     <message>
         <source>Share</source>
-        <translation type="unfinished"></translation>
+        <translation>Jaga</translation>
     </message>
 </context>
 <context>
