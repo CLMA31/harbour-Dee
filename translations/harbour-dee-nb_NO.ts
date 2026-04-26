@@ -25,38 +25,38 @@
     </message>
     <message>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Innstillinger</translation>
     </message>
     <message>
         <source>No subscribed communities</source>
-        <translation type="unfinished"></translation>
+        <translation>Ingen fulgte samfunn</translation>
     </message>
     <message>
         <source>subscribers</source>
-        <translation type="unfinished"></translation>
+        <translation>følgere</translation>
     </message>
     <message>
         <source>posts</source>
-        <translation type="unfinished"></translation>
+        <translation>innlegg</translation>
     </message>
 </context>
 <context>
     <name>CoverPage</name>
     <message>
         <source>comment</source>
-        <translation type="unfinished"></translation>
+        <translation>kommentar</translation>
     </message>
     <message>
         <source>comments</source>
-        <translation type="unfinished"></translation>
+        <translation>kommentarer</translation>
     </message>
     <message>
         <source>point</source>
-        <translation type="unfinished"></translation>
+        <translation>punkt</translation>
     </message>
     <message>
         <source>points</source>
-        <translation type="unfinished"></translation>
+        <translation>punkter</translation>
     </message>
 </context>
 <context>
@@ -82,35 +82,35 @@
     </message>
     <message>
         <source>Sign in</source>
-        <translation type="unfinished"></translation>
+        <translation>Logg inn</translation>
     </message>
     <message>
         <source>Instance</source>
-        <translation type="unfinished"></translation>
+        <translation>Instans</translation>
     </message>
     <message>
         <source>Instance URL</source>
-        <translation type="unfinished"></translation>
+        <translation>URL til instans</translation>
     </message>
     <message>
         <source>Credentials</source>
-        <translation type="unfinished"></translation>
+        <translation>Påloggingsinformasjon</translation>
     </message>
     <message>
         <source>Two-factor authentication</source>
-        <translation type="unfinished"></translation>
+        <translation>to-faktor-autentisering</translation>
     </message>
     <message>
         <source>Authentication code</source>
-        <translation type="unfinished"></translation>
+        <translation>Autentiseringskode</translation>
     </message>
     <message>
         <source>6-digit code</source>
-        <translation type="unfinished"></translation>
+        <translation>6-sifret kode</translation>
     </message>
     <message>
         <source>Signing in…</source>
-        <translation type="unfinished"></translation>
+        <translation>Logger inn…</translation>
     </message>
 </context>
 <context>
@@ -141,23 +141,23 @@
     </message>
     <message>
         <source>Reply</source>
-        <translation type="unfinished"></translation>
+        <translation>Svar</translation>
     </message>
     <message>
         <source>In reply to &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>Som svar på «%1»</translation>
     </message>
     <message>
         <source>No comments yet.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ingen kommentarer enda.</translation>
     </message>
     <message>
         <source>Load more comments</source>
-        <translation type="unfinished"></translation>
+        <translation>Last inn flere kommentarer</translation>
     </message>
     <message>
         <source>Share link to post</source>
-        <translation type="unfinished"></translation>
+        <translation>Del lenken til innlegget</translation>
     </message>
     <message>
         <source>Share</source>
@@ -168,57 +168,57 @@
     <name>PostWebView</name>
     <message>
         <source>Share url</source>
-        <translation type="unfinished"></translation>
+        <translation>Del url</translation>
     </message>
 </context>
 <context>
     <name>ReplyPage</name>
     <message>
         <source>Reply to comment</source>
-        <translation type="unfinished"></translation>
+        <translation>Svar på kommentar</translation>
     </message>
     <message>
         <source>Reply to post</source>
-        <translation type="unfinished"></translation>
+        <translation>Svar på innlegg</translation>
     </message>
     <message>
         <source>Reply</source>
-        <translation type="unfinished"></translation>
+        <translation>Svar</translation>
     </message>
     <message>
         <source>Write your comment…</source>
-        <translation type="unfinished"></translation>
+        <translation>Skriv din kommentar…</translation>
     </message>
     <message>
         <source>Posting…</source>
-        <translation type="unfinished"></translation>
+        <translation>Publiserer…</translation>
     </message>
     <message>
         <source>Post comment</source>
-        <translation type="unfinished"></translation>
+        <translation>Publiser kommentar</translation>
     </message>
 </context>
 <context>
     <name>SettingsPage</name>
     <message>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Innstillinger</translation>
     </message>
     <message>
         <source>Account</source>
-        <translation type="unfinished"></translation>
+        <translation>Konto</translation>
     </message>
     <message>
         <source>Username</source>
-        <translation type="unfinished"></translation>
+        <translation>Brukernavn</translation>
     </message>
     <message>
         <source>Instance</source>
-        <translation type="unfinished"></translation>
+        <translation>Instans</translation>
     </message>
     <message>
         <source>Sign out</source>
-        <translation type="unfinished"></translation>
+        <translation>Logg ut</translation>
     </message>
     <message>
         <source>Logging out</source>
@@ -229,47 +229,47 @@
     <name>SubscribedPage</name>
     <message>
         <source>Subscribed</source>
-        <translation type="unfinished">Abonnerer</translation>
+        <translation>Følger</translation>
     </message>
     <message>
         <source>Communities</source>
-        <translation type="unfinished">Nettsamfunn</translation>
+        <translation>Nettsamfunn</translation>
     </message>
     <message>
         <source>Refresh</source>
-        <translation type="unfinished">Last på nytt</translation>
+        <translation>Last på nytt</translation>
     </message>
     <message>
         <source>No posts</source>
-        <translation type="unfinished"></translation>
+        <translation>Ingen innlegg</translation>
     </message>
     <message>
         <source>Pull down to refresh</source>
-        <translation type="unfinished">Dra ned for å oppdatere</translation>
+        <translation>Dra ned for å oppdatere</translation>
     </message>
     <message>
         <source>Loading more…</source>
-        <translation type="unfinished"></translation>
+        <translation>Laster inn mer…</translation>
     </message>
     <message>
         <source>Upvote</source>
-        <translation type="unfinished">Stem opp</translation>
+        <translation>Stem opp</translation>
     </message>
     <message>
         <source>Undo upvote</source>
-        <translation type="unfinished">Fjern stemme</translation>
+        <translation>Fjern stemme</translation>
     </message>
     <message>
         <source>Downvote</source>
-        <translation type="unfinished">Stem ned</translation>
+        <translation>Stem ned</translation>
     </message>
     <message>
         <source>Undo downvote</source>
-        <translation type="unfinished">Fjern nedstemme</translation>
+        <translation>Fjern nedstemme</translation>
     </message>
     <message>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Innstillinger</translation>
     </message>
 </context>
 <context>
@@ -280,27 +280,27 @@
     </message>
     <message>
         <source>1 minute ago</source>
-        <translation type="unfinished"></translation>
+        <translation>1 minutt siden</translation>
     </message>
     <message>
         <source>%1 minutes ago</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 minutter siden</translation>
     </message>
     <message>
         <source>1 hour ago</source>
-        <translation type="unfinished"></translation>
+        <translation>1 time siden</translation>
     </message>
     <message>
         <source>%1 hours ago</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 timer siden</translation>
     </message>
     <message>
         <source>1 day ago</source>
-        <translation type="unfinished"></translation>
+        <translation>1 dag siden</translation>
     </message>
     <message>
         <source>%1 days ago</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 dager siden</translation>
     </message>
 </context>
 </TS>
