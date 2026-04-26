@@ -161,7 +161,7 @@
     </message>
     <message>
         <source>Share</source>
-        <translation type="unfinished"></translation>
+        <translation>Jaa</translation>
     </message>
 </context>
 <context>
@@ -229,19 +229,19 @@
     <name>SubscribedPage</name>
     <message>
         <source>Communities</source>
-        <translation type="unfinished">Yhteisöt</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Refresh</source>
-        <translation type="unfinished">Päivitä</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>No posts</source>
-        <translation type="unfinished">Ei julkaisuja</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Pull down to refresh</source>
-        <translation type="unfinished">Päivitä vetämällä alaspäin</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Loading more…</source>
