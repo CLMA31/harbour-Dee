@@ -5,7 +5,7 @@ Name:       harbour-dee
 %define __requires_exclude ^liblemmy_bridge.*$
 # << macros
 
-Summary:    Lemmy client
+Summary:    A Lemmy client
 Version:    0.0.5
 Release:    1
 License:    LICENSE

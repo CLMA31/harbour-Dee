@@ -1,7 +1,6 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 import harbour.dee 1.0
-import "utils.js" as Utils
 
 Page {
     id: page
@@ -261,7 +260,7 @@ Page {
                     }
 
                     Label {
-                        text: Utils.getRelativeTime(post.published)
+                        text: Format.formatDate(post.published, Formatter.DurationElapsed)
                         font.pixelSize: Theme.fontSizeExtraSmall
                         color: delegate.highlighted ? Theme.highlightColor : Theme.secondaryColor
                     }

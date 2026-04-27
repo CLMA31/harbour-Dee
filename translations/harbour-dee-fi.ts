@@ -229,11 +229,11 @@
     <name>SubscribedPage</name>
     <message>
         <source>Communities</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Yhteisöt</translation>
     </message>
     <message>
         <source>Refresh</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Päivitä</translation>
     </message>
     <message>
         <source>No posts</source>
@@ -241,7 +241,7 @@
     </message>
     <message>
         <source>Pull down to refresh</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Päivitä vetämällä alaspäin</translation>
     </message>
     <message>
         <source>Loading more…</source>
@@ -269,37 +269,6 @@
     </message>
     <message>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>utils</name>
-    <message>
-        <source>just now</source>
-        <translation>Juuri nyt</translation>
-    </message>
-    <message>
-        <source>1 minute ago</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>%1 minutes ago</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>1 hour ago</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>%1 hours ago</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>1 day ago</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>%1 days ago</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

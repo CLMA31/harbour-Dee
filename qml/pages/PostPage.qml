@@ -2,7 +2,6 @@ import QtQuick 2.6
 import Sailfish.Share 1.0
 import Sailfish.Silica 1.0
 import harbour.dee 1.0
-import "utils.js" as Utils
 
 Page {
     id: page
@@ -39,6 +38,18 @@ Page {
             return "";
 
         return text.trim().substring(0, 200);
+    }
+
+    function formatAuthor(actorId) {
+        if (!actorId)
+            return "";
+        var parts = actorId.split("/u/");
+        if (parts.length < 2)
+            return actorId;
+        var username = parts[1];
+        var urlParts = actorId.split("://");
+        var domain = urlParts.length >= 2 ? urlParts[1].split("/")[0] : "";
+        return domain ? username + "@" + domain : username;
     }
 
     Component.onCompleted: {
@@ -223,14 +234,14 @@ Page {
                 }
 
                 Label {
-                    text: Utils.getRelativeTime(postDate)
+                    text: Format.formatDate(postDate, Formatter.DurationElapsed)
                     font.pixelSize: Theme.fontSizeExtraSmall
                     color: Theme.secondaryColor
                 }
             }
 
             Label {
-                text: Utils.formatAuthor(postAuthor)
+                text: formatAuthor(postAuthor)
                 font.pixelSize: Theme.fontSizeExtraSmall
                 color: Theme.secondaryHighlightColor
                 width: parent.width
@@ -308,7 +319,7 @@ Page {
                                 spacing: Theme.paddingSmall
 
                                 Label {
-                                    text: Utils.formatAuthor((modelData.creator || {}).actor_id || "")
+                                    text: formatAuthor((modelData.creator || {}).actor_id || "")
                                     font.pixelSize: Theme.fontSizeExtraSmall
                                     color: commentBg.highlighted ? Theme.highlightColor : Theme.secondaryHighlightColor
                                 }
@@ -352,7 +363,7 @@ Page {
                                 }
 
                                 Label {
-                                    text: Utils.getRelativeTime(commentData.published || "")
+                                    text: Format.formatDate(commentData.published, Formatter.DurationElapsed)
                                     font.pixelSize: Theme.fontSizeExtraSmall
                                     color: commentBg.highlighted ? Theme.highlightColor : Theme.secondaryColor
                                 }

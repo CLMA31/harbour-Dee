@@ -220,6 +220,10 @@
         <source>Sign out</source>
         <translation>Afmelden</translation>
     </message>
+    <message>
+        <source>Logging out</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SubscribedPage</name>
@@ -266,37 +270,6 @@
     <message>
         <source>Settings</source>
         <translation>Instellingen</translation>
-    </message>
-</context>
-<context>
-    <name>utils</name>
-    <message>
-        <source>just now</source>
-        <translation>nu net</translation>
-    </message>
-    <message>
-        <source>1 minute ago</source>
-        <translation>1 minuut geleden</translation>
-    </message>
-    <message>
-        <source>%1 minutes ago</source>
-        <translation>%1 minuten geleden</translation>
-    </message>
-    <message>
-        <source>1 hour ago</source>
-        <translation>1 uur geleden</translation>
-    </message>
-    <message>
-        <source>%1 hours ago</source>
-        <translation>%1 uren geleden</translation>
-    </message>
-    <message>
-        <source>1 day ago</source>
-        <translation>1 dag geleden</translation>
-    </message>
-    <message>
-        <source>%1 days ago</source>
-        <translation>%1 dagen geleden</translation>
     </message>
 </context>
 </TS>

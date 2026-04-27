@@ -27,7 +27,6 @@ DISTFILES += qml/Dee.qml \
     qml/pages/ReplyPage.qml \
     qml/pages/SettingsPage.qml \
     qml/pages/SubscribedPage.qml \
-    qml/pages/utils.js \
     rpm/harbour-dee.changes \
     rpm/harbour-dee.changes.run.in \
     rpm/harbour-dee.spec \
