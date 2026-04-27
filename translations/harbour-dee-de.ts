@@ -220,6 +220,10 @@
         <source>Sign out</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Logging out</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SubscribedPage</name>

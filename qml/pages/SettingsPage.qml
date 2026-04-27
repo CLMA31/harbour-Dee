@@ -12,6 +12,10 @@ Page {
         anchors.fill: parent
         contentHeight: column.height + Theme.paddingLarge
 
+        RemorsePopup {
+            id: remorseLogout
+        }
+
         VerticalScrollDecorator {}
 
         Column {
@@ -48,8 +52,10 @@ Page {
                 width: parent.width - 2 * Theme.horizontalPageMargin
                 text: qsTr("Sign out")
                 onClicked: {
-                    api.logout();
-                    pageStack.replace(Qt.resolvedUrl("LoginPage.qml"));
+                    remorseLogout.execute(qsTr("Logging out"), function () {
+                        api.logout();
+                        pageStack.replace(Qt.resolvedUrl("LoginPage.qml"));
+                    });
                 }
             }
 
