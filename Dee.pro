@@ -95,12 +95,10 @@ INSTALLS += rust_so_install
 # following CONFIG line
 CONFIG += sailfishapp_i18n
 
-# German translation is enabled as an example. If you aren't
-# planning to localize your app, remember to comment out the
-# following TRANSLATIONS line. And also do not forget to
-# modify the localized app name in the the .desktop file.
-TRANSLATIONS += translations/harbour-dee-de.ts \
+TRANSLATIONS += \
+                translations/harbour-dee-de.ts \
                 translations/harbour-dee-et.ts \
                 translations/harbour-dee-fi.ts \
                 translations/harbour-dee-it.ts \
-                translations/harbour-dee-nb_NO.ts
+                translations/harbour-dee-nb_NO.ts \
+                translations/harbour-dee-nl.ts
