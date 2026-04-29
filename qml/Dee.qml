@@ -1,5 +1,7 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
+import Nemo.Notifications 1.0
+import harbour.dee 1.0
 import "pages"
 
 ApplicationWindow {
@@ -91,6 +93,26 @@ ApplicationWindow {
                 return commentSortOptions[i].text;
         }
         return value;
+    }
+
+    LemmyAPI {
+        id: _api
+    }
+
+    Notification {
+        id: systemNotification
+        appName: "Dee"
+        icon: "harbour-dee"
+        category: "x-harbour.dee.notification"
+    }
+
+    Connections {
+        target: _api
+        onNewNotificationsReceived: {
+            systemNotification.summary = qsTr("New notifications");
+            systemNotification.body = count === 1 ? qsTr("1 new notification") : qsTr("%1 new notifications").arg(count);
+            systemNotification.publish();
+        }
     }
 
     cover: Qt.resolvedUrl("cover/CoverPage.qml")

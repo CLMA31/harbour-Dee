@@ -17,3 +17,12 @@ repos:
         args: [-i]
         additional_dependencies:
         - PySide6-Essentials==6.10.2
+  - repo: https://github.com/doublify/pre-commit-rust
+    rev: v1.0
+    hooks:
+    -   id: cargo-check
+        args: ["--workspace", "--manifest-path", "rust/Cargo.toml"]
+    -   id: fmt
+        args: ["--manifest-path", "rust/Cargo.toml", "--"]
+    -   id: clippy
+        args: ["--manifest-path", "rust/Cargo.toml", "--", "-D", "warnings"]

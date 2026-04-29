@@ -3,21 +3,25 @@
 //! Provides blocking C-compatible functions that internally run async
 //! lemmy-client calls on a tokio runtime. Returns JSON strings that the
 //! C++ side can parse with Qt's QJsonDocument.
+#![allow(clippy::missing_safety_doc)]
 
 use std::ffi::{CStr, CString};
 use std::os::raw::c_char;
 use std::ptr;
-use std::sync::OnceLock;
+use std::sync::{Arc, OnceLock, RwLock};
 
 use lemmy_client::lemmy_api_common::{
     comment::{CreateComment, CreateCommentLike, GetComments},
     community::{FollowCommunity, GetCommunity, ListCommunities},
-    person::{GetPersonDetails, Login},
+    person::{
+        GetPersonDetails, GetPersonMentions, GetReplies, Login, MarkCommentReplyAsRead,
+        MarkPersonMentionAsRead,
+    },
     post::{CreatePostLike, GetPost, GetPosts},
+    private_message::{GetPrivateMessages, MarkPrivateMessageAsRead},
     site::Search,
 };
 use lemmy_client::{ClientOptions, LemmyClient};
-use serde_json;
 use tokio::runtime::Runtime;
 
 // ---------------------------------------------------------------------------
@@ -33,6 +37,7 @@ fn runtime() -> &'static Runtime {
 /// Opaque handle exposed to C.
 pub struct LemmyClientHandle {
     client: LemmyClient,
+    jwt: Arc<RwLock<Option<String>>>,
 }
 
 /// Turn a `*const c_char` into a `&str`. Returns `None` on null / invalid UTF-8.
@@ -85,14 +90,17 @@ pub unsafe extern "C" fn lemmy_client_new(
     secure: bool,
 ) -> *mut LemmyClientHandle {
     let domain_str = match cstr_to_str(domain) {
-        Some(s) => s,
+        Some(s) => s.to_owned(),
         None => return ptr::null_mut(),
     };
     let client = LemmyClient::new(ClientOptions {
-        domain: domain_str.to_owned(),
+        domain: domain_str.clone(),
         secure,
     });
-    Box::into_raw(Box::new(LemmyClientHandle { client }))
+    Box::into_raw(Box::new(LemmyClientHandle {
+        client,
+        jwt: Arc::new(RwLock::new(None)),
+    }))
 }
 
 /// Destroy a Lemmy client handle previously returned by `lemmy_client_new`.
@@ -114,10 +122,17 @@ pub unsafe extern "C" fn lemmy_client_set_jwt(handle: *mut LemmyClientHandle, jw
     let headers = h.client.headers_mut();
     match cstr_to_str(jwt) {
         Some(token) if !token.is_empty() => {
+            let token = token.to_owned();
             headers.insert("Authorization".to_owned(), format!("Bearer {}", token));
+            if let Ok(mut guard) = h.jwt.write() {
+                *guard = Some(token);
+            }
         }
         _ => {
             headers.remove("Authorization");
+            if let Ok(mut guard) = h.jwt.write() {
+                *guard = None;
+            }
         }
     }
 }
@@ -128,6 +143,228 @@ pub unsafe extern "C" fn lemmy_free_string(s: *mut c_char) {
     if !s.is_null() {
         drop(CString::from_raw(s));
     }
+}
+
+// ---------------------------------------------------------------------------
+// Notifications
+// ---------------------------------------------------------------------------
+
+/// List notifications by fetching replies, mentions, and private messages
+/// separately and merging them into a single array. `json_params` is a
+/// JSON-serialised object with optional `unread_only` (bool), `limit` (i64),
+/// `page` (i64).
+#[no_mangle]
+pub unsafe extern "C" fn lemmy_list_notifications(
+    handle: *mut LemmyClientHandle,
+    json_params: *const c_char,
+) -> *mut c_char {
+    if handle.is_null() {
+        return to_c_string(r#"{"error":"null handle"}"#);
+    }
+    let h = &*handle;
+
+    let params_str = cstr_to_str(json_params).unwrap_or("{}");
+    let params: serde_json::Value = serde_json::from_str(params_str).unwrap_or_default();
+    let unread_only = params.get("unread_only").and_then(|v| v.as_bool());
+    let page = params.get("page").and_then(|v| v.as_i64());
+    let limit = params.get("limit").and_then(|v| v.as_i64());
+
+    let replies_req = GetReplies {
+        sort: None,
+        page,
+        limit,
+        unread_only,
+    };
+    let mentions_req = GetPersonMentions {
+        sort: None,
+        page,
+        limit,
+        unread_only,
+    };
+    let pms_req = GetPrivateMessages {
+        unread_only,
+        page,
+        limit,
+        creator_id: None,
+    };
+
+    let replies_res = runtime().block_on(h.client.list_replies(replies_req));
+    let mentions_res = runtime().block_on(h.client.list_mentions(mentions_req));
+    let pms_res = runtime().block_on(h.client.list_private_messages(pms_req));
+
+    let mut notifications: Vec<serde_json::Value> = Vec::new();
+
+    if let Ok(ref replies) = replies_res {
+        for reply in &replies.replies {
+            let mut n = serde_json::to_value(reply).unwrap_or_default();
+            if let Some(obj) = n.as_object_mut() {
+                obj.insert("type".to_string(), serde_json::json!("CommentReply"));
+                obj.insert(
+                    "unread".to_string(),
+                    serde_json::json!(!reply.comment_reply.read),
+                );
+                obj.insert(
+                    "id".to_string(),
+                    serde_json::to_value(reply.comment_reply.id).unwrap_or_default(),
+                );
+                obj.insert(
+                    "published".to_string(),
+                    serde_json::to_value(reply.comment_reply.published).unwrap_or_default(),
+                );
+            }
+            notifications.push(n);
+        }
+    }
+
+    if let Ok(ref mentions) = mentions_res {
+        for mention in &mentions.mentions {
+            let mut n = serde_json::to_value(mention).unwrap_or_default();
+            if let Some(obj) = n.as_object_mut() {
+                obj.insert("type".to_string(), serde_json::json!("CommentMention"));
+                obj.insert(
+                    "unread".to_string(),
+                    serde_json::json!(!mention.person_mention.read),
+                );
+                obj.insert(
+                    "id".to_string(),
+                    serde_json::to_value(mention.person_mention.id).unwrap_or_default(),
+                );
+                obj.insert(
+                    "published".to_string(),
+                    serde_json::to_value(mention.person_mention.published).unwrap_or_default(),
+                );
+            }
+            notifications.push(n);
+        }
+    }
+
+    if let Ok(ref pms) = pms_res {
+        for pm in &pms.private_messages {
+            let mut n = serde_json::to_value(pm).unwrap_or_default();
+            if let Some(obj) = n.as_object_mut() {
+                obj.insert("type".to_string(), serde_json::json!("PrivateMessage"));
+                obj.insert(
+                    "unread".to_string(),
+                    serde_json::json!(!pm.private_message.read),
+                );
+                obj.insert(
+                    "id".to_string(),
+                    serde_json::to_value(pm.private_message.id).unwrap_or_default(),
+                );
+                obj.insert(
+                    "published".to_string(),
+                    serde_json::to_value(pm.private_message.published).unwrap_or_default(),
+                );
+            }
+            notifications.push(n);
+        }
+    }
+
+    notifications.sort_by(|a, b| {
+        let a_time = a
+            .get("comment_reply")
+            .and_then(|v| v.get("published"))
+            .or_else(|| a.get("person_mention").and_then(|v| v.get("published")))
+            .or_else(|| a.get("private_message").and_then(|v| v.get("published")))
+            .and_then(|v| v.as_str())
+            .unwrap_or("");
+        let b_time = b
+            .get("comment_reply")
+            .and_then(|v| v.get("published"))
+            .or_else(|| b.get("person_mention").and_then(|v| v.get("published")))
+            .or_else(|| b.get("private_message").and_then(|v| v.get("published")))
+            .and_then(|v| v.as_str())
+            .unwrap_or("");
+        b_time.cmp(a_time)
+    });
+
+    if let Some(l) = limit {
+        if l > 0 && (notifications.len() as i64) > l {
+            notifications.truncate(l as usize);
+        }
+    }
+
+    let response = serde_json::json!({
+        "notifications": notifications
+    });
+
+    to_c_string(&response.to_string())
+}
+
+/// Mark notifications as read. `json_params` is a JSON-serialised object with
+/// optional `notification_id` (i64), `notification_type` (string),
+/// or `all` (bool).
+#[no_mangle]
+pub unsafe extern "C" fn lemmy_mark_notifications_read(
+    handle: *mut LemmyClientHandle,
+    json_params: *const c_char,
+) -> *mut c_char {
+    if handle.is_null() {
+        return to_c_string(r#"{"error":"null handle"}"#);
+    }
+    let h = &*handle;
+
+    let params_str = cstr_to_str(json_params).unwrap_or("{}");
+    let params: serde_json::Value = serde_json::from_str(params_str).unwrap_or_default();
+
+    let is_all = params.get("all").and_then(|v| v.as_bool()).unwrap_or(false);
+
+    if is_all {
+        let res = runtime().block_on(h.client.mark_all_notifications_as_read(()));
+        return result_to_c(res);
+    }
+
+    let notification_id = params
+        .get("notification_id")
+        .and_then(|v| v.as_i64())
+        .unwrap_or(0);
+    let notification_type = params
+        .get("notification_type")
+        .and_then(|v| v.as_str())
+        .unwrap_or("");
+
+    match notification_type {
+        "CommentReply" => {
+            let req: MarkCommentReplyAsRead = match serde_json::from_value(
+                serde_json::json!({"comment_reply_id": notification_id, "read": true}),
+            ) {
+                Ok(r) => r,
+                Err(e) => return to_c_string(&format!(r#"{{"error":"bad params: {}"}}"#, e)),
+            };
+            result_to_c(runtime().block_on(h.client.mark_reply_as_read(req)))
+        }
+        "CommentMention" => {
+            let req: MarkPersonMentionAsRead = match serde_json::from_value(
+                serde_json::json!({"person_mention_id": notification_id, "read": true}),
+            ) {
+                Ok(r) => r,
+                Err(e) => return to_c_string(&format!(r#"{{"error":"bad params: {}"}}"#, e)),
+            };
+            result_to_c(runtime().block_on(h.client.mark_mention_as_read(req)))
+        }
+        "PrivateMessage" => {
+            let req: MarkPrivateMessageAsRead = match serde_json::from_value(
+                serde_json::json!({"private_message_id": notification_id, "read": true}),
+            ) {
+                Ok(r) => r,
+                Err(e) => return to_c_string(&format!(r#"{{"error":"bad params: {}"}}"#, e)),
+            };
+            result_to_c(runtime().block_on(h.client.mark_private_message_as_read(req)))
+        }
+        _ => result_to_c(runtime().block_on(h.client.mark_all_notifications_as_read(()))),
+    }
+}
+
+/// Get the unread notification count.
+/// Uses the lemmy-client crate's `unread_count` method.
+#[no_mangle]
+pub unsafe extern "C" fn lemmy_unread_count(handle: *mut LemmyClientHandle) -> *mut c_char {
+    if handle.is_null() {
+        return to_c_string(r#"{"error":"null handle"}"#);
+    }
+    let h = &*handle;
+    let res = runtime().block_on(h.client.unread_count(()));
+    result_to_c(res)
 }
 
 // ---------------------------------------------------------------------------

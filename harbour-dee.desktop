@@ -12,4 +12,4 @@ BackupPathList=.config/dev.scarpino/harbour-dee.conf
 [X-Sailjail]
 OrganizationName=dev.scarpino
 ApplicationName=harbour-dee
-Permissions=Internet;Secrets
+Permissions=Internet;Secrets;Notifications

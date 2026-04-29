@@ -88,6 +88,14 @@ Page {
             }
 
             MenuItem {
+                text: qsTr("Inbox") + (api.unreadCount > 0 ? " (" + api.unreadCount + ")" : "")
+                onClicked: pageStack.animatorPush(Qt.resolvedUrl("InboxPage.qml"), {
+                    "api": api
+                })
+                visible: api.loggedIn
+            }
+
+            MenuItem {
                 text: communityId > 0 ? qsTr("Subscribed") : qsTr("Communities")
                 onClicked: {
                     if (communityId > 0)

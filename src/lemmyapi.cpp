@@ -151,6 +151,29 @@ void LemmyWorker::doFollowCommunity(const QString &jsonParams) {
       callRust(m_handle, lemmy_follow_community, jsonParams));
 }
 
+void LemmyWorker::doListNotifications(const QString &jsonParams) {
+  emit listNotificationsFinished(
+      callRust(m_handle, lemmy_list_notifications, jsonParams));
+}
+
+void LemmyWorker::doMarkNotificationsRead(const QString &jsonParams) {
+  emit markNotificationsReadFinished(
+      callRust(m_handle, lemmy_mark_notifications_read, jsonParams));
+}
+
+void LemmyWorker::doUnreadCount() {
+  if (!m_handle) {
+    emit unreadCountFinished(QStringLiteral("{\"error\":\"no client\"}"));
+    return;
+  }
+  char *result = lemmy_unread_count(m_handle);
+  QString json = result ? QString::fromUtf8(result)
+                        : QStringLiteral("{\"error\":\"null result\"}");
+  if (result)
+    lemmy_free_string(result);
+  emit unreadCountFinished(json);
+}
+
 // ===================================================================
 // LemmyAPI implementation
 // ===================================================================
@@ -159,7 +182,9 @@ LemmyAPI::LemmyAPI(QObject *parent)
     : QObject(parent), m_loggedIn(false), m_busy(false), m_posts(0),
       m_postsPage(1), m_loadingMore(false), m_communitiesPage(1),
       m_loadingMoreCommunities(false), m_commentsPage(1),
-      m_loadingMoreComments(false),
+      m_loadingMoreComments(false), m_unreadCount(0), m_serverUnreadCount(-1),
+      m_lastSeenNotificationId(-1), m_backgroundCheckEnabled(false),
+      m_checkIntervalMinutes(15), m_notificationTimer(new QTimer(this)),
       m_worker(new LemmyWorker), // no parent – will be moved to thread
       m_secureStorage(new SecureStorage(this)) {
   // Initialize secure storage and wait for it to be ready
@@ -203,6 +228,21 @@ LemmyAPI::LemmyAPI(QObject *parent)
     m_loggedIn = true;
   }
 
+  // Load notification settings
+  m_backgroundCheckEnabled =
+      m_settings->value("notifications/backgroundCheck", false).toBool();
+  m_checkIntervalMinutes =
+      m_settings->value("notifications/intervalMinutes", 15).toInt();
+  m_lastSeenNotificationId =
+      m_settings->value("notifications/lastSeenId", -1).toInt();
+  m_serverUnreadCount =
+      m_settings->value("notifications/serverUnreadCount", -1).toInt();
+
+  // Setup notification timer
+  m_notificationTimer->setSingleShot(false);
+  connect(m_notificationTimer, &QTimer::timeout, this,
+          &LemmyAPI::onNotificationTimerFired);
+
   // Move the worker to a background thread
   m_worker->moveToThread(&m_workerThread);
   connect(&m_workerThread, &QThread::finished, m_worker, &QObject::deleteLater);
@@ -236,6 +276,12 @@ LemmyAPI::LemmyAPI(QObject *parent)
           &LemmyAPI::onSearchFinished);
   connect(m_worker, &LemmyWorker::followCommunityFinished, this,
           &LemmyAPI::onFollowCommunityFinished);
+  connect(m_worker, &LemmyWorker::listNotificationsFinished, this,
+          &LemmyAPI::onListNotificationsFinished);
+  connect(m_worker, &LemmyWorker::markNotificationsReadFinished, this,
+          &LemmyAPI::onMarkNotificationsReadFinished);
+  connect(m_worker, &LemmyWorker::unreadCountFinished, this,
+          &LemmyAPI::onUnreadCountFinished);
 
   m_workerThread.start();
 
@@ -243,9 +289,14 @@ LemmyAPI::LemmyAPI(QObject *parent)
   if (!m_instanceUrl.isEmpty()) {
     ensureClient();
   }
+
+  // Start background notification timer if logged in and enabled
+  if (m_loggedIn && m_backgroundCheckEnabled)
+    m_notificationTimer->start(m_checkIntervalMinutes * 60 * 1000);
 }
 
 LemmyAPI::~LemmyAPI() {
+  m_notificationTimer->stop();
   m_workerThread.quit();
   m_workerThread.wait();
 }
@@ -431,6 +482,17 @@ void LemmyAPI::setPostsModel(PostsModel *model) {
     m_posts = model;
     emit postsChanged();
   }
+}
+
+void LemmyAPI::setCheckIntervalMinutes(int minutes) {
+  minutes = qMax(1, minutes);
+  if (m_checkIntervalMinutes == minutes)
+    return;
+  m_checkIntervalMinutes = minutes;
+  m_settings->setValue("notifications/intervalMinutes", minutes);
+  emit checkIntervalMinutesChanged();
+  if (m_notificationTimer->isActive())
+    m_notificationTimer->setInterval(minutes * 60 * 1000);
 }
 
 void LemmyAPI::login(const QString instanceUrl, const QString username,
@@ -626,6 +688,114 @@ void LemmyAPI::followCommunity(const QString &jsonParams) {
                             Q_ARG(QString, jsonParams));
 }
 
+void LemmyAPI::listNotifications(bool unreadOnly, int limit, int page) {
+  QJsonObject params;
+  params["unread_only"] = unreadOnly;
+  if (limit > 0)
+    params["limit"] = limit;
+  if (page > 0)
+    params["page"] = page;
+  setBusy(true);
+  QMetaObject::invokeMethod(
+      m_worker, "doListNotifications", Qt::QueuedConnection,
+      Q_ARG(QString, QJsonDocument(params).toJson(QJsonDocument::Compact)));
+}
+
+void LemmyAPI::markNotificationsRead(int notificationId,
+                                     const QString &notificationType) {
+  QJsonObject params;
+  if (notificationId < 0)
+    params["all"] = true;
+  else {
+    params["notification_id"] = notificationId;
+    if (!notificationType.isEmpty())
+      params["notification_type"] = notificationType;
+  }
+  setBusy(true);
+  QMetaObject::invokeMethod(
+      m_worker, "doMarkNotificationsRead", Qt::QueuedConnection,
+      Q_ARG(QString, QJsonDocument(params).toJson(QJsonDocument::Compact)));
+}
+
+void LemmyAPI::setBackgroundCheckEnabled(bool enabled) {
+  if (m_backgroundCheckEnabled == enabled)
+    return;
+  m_backgroundCheckEnabled = enabled;
+  m_settings->setValue("notifications/backgroundCheck", enabled);
+  emit backgroundCheckEnabledChanged();
+  if (enabled && m_loggedIn)
+    m_notificationTimer->start(m_checkIntervalMinutes * 60 * 1000);
+  else
+    m_notificationTimer->stop();
+}
+
+void LemmyAPI::onNotificationTimerFired() {
+  if (m_loggedIn && !m_busy)
+    checkUnreadCount();
+}
+
+void LemmyAPI::checkUnreadCount() {
+  QMetaObject::invokeMethod(m_worker, "doUnreadCount", Qt::QueuedConnection);
+}
+
+void LemmyAPI::onListNotificationsFinished(const QString &json) {
+  setBusy(false);
+  QJsonObject obj = parseJson(json);
+  if (obj.contains("error")) {
+    emit requestFailed("listNotifications", obj["error"].toString());
+    return;
+  }
+  QJsonArray arr = obj.value("notifications").toArray();
+  m_notifications.clear();
+  int newUnread = 0;
+  int newSinceLastCheck = 0;
+  int maxId = m_lastSeenNotificationId;
+  for (const QJsonValue &v : arr) {
+    QJsonObject n = v.toObject();
+    m_notifications.append(n.toVariantMap());
+    if (n.value("unread").toBool())
+      newUnread++;
+    int nid = n.value("id").toInt();
+    if (nid > maxId)
+      maxId = nid;
+    if (nid > m_lastSeenNotificationId)
+      newSinceLastCheck++;
+  }
+  bool hasNew = newSinceLastCheck > 0 && m_lastSeenNotificationId >= 0;
+  int prevUnread = m_unreadCount;
+  m_unreadCount = newUnread;
+  if (m_unreadCount != prevUnread)
+    emit unreadCountChanged();
+  if (hasNew)
+    emit newNotificationsReceived(newSinceLastCheck);
+  if (maxId > m_lastSeenNotificationId) {
+    m_lastSeenNotificationId = maxId;
+    m_settings->setValue("notifications/lastSeenId", maxId);
+  }
+  emit notificationsChanged();
+  emit requestFinished("listNotifications", obj);
+}
+
+void LemmyAPI::onMarkNotificationsReadFinished(const QString &json) {
+  setBusy(false);
+  emit requestFinished("markNotificationsRead", parseJson(json));
+  listNotifications();
+}
+
+void LemmyAPI::onUnreadCountFinished(const QString &json) {
+  QJsonObject obj = parseJson(json);
+  if (obj.contains("error")) {
+    return;
+  }
+  int total = obj.value("replies").toInt(0) + obj.value("mentions").toInt(0) +
+              obj.value("private_messages").toInt(0);
+  int prev = m_serverUnreadCount;
+  m_serverUnreadCount = total;
+  m_settings->setValue("notifications/serverUnreadCount", total);
+  if (prev >= 0 && total > prev)
+    emit newNotificationsReceived(total - prev);
+}
+
 void LemmyAPI::onLoginFinished(const QString &json) {
   QJsonObject obj = parseJson(json);
   if (obj.contains(QStringLiteral("error"))) {
@@ -658,6 +828,10 @@ void LemmyAPI::onLoginFinished(const QString &json) {
     setLoggedIn(true);
     setBusy(false);
     emit loginSuccess();
+
+    // Start background notification timer if enabled
+    if (m_backgroundCheckEnabled)
+      m_notificationTimer->start(m_checkIntervalMinutes * 60 * 1000);
   } else {
     setError(tr("Login succeeded but no token received"));
     setBusy(false);
@@ -677,6 +851,14 @@ void LemmyAPI::onLogoutFinished(const QString &json) {
   m_instanceUrl.clear();
   setLoggedIn(false);
   setBusy(false);
+
+  // Stop notification timer
+  m_notificationTimer->stop();
+  m_notifications.clear();
+  m_unreadCount = 0;
+  m_serverUnreadCount = -1;
+  emit notificationsChanged();
+  emit unreadCountChanged();
 
   // Clear cached data
   if (m_posts) {

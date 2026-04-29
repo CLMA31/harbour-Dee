@@ -42,6 +42,50 @@ Page {
                 value: api.instanceUrl
             }
 
+            SectionHeader {
+                text: qsTr("Notifications")
+            }
+
+            TextSwitch {
+                text: qsTr("Background checking")
+                description: qsTr("Poll for new notifications while the app is running")
+                checked: api.backgroundCheckEnabled
+                onCheckedChanged: api.backgroundCheckEnabled = checked
+            }
+
+            ComboBox {
+                label: qsTr("Check interval")
+                enabled: api.backgroundCheckEnabled
+                currentIndex: {
+                    var mins = api.checkIntervalMinutes;
+                    if (mins <= 5)
+                        return 0;
+                    if (mins <= 15)
+                        return 1;
+                    if (mins <= 30)
+                        return 2;
+                    return 3;
+                }
+                onCurrentIndexChanged: {
+                    var vals = [5, 15, 30, 60];
+                    api.checkIntervalMinutes = vals[currentIndex];
+                }
+                menu: ContextMenu {
+                    MenuItem {
+                        text: qsTr("5 minutes")
+                    }
+                    MenuItem {
+                        text: qsTr("15 minutes")
+                    }
+                    MenuItem {
+                        text: qsTr("30 minutes")
+                    }
+                    MenuItem {
+                        text: qsTr("1 hour")
+                    }
+                }
+            }
+
             Item {
                 width: 1
                 height: Theme.paddingLarge

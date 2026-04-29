@@ -113,6 +113,61 @@
         <source>Old</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>New notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>1 new notification</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 new notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>InboxPage</name>
+    <message>
+        <source>Mark all as read</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Refresh</source>
+        <translation type="unfinished">Last på nytt</translation>
+    </message>
+    <message>
+        <source>Inbox (%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Inbox</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pull down to refresh</source>
+        <translation type="unfinished">Dra ned for å oppdatere</translation>
+    </message>
+    <message>
+        <source>Reply to your comment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You were mentioned</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Private message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notification</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>LemmyAPI</name>
@@ -220,7 +275,7 @@
     </message>
     <message>
         <source>Sort</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Sortere</translation>
     </message>
     <message>
         <source>Sort comments</source>
@@ -287,6 +342,38 @@
         <source>Logging out</source>
         <translation>Logger ut</translation>
     </message>
+    <message>
+        <source>Notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Background checking</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Poll for new notifications while the app is running</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Check interval</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>5 minutes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>15 minutes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>30 minutes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>1 hour</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SubscribedPage</name>
@@ -341,6 +428,10 @@
     <message>
         <source>Sort posts</source>
         <translation>Sortere innlegg</translation>
+    </message>
+    <message>
+        <source>Inbox</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

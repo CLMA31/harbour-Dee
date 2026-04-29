@@ -22,6 +22,7 @@ DISTFILES += qml/Dee.qml \
     qml/cover/CoverPage.qml \
     qml/pages/LoginPage.qml \
     qml/pages/CommunitiesPage.qml \
+    qml/pages/InboxPage.qml \
     qml/pages/PostPage.qml \
     qml/pages/PostWebView.qml \
     qml/pages/ReplyPage.qml \
@@ -85,6 +86,7 @@ QMAKE_CLEAN += \
 
 rust_so_install.path  = /usr/share/harbour-dee/lib
 rust_so_install.files = $$RUST_TARGET_DIR/liblemmy_bridge.so
+rust_so_install.CONFIG += no_check_exist
 INSTALLS += rust_so_install
 
 # ---------------------------------------------------------------------------

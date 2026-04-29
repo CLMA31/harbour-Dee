@@ -9,6 +9,8 @@
 #include <QSettings>
 #include <QString>
 #include <QThread>
+#include <QTimer>
+#include <QVariantList>
 
 // Forward-declare the opaque Rust handle
 extern "C" {
@@ -46,6 +48,9 @@ public slots:
   void doGetPerson(const QString &jsonParams);
   void doSearch(const QString &jsonParams);
   void doFollowCommunity(const QString &jsonParams);
+  void doListNotifications(const QString &jsonParams);
+  void doMarkNotificationsRead(const QString &jsonParams);
+  void doUnreadCount();
 
 signals:
   void loginFinished(const QString &json);
@@ -62,6 +67,9 @@ signals:
   void getPersonFinished(const QString &json);
   void searchFinished(const QString &json);
   void followCommunityFinished(const QString &json);
+  void listNotificationsFinished(const QString &json);
+  void markNotificationsReadFinished(const QString &json);
+  void unreadCountFinished(const QString &json);
 
 private:
   LemmyClientHandle *m_handle;
@@ -88,6 +96,15 @@ class LemmyAPI : public QObject {
   Q_PROPERTY(QVariantList comments READ comments NOTIFY commentsChanged)
   Q_PROPERTY(QJsonObject siteInfo READ siteInfo NOTIFY siteInfoChanged)
 
+  // Notification properties
+  Q_PROPERTY(
+      QVariantList notifications READ notifications NOTIFY notificationsChanged)
+  Q_PROPERTY(int unreadCount READ unreadCount NOTIFY unreadCountChanged)
+  Q_PROPERTY(bool backgroundCheckEnabled READ backgroundCheckEnabled WRITE
+                 setBackgroundCheckEnabled NOTIFY backgroundCheckEnabledChanged)
+  Q_PROPERTY(int checkIntervalMinutes READ checkIntervalMinutes WRITE
+                 setCheckIntervalMinutes NOTIFY checkIntervalMinutesChanged)
+
 public:
   explicit LemmyAPI(QObject *parent = nullptr);
   ~LemmyAPI();
@@ -106,6 +123,10 @@ public:
   int communitiesPage() const { return m_communitiesPage; }
   QString currentSort() const { return m_currentSort; }
   QString commentSort() const { return m_commentSort; }
+  QVariantList notifications() const { return m_notifications; }
+  int unreadCount() const { return m_unreadCount; }
+  bool backgroundCheckEnabled() const { return m_backgroundCheckEnabled; }
+  int checkIntervalMinutes() const { return m_checkIntervalMinutes; }
 
   // Property setters
   void setInstanceUrl(const QString &url);
@@ -114,6 +135,8 @@ public:
   void setCommunitiesPage(int page);
   void setCurrentSort(const QString &sort);
   void setCommentSort(const QString &sort);
+  void setBackgroundCheckEnabled(bool enabled);
+  void setCheckIntervalMinutes(int minutes);
 
   // Invokable from QML
   Q_INVOKABLE void login(const QString instanceUrl, const QString username,
@@ -139,6 +162,12 @@ public:
   Q_INVOKABLE void getPerson(const QString &jsonParams = QString());
   Q_INVOKABLE void search(const QString &jsonParams);
   Q_INVOKABLE void followCommunity(const QString &jsonParams);
+  Q_INVOKABLE void listNotifications(bool unreadOnly = false, int limit = 0,
+                                     int page = 0);
+  Q_INVOKABLE void
+  markNotificationsRead(int notificationId = -1,
+                        const QString &notificationType = QString());
+  Q_INVOKABLE void checkUnreadCount();
 
 signals:
   void instanceUrlChanged();
@@ -160,6 +189,13 @@ signals:
   void currentSortChanged();
   void commentSortChanged();
 
+  // Notification signals
+  void notificationsChanged();
+  void unreadCountChanged();
+  void backgroundCheckEnabledChanged();
+  void checkIntervalMinutesChanged();
+  void newNotificationsReceived(int count);
+
 private slots:
   void onLoginFinished(const QString &json);
   void onLogoutFinished(const QString &json);
@@ -175,6 +211,10 @@ private slots:
   void onSearchFinished(const QString &json);
   void onFollowCommunityFinished(const QString &json);
   void onCreateCommentFinished(const QString &json);
+  void onNotificationTimerFired();
+  void onListNotificationsFinished(const QString &json);
+  void onMarkNotificationsReadFinished(const QString &json);
+  void onUnreadCountFinished(const QString &json);
 
 private:
   void setBusy(bool busy);
@@ -211,6 +251,15 @@ private:
   int m_commentsPage;
   bool m_loadingMoreComments;
   QJsonObject m_commentsFilter;
+
+  // Notification state
+  QVariantList m_notifications;
+  int m_unreadCount;
+  int m_serverUnreadCount;
+  int m_lastSeenNotificationId;
+  bool m_backgroundCheckEnabled;
+  int m_checkIntervalMinutes;
+  QTimer *m_notificationTimer;
 
   QThread m_workerThread;
   LemmyWorker *m_worker;
