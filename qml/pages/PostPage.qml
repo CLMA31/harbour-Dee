@@ -419,8 +419,8 @@ Page {
                 appWindow.postTitle = postTitle;
                 appWindow.postScore = postScore;
                 appWindow.postComments = postComments;
-            } else if (method === "likeComment") {
-                loadComments();
+            } else if (method === "likeComment" || method === "createComment") {
+                refresh();
             }
         }
     }
