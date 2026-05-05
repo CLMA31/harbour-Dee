@@ -7,15 +7,22 @@ Page {
 
     property int communityId: 0
     property string pageTitle: ""
+    property string currentSort: "Hot"
 
     function refresh() {
         var params = {
-            "limit": 50
+            "limit": 50,
+            "sort": currentSort
         };
         if (communityId > 0)
             params.community_id = communityId;
 
         api.listPosts(JSON.stringify(params));
+    }
+
+    function setSort(sortType) {
+        currentSort = sortType;
+        refresh();
     }
 
     allowedOrientations: Orientation.All
@@ -37,7 +44,8 @@ Page {
         Component.onCompleted: {
             api.setPostsModel(posts);
             var params = {
-                "limit": 50
+                "limit": 50,
+                "sort": currentSort
             };
             if (communityId > 0)
                 params.community_id = communityId;
@@ -58,6 +66,18 @@ Page {
         }
 
         PullDownMenu {
+            MenuItem {
+                text: qsTr("Sort")
+                onClicked: {
+                    var dialog = pageStack.push(Qt.resolvedUrl("SortDialog.qml"), {
+                        "selectedSort": currentSort
+                    });
+                    dialog.accepted.connect(function() {
+                        setSort(dialog.selectedSort);
+                    });
+                }
+            }
+
             MenuItem {
                 text: qsTr("Settings")
                 onClicked: pageStack.animatorPush(Qt.resolvedUrl("SettingsPage.qml"), {
