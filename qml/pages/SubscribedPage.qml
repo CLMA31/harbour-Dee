@@ -151,7 +151,7 @@ Page {
             property int myVote: postData.my_vote ? postData.my_vote : 0
 
             menu: contextMenu
-            contentHeight: contentColumn.height + 2 * Theme.paddingMedium
+            contentHeight: contentRow.height + 2 * Theme.paddingMedium
             onClicked: {
                 if (post.id)
                     pageStack.animatorPush(Qt.resolvedUrl("PostPage.qml"), {
@@ -170,121 +170,140 @@ Page {
                     });
             }
 
-            Column {
-                id: contentColumn
-
-                x: Theme.horizontalPageMargin
-                width: parent.width - 2 * Theme.horizontalPageMargin
+            Row {
+                id: contentRow
                 spacing: Theme.paddingSmall
+                width: parent.width
+                x: Theme.horizontalPageMargin
+                height: childrenRect.height
 
-                Row {
-                    width: parent.width
+                Column {
+                    id: contentColumn
+                    width: parent.width - (thumbnail.visible ? thumbnail.width + Theme.paddingSmall : 0)
                     spacing: Theme.paddingSmall
 
-                    Image {
-                        visible: post.featured_community
-                        source: "image://theme/icon-s-high-importance"
-                    }
+                    Row {
+                        width: parent.width
+                        spacing: Theme.paddingSmall
 
-                    Image {
-                        visible: post.locked
-                        source: "image://theme/icon-s-secure"
+                        Image {
+                            visible: post.featured_community
+                            source: "image://theme/icon-s-high-importance"
+                        }
+
+                        Image {
+                            visible: post.locked
+                            source: "image://theme/icon-s-secure"
+                        }
+
+                        Label {
+                            width: parent.width - (post.featured_community ? (Theme.iconSizeSmall + Theme.paddingSmall) : 0) - (post.locked ? (Theme.iconSizeSmall + Theme.paddingSmall) : 0)
+                            text: post.name || ""
+                            font.pixelSize: Theme.fontSizeSmall
+                            wrapMode: Text.Wrap
+                            color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
+                        }
                     }
 
                     Label {
-                        width: parent.width - (post.featured_community ? (Theme.iconSizeSmall + Theme.paddingSmall) : 0) - (post.locked ? (Theme.iconSizeSmall + Theme.paddingSmall) : 0)
-                        text: post.name || ""
-                        font.pixelSize: Theme.fontSizeSmall
-                        wrapMode: Text.Wrap
-                        color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
-                    }
-                }
-
-                Label {
-                    visible: post.url ? (post.url.length > 0 && !/^\s*$/.test(post.url)) : false
-                    text: {
-                        try {
-                            var u = new URL(post.url);
-                            return u.hostname;
-                        } catch (e) {
-                            return post.url || "";
-                        }
-                    }
-                    font.pixelSize: Theme.fontSizeExtraSmall
-                    color: Theme.secondaryHighlightColor
-                    truncationMode: TruncationMode.Fade
-                    width: parent.width
-                }
-
-                Row {
-                    spacing: Theme.paddingSmall
-
-                    Row {
-                        spacing: Theme.paddingSmall
-                        Label {
-                            visible: page.communityId === 0
-                            text: "c/" + (community.name || "")
-                            font.pixelSize: Theme.fontSizeExtraSmall
-                            color: delegate.highlighted ? Theme.highlightColor : Theme.secondaryHighlightColor
-                        }
-
-                        Label {
-                            text: "·"
-                            font.pixelSize: Theme.fontSizeExtraSmall
-                            color: delegate.highlighted ? Theme.highlightColor : Theme.secondaryColor
-                        }
-                    }
-
-                    Row {
-                        spacing: Theme.paddingSmall
-
-                        Label {
-                            text: {
-                                var s = counts.score || 0;
-                                if (myVote > 0)
-                                    return "▲ " + s;
-
-                                if (myVote < 0)
-                                    return "▼ " + s;
-
-                                return s;
+                        visible: post.url ? (post.url.length > 0 && !/^\s*$/.test(post.url)) : false
+                        text: {
+                            try {
+                                var u = new URL(post.url);
+                                return u.hostname;
+                            } catch (e) {
+                                return post.url || "";
                             }
-                            font.pixelSize: Theme.fontSizeExtraSmall
-                            color: myVote > 0 ? Theme.highlightColor : myVote < 0 ? Theme.highlightDimmerColor : delegate.highlighted ? Theme.highlightColor : Theme.secondaryColor
                         }
-
-                        Image {
-                            source: "image://theme/icon-s-like"
-                            width: Theme.iconSizeExtraSmall
-                            height: Theme.iconSizeExtraSmall
-                            anchors.verticalCenter: parent.verticalCenter
-                            opacity: 0.7
-                        }
+                        font.pixelSize: Theme.fontSizeExtraSmall
+                        color: Theme.secondaryHighlightColor
+                        truncationMode: TruncationMode.Fade
+                        width: parent.width
                     }
 
                     Row {
-                        visible: counts.comments > 0
                         spacing: Theme.paddingSmall
 
+                        Row {
+                            spacing: Theme.paddingSmall
+                            Label {
+                                visible: page.communityId === 0
+                                text: "c/" + (community.name || "")
+                                font.pixelSize: Theme.fontSizeExtraSmall
+                                color: delegate.highlighted ? Theme.highlightColor : Theme.secondaryHighlightColor
+                            }
+
+                            Label {
+                                text: "·"
+                                font.pixelSize: Theme.fontSizeExtraSmall
+                                color: delegate.highlighted ? Theme.highlightColor : Theme.secondaryColor
+                            }
+                        }
+
+                        Row {
+                            spacing: Theme.paddingSmall
+
+                            Label {
+                                text: {
+                                    var s = counts.score || 0;
+                                    if (myVote > 0)
+                                        return "▲ " + s;
+
+                                    if (myVote < 0)
+                                        return "▼ " + s;
+
+                                    return s;
+                                }
+                                font.pixelSize: Theme.fontSizeExtraSmall
+                                color: myVote > 0 ? Theme.highlightColor : myVote < 0 ? Theme.highlightDimmerColor : delegate.highlighted ? Theme.highlightColor : Theme.secondaryColor
+                            }
+
+                            Image {
+                                source: "image://theme/icon-s-like"
+                                width: Theme.iconSizeExtraSmall
+                                height: Theme.iconSizeExtraSmall
+                                anchors.verticalCenter: parent.verticalCenter
+                                opacity: 0.7
+                            }
+                        }
+
+                        Row {
+                            visible: counts.comments > 0
+                            spacing: Theme.paddingSmall
+
+                            Label {
+                                text: counts.comments
+                                font.pixelSize: Theme.fontSizeExtraSmall
+                                color: delegate.highlighted ? Theme.highlightColor : Theme.secondaryColor
+                            }
+
+                            Image {
+                                source: "image://theme/icon-s-chat"
+                                width: Theme.iconSizeExtraSmall
+                                height: Theme.iconSizeExtraSmall
+                                anchors.verticalCenter: parent.verticalCenter
+                                opacity: 0.7
+                            }
+                        }
+
                         Label {
-                            text: counts.comments
+                            text: Format.formatDate(post.published, Formatter.DurationElapsed)
                             font.pixelSize: Theme.fontSizeExtraSmall
                             color: delegate.highlighted ? Theme.highlightColor : Theme.secondaryColor
                         }
-
-                        Image {
-                            source: "image://theme/icon-s-chat"
-                            width: Theme.iconSizeExtraSmall
-                            height: Theme.iconSizeExtraSmall
-                            anchors.verticalCenter: parent.verticalCenter
-                            opacity: 0.7
-                        }
                     }
+                }
 
-                    Label {
-                        text: Format.formatDate(post.published, Formatter.DurationElapsed)
-                        font.pixelSize: Theme.fontSizeExtraSmall
-                        color: delegate.highlighted ? Theme.highlightColor : Theme.secondaryColor
+                Thumbnail {
+                    id: thumbnail
+                    imageUrl: post.url
+                    visible: appWindow.isImageUrl(post.url)
+                    anchors.verticalCenter: parent.verticalCenter
+                    onClicked: {
+                        pageStack.pushAttached(Qt.resolvedUrl("PostWebView.qml"), {
+                            "postUrl": post.url,
+                            "postTitle": post.name
+                        });
                     }
                 }
             }
