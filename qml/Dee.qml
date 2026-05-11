@@ -96,9 +96,16 @@ ApplicationWindow {
     function isImageUrl(url) {
         if (!url || url.trim().length === 0)
             return false;
-        return /^https?:\/\/\S+\.(jpe?g|png|gif|webp|avif)/i.test(url) ||
-               /^https?:\/\/(i\.|www\.)?imgur\.com\//.test(url) ||
-               /^https?:\/\/\S+\/media\//.test(url);
+        // Direct image URLs (allow query/hash)
+        if (/^https?:\/\/\S+\.(?:jpe?g|png|gif|webp|avif)(?:\?.*)?(?:#.*)?$/i.test(url))
+            return true;
+        // Only accept direct imgur image host
+        if (/^https?:\/\/i\.imgur\.com\/\S+\.(?:jpe?g|png|gif|webp)(?:\?.*)?(?:#.*)?$/i.test(url))
+            return true;
+        // Lemmy/pict-rs commonly uses /media/ paths
+        if (/^https?:\/\/\S+\/media\/\S+/i.test(url))
+            return true;
+        return false;
     }
 
     cover: Qt.resolvedUrl("cover/CoverPage.qml")

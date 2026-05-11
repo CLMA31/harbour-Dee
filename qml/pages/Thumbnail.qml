@@ -14,6 +14,11 @@ Image {
     fillMode: Image.PreserveAspectCrop
     smooth: true
     cache: true
+    clip: true
+
+    // Limit decoded image size to thumbnail dimensions
+    sourceSize.width: width * Screen.devicePixelRatio
+    sourceSize.height: height * Screen.devicePixelRatio
 
     onStatusChanged: {
         if (status === Image.Error)
@@ -22,14 +27,14 @@ Image {
 
     MouseArea {
         anchors.fill: parent
-        enabled: thumbnail.enabled && imageUrl
+        enabled: thumbnail.enabled && !!imageUrl
         onClicked: thumbnail.clicked()
     }
 
     BusyIndicator {
         anchors.centerIn: parent
         running: thumbnail.status === Image.Loading
-        visible: thumbnail.status === Image.Loading
+        visible: running
         size: BusyIndicatorSize.Small
     }
 

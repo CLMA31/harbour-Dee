@@ -201,7 +201,7 @@ Page {
                 }
 
                 Label {
-                    visible: post.url ? (post.url.length > 0 && !/^\s*$/.test(post.url)) : false
+                    visible: post.url ? (post.url.length > 0 && !/\s*$/.test(post.url)) : false
                     text: {
                         try {
                             var u = new URL(post.url);
@@ -309,8 +309,8 @@ Page {
 
             Thumbnail {
                 id: thumbnail
-                imageUrl: post.url
-                visible: appWindow.isImageUrl(post.url)
+                imageUrl: post.thumbnail_url || post.url
+                visible: appWindow.isImageUrl(thumbnail.imageUrl)
                 anchors {
                     right: parent.right
                     verticalCenter: parent.verticalCenter
