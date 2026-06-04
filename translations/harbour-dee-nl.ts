@@ -8,10 +8,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Subscribed</source>
-        <translation type="unfinished">Geabonneerd</translation>
-    </message>
-    <message>
         <source>Refresh</source>
         <translation type="unfinished">Verversen</translation>
     </message>
@@ -37,6 +33,10 @@
     </message>
     <message>
         <source>posts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Home</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -397,10 +397,6 @@
 <context>
     <name>SubscribedPage</name>
     <message>
-        <source>Subscribed</source>
-        <translation>Geabonneerd</translation>
-    </message>
-    <message>
         <source>Communities</source>
         <translation>Gemeenschappen</translation>
     </message>
@@ -458,6 +454,10 @@
     </message>
     <message>
         <source>Subscribe</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Home</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

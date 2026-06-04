@@ -37,7 +37,7 @@ Page {
             }
 
             MenuItem {
-                text: qsTr("Subscribed")
+                text: qsTr("Home")
                 onClicked: pageStack.animatorPush(Qt.resolvedUrl("SubscribedPage.qml"))
             }
 

@@ -8,10 +8,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Subscribed</source>
-        <translation type="unfinished">Tilaukset</translation>
-    </message>
-    <message>
         <source>Refresh</source>
         <translation type="unfinished">Päivitä</translation>
     </message>
@@ -37,6 +33,10 @@
     </message>
     <message>
         <source>posts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Home</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -433,10 +433,6 @@
         <translation>Peru, äänestä vastaan</translation>
     </message>
     <message>
-        <source>Subscribed</source>
-        <translation type="unfinished">Tilaukset</translation>
-    </message>
-    <message>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
@@ -458,6 +454,10 @@
     </message>
     <message>
         <source>Subscribe</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Home</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

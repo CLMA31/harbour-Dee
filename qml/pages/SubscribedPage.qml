@@ -128,7 +128,7 @@ Page {
             }
 
             MenuItem {
-                text: communityId > 0 ? qsTr("Subscribed") : qsTr("Communities")
+                text: communityId > 0 ? qsTr("Home") : qsTr("Communities")
                 onClicked: {
                     if (communityId > 0)
                         pageStack.animatorPush(Qt.resolvedUrl("SubscribedPage.qml"));
@@ -160,7 +160,7 @@ Page {
         VerticalScrollDecorator {}
 
         header: PageHeader {
-            title: communityId > 0 ? pageTitle : qsTr("Subscribed")
+            title: communityId > 0 ? pageTitle : qsTr("Home")
             description: communityId > 0 ? communityHandle : ""
         }
 

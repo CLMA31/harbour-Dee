@@ -8,10 +8,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Subscribed</source>
-        <translation type="unfinished">Abonniert</translation>
-    </message>
-    <message>
         <source>Refresh</source>
         <translation type="unfinished">Aktualisieren</translation>
     </message>
@@ -37,6 +33,10 @@
     </message>
     <message>
         <source>posts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Home</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -413,10 +413,6 @@
         <translation>Zum Aktualisieren herunter ziehen</translation>
     </message>
     <message>
-        <source>Subscribed</source>
-        <translation>Abonniert</translation>
-    </message>
-    <message>
         <source>Upvote</source>
         <translation>Hochwählen</translation>
     </message>
@@ -458,6 +454,10 @@
     </message>
     <message>
         <source>Subscribe</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Home</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
