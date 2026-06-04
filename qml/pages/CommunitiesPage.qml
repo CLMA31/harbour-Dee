@@ -21,12 +21,19 @@ Page {
         anchors.fill: parent
         model: api ? api.communities : []
 
+        onAtYEndChanged: {
+            if (atYEnd && !api.busy && listView.count > 0)
+                api.loadMoreCommunities();
+        }
+
         PullDownMenu {
             MenuItem {
-                text: qsTr("Settings")
-                onClicked: pageStack.animatorPush(Qt.resolvedUrl("SettingsPage.qml"), {
-                    "api": api
-                })
+                text: qsTr("Go to community")
+                onClicked: {
+                    pageStack.push(Qt.resolvedUrl("GoToCommunityDialog.qml"), {
+                        "api": api
+                    });
+                }
             }
 
             MenuItem {
@@ -37,16 +44,9 @@ Page {
             MenuItem {
                 text: qsTr("Refresh")
                 onClicked: api.listCommunities(JSON.stringify({
-                    "type_": "Subscribed"
+                    "type_": "Subscribed",
+                    "limit": 50
                 }))
-            }
-        }
-
-        PushUpMenu {
-            MenuItem {
-                text: qsTr("Load more")
-                enabled: !api.busy
-                onClicked: api.loadMoreCommunities()
             }
         }
 
@@ -59,13 +59,41 @@ Page {
         BusyIndicator {
             anchors.centerIn: parent
             size: BusyIndicatorSize.Large
-            running: api ? api.busy : false
+            running: api && api.busy && listView.count === 0
         }
 
         VerticalScrollDecorator {}
 
         header: PageHeader {
             title: qsTr("Communities")
+        }
+
+        footer: Column {
+            width: parent.width
+            visible: api && api.busy && listView.count > 0
+
+            Item {
+                width: parent.width
+                height: Theme.paddingLarge
+            }
+
+            BusyIndicator {
+                anchors.horizontalCenter: parent.horizontalCenter
+                size: BusyIndicatorSize.Small
+                running: api && api.busy
+            }
+
+            Label {
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: qsTr("Loading more…")
+                font.pixelSize: Theme.fontSizeExtraSmall
+                color: Theme.secondaryColor
+            }
+
+            Item {
+                width: parent.width
+                height: Theme.paddingLarge
+            }
         }
 
         delegate: BackgroundItem {

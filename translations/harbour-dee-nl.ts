@@ -4,40 +4,40 @@
 <context>
     <name>CommunitiesPage</name>
     <message>
-        <source>Communities</source>
-        <translation>Gemeenschappen</translation>
-    </message>
-    <message>
-        <source>Refresh</source>
-        <translation>Verversen</translation>
-    </message>
-    <message>
-        <source>Pull down to refresh</source>
-        <translation>Trek omlaag om te verversen</translation>
-    </message>
-    <message>
-        <source>Load more</source>
-        <translation>Meer laden</translation>
+        <source>Go to community</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Subscribed</source>
-        <translation>Geabonneerd</translation>
+        <translation type="unfinished">Geabonneerd</translation>
     </message>
     <message>
-        <source>Settings</source>
-        <translation>Instellingen</translation>
+        <source>Refresh</source>
+        <translation type="unfinished">Verversen</translation>
     </message>
     <message>
         <source>No subscribed communities</source>
-        <translation>Geen abonnementen op gemeenschappen</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pull down to refresh</source>
+        <translation type="unfinished">Trek omlaag om te verversen</translation>
+    </message>
+    <message>
+        <source>Communities</source>
+        <translation type="unfinished">Gemeenschappen</translation>
+    </message>
+    <message>
+        <source>Loading more…</source>
+        <translation type="unfinished">Meer aan het laden…</translation>
     </message>
     <message>
         <source>subscribers</source>
-        <translation>abonnees</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>posts</source>
-        <translation>posts</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -123,6 +123,25 @@
     </message>
     <message>
         <source>%1 new notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>GoToCommunityDialog</name>
+    <message>
+        <source>Go to community</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter a community name or full handle (e.g. &quot;lemmy&quot; or &quot;lemmy@lemmy.world&quot;)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Go</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Community not found. Check the name and try again.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -431,6 +450,14 @@
     </message>
     <message>
         <source>Inbox</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unsubscribe</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Subscribe</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

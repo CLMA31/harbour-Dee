@@ -16,9 +16,13 @@ Image {
     cache: true
     clip: true
 
-    // Limit decoded image size to thumbnail dimensions
     sourceSize.width: width * Screen.devicePixelRatio
     sourceSize.height: height * Screen.devicePixelRatio
+
+    opacity: status === Image.Ready ? 1 : 0
+    Behavior on opacity {
+        FadeAnimation {}
+    }
 
     onStatusChanged: {
         if (status === Image.Error)
@@ -29,13 +33,6 @@ Image {
         anchors.fill: parent
         enabled: thumbnail.enabled && !!imageUrl
         onClicked: thumbnail.clicked()
-    }
-
-    BusyIndicator {
-        anchors.centerIn: parent
-        running: thumbnail.status === Image.Loading
-        visible: running
-        size: BusyIndicatorSize.Small
     }
 
     signal clicked

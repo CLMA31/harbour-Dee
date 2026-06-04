@@ -4,31 +4,31 @@
 <context>
     <name>CommunitiesPage</name>
     <message>
+        <source>Go to community</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Subscribed</source>
+        <translation type="unfinished">Abonniert</translation>
+    </message>
+    <message>
+        <source>Refresh</source>
+        <translation type="unfinished">Aktualisieren</translation>
+    </message>
+    <message>
+        <source>No subscribed communities</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pull down to refresh</source>
+        <translation type="unfinished">Zum Aktualisieren herunter ziehen</translation>
+    </message>
+    <message>
         <source>Communities</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Refresh</source>
-        <translation>Aktualisieren</translation>
-    </message>
-    <message>
-        <source>Pull down to refresh</source>
-        <translation>Zum Aktualisieren herunter ziehen</translation>
-    </message>
-    <message>
-        <source>Load more</source>
-        <translation>Mehr laden</translation>
-    </message>
-    <message>
-        <source>Subscribed</source>
-        <translation>Abonniert</translation>
-    </message>
-    <message>
-        <source>Settings</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>No subscribed communities</source>
+        <source>Loading more…</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -123,6 +123,25 @@
     </message>
     <message>
         <source>%1 new notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>GoToCommunityDialog</name>
+    <message>
+        <source>Go to community</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter a community name or full handle (e.g. &quot;lemmy&quot; or &quot;lemmy@lemmy.world&quot;)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Go</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Community not found. Check the name and try again.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -431,6 +450,14 @@
     </message>
     <message>
         <source>Inbox</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unsubscribe</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Subscribe</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

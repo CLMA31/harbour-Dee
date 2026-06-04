@@ -4,40 +4,40 @@
 <context>
     <name>CommunitiesPage</name>
     <message>
-        <source>Communities</source>
-        <translation>Gemenskaper</translation>
-    </message>
-    <message>
-        <source>Refresh</source>
-        <translation>Uppdatera</translation>
-    </message>
-    <message>
-        <source>Pull down to refresh</source>
-        <translation>Dra neråt för att uppdatera</translation>
-    </message>
-    <message>
-        <source>Load more</source>
-        <translation>Läs in mer</translation>
+        <source>Go to community</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Subscribed</source>
-        <translation>Prenumererad</translation>
+        <translation type="unfinished">Prenumererad</translation>
     </message>
     <message>
-        <source>Settings</source>
-        <translation>Inställningar</translation>
+        <source>Refresh</source>
+        <translation type="unfinished">Uppdatera</translation>
     </message>
     <message>
         <source>No subscribed communities</source>
-        <translation>Inga prenumererade gemenskaper</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pull down to refresh</source>
+        <translation type="unfinished">Dra neråt för att uppdatera</translation>
+    </message>
+    <message>
+        <source>Communities</source>
+        <translation type="unfinished">Gemenskaper</translation>
+    </message>
+    <message>
+        <source>Loading more…</source>
+        <translation type="unfinished">Läser in mer…</translation>
     </message>
     <message>
         <source>subscribers</source>
-        <translation>prenumeranter</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>posts</source>
-        <translation>inlägg</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -123,6 +123,25 @@
     </message>
     <message>
         <source>%1 new notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>GoToCommunityDialog</name>
+    <message>
+        <source>Go to community</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter a community name or full handle (e.g. &quot;lemmy&quot; or &quot;lemmy@lemmy.world&quot;)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Go</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Community not found. Check the name and try again.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -431,6 +450,14 @@
     </message>
     <message>
         <source>Inbox</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unsubscribe</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Subscribe</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

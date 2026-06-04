@@ -7,6 +7,24 @@ Page {
 
     property int communityId: 0
     property string pageTitle: ""
+    property string communitySubscribed: "NotSubscribed"
+    property string communityHandle: ""
+
+    function isSubscribed() {
+        return communitySubscribed === "Subscribed";
+    }
+
+    function resolveCommunityHandle(actorId) {
+        if (!actorId)
+            return "";
+        var parts = actorId.split("/c/");
+        if (parts.length < 2)
+            return actorId;
+        var name = parts[1];
+        var urlParts = actorId.split("://");
+        var domain = urlParts.length >= 2 ? urlParts[1].split("/")[0] : "";
+        return domain ? name + "@" + domain : name;
+    }
 
     function refresh() {
         var params = {
@@ -38,21 +56,23 @@ Page {
         id: posts
     }
 
-    LemmyAPI {
-        id: api
+    property var api: appWindow.api
 
-        Component.onCompleted: {
-            api.setPostsModel(posts);
-            appWindow.currentSort = api.currentSort;
-            var params = {
-                "limit": 50,
-                "sort": appWindow.currentSort
-            };
-            if (communityId > 0)
-                params.community_id = communityId;
-
-            api.listPosts(JSON.stringify(params));
+    Component.onCompleted: {
+        api.setPostsModel(posts);
+        appWindow.currentSort = api.currentSort;
+        var params = {
+            "limit": 50,
+            "sort": appWindow.currentSort
+        };
+        if (communityId > 0) {
+            params.community_id = communityId;
+            api.getCommunity(JSON.stringify({
+                "id": communityId
+            }));
         }
+
+        api.listPosts(JSON.stringify(params));
     }
 
     SilicaListView {
@@ -85,6 +105,18 @@ Page {
                 onClicked: pageStack.animatorPush(Qt.resolvedUrl("SettingsPage.qml"), {
                     "api": api
                 })
+                visible: communityId === 0
+            }
+
+            MenuItem {
+                text: isSubscribed() ? qsTr("Unsubscribe") : qsTr("Subscribe")
+                visible: communityId > 0
+                onClicked: {
+                    api.followCommunity(JSON.stringify({
+                        "community_id": communityId,
+                        "follow": !isSubscribed()
+                    }));
+                }
             }
 
             MenuItem {
@@ -128,13 +160,18 @@ Page {
         VerticalScrollDecorator {}
 
         header: PageHeader {
-            title: pageTitle ? pageTitle : qsTr("Subscribed")
+            title: communityId > 0 ? pageTitle : qsTr("Subscribed")
+            description: communityId > 0 ? communityHandle : ""
         }
 
         footer: Column {
             width: parent.width
-            height: visible ? implicitHeight + Theme.paddingLarge * 2 : 0
             visible: api.busy && listView.count > 0
+
+            Item {
+                width: parent.width
+                height: Theme.paddingLarge
+            }
 
             BusyIndicator {
                 anchors.horizontalCenter: parent.horizontalCenter
@@ -147,6 +184,11 @@ Page {
                 text: qsTr("Loading more…")
                 font.pixelSize: Theme.fontSizeExtraSmall
                 color: Theme.secondaryColor
+            }
+
+            Item {
+                width: parent.width
+                height: Theme.paddingLarge
             }
         }
 
@@ -338,8 +380,32 @@ Page {
     Connections {
         target: api
         onRequestFinished: {
-            if (method === "likePost")
+            if (method === "likePost" || method === "getPost") {
+                var pv = result.post_view;
+                postMyVote = pv.my_vote ? pv.my_vote : 0;
+                postComments = pv.counts.comments;
+                postScore = pv.counts.score;
+                postTitle = pv.post.name;
+                appWindow.postTitle = postTitle;
+                appWindow.postScore = postScore;
+                appWindow.postComments = postComments;
+            } else if (method === "likeComment" || method === "createComment") {
                 refresh();
+            } else if (method === "getCommunity") {
+                var cv = result.community_view;
+                if (cv) {
+                    communitySubscribed = cv.subscribed || "NotSubscribed";
+                    var community = cv.community;
+                    if (community) {
+                        pageTitle = community.title || community.name;
+                        communityHandle = resolveCommunityHandle(community.actor_id || "");
+                    }
+                }
+            } else if (method === "followCommunity") {
+                var cv = result.community_view;
+                if (cv)
+                    communitySubscribed = cv.subscribed || "NotSubscribed";
+            }
         }
     }
 }

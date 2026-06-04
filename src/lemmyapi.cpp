@@ -293,6 +293,9 @@ LemmyAPI::LemmyAPI(QObject *parent)
   // Start background notification timer if logged in and enabled
   if (m_loggedIn && m_backgroundCheckEnabled)
     m_notificationTimer->start(m_checkIntervalMinutes * 60 * 1000);
+
+  if (m_loggedIn)
+    checkUnreadCount();
 }
 
 LemmyAPI::~LemmyAPI() {
@@ -792,6 +795,8 @@ void LemmyAPI::onUnreadCountFinished(const QString &json) {
   int prev = m_serverUnreadCount;
   m_serverUnreadCount = total;
   m_settings->setValue("notifications/serverUnreadCount", total);
+  m_unreadCount = total;
+  emit unreadCountChanged();
   if (prev >= 0 && total > prev)
     emit newNotificationsReceived(total - prev);
 }
@@ -832,6 +837,8 @@ void LemmyAPI::onLoginFinished(const QString &json) {
     // Start background notification timer if enabled
     if (m_backgroundCheckEnabled)
       m_notificationTimer->start(m_checkIntervalMinutes * 60 * 1000);
+
+    checkUnreadCount();
   } else {
     setError(tr("Login succeeded but no token received"));
     setBusy(false);

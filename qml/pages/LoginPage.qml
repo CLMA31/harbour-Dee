@@ -5,20 +5,14 @@ import harbour.dee 1.0
 Page {
     id: page
 
-    property alias api: _api
-
     function doLogin() {
-        _api.login(instance.text, username.text, password.text, useTwoFactor.checked ? totp.text : "");
+        appWindow.api.login(instance.text, username.text, password.text, useTwoFactor.checked ? totp.text : "");
     }
 
     allowedOrientations: Orientation.All
     Component.onCompleted: {
-        if (_api.loggedIn)
+        if (appWindow.api.loggedIn)
             replaceTimer.start();
-    }
-
-    LemmyAPI {
-        id: _api
     }
 
     Timer {
@@ -57,7 +51,7 @@ Page {
                 label: qsTr("Instance URL")
                 placeholderText: "https://lemmy.world"
                 inputMethodHints: Qt.ImhUrlCharactersOnly
-                text: _api.instanceUrl
+                text: appWindow.api.instanceUrl
                 EnterKey.enabled: text.length > 0
                 EnterKey.iconSource: "image://theme/icon-m-enter-next"
                 EnterKey.onClicked: username.focus = true
@@ -74,7 +68,7 @@ Page {
                 width: parent.width - 2 * Theme.horizontalPageMargin
                 label: qsTr("Email or Username")
                 placeholderText: qsTr("Email or Username")
-                text: _api.username
+                text: appWindow.api.username
                 EnterKey.enabled: text.length > 0 && instance.text.length > 0
                 EnterKey.iconSource: "image://theme/icon-m-enter-next"
                 EnterKey.onClicked: password.focus = true
@@ -130,8 +124,8 @@ Page {
             Button {
                 x: Theme.horizontalPageMargin
                 width: parent.width - 2 * Theme.horizontalPageMargin
-                enabled: !_api.busy && instance.text.length > 0 && username.text.length > 0 && password.text.length > 0
-                text: _api.busy ? qsTr("Signing in…") : qsTr("Sign in")
+                enabled: !appWindow.api.busy && instance.text.length > 0 && username.text.length > 0 && password.text.length > 0
+                text: appWindow.api.busy ? qsTr("Signing in…") : qsTr("Sign in")
                 onClicked: doLogin()
             }
 
@@ -141,8 +135,8 @@ Page {
                 topPadding: Theme.paddingMedium
                 wrapMode: Text.Wrap
                 color: Theme.errorColor
-                text: _api.error
-                visible: _api.error.length > 0
+                text: appWindow.api.error
+                visible: appWindow.api.error.length > 0
                 font.pixelSize: Theme.fontSizeSmall
             }
 
@@ -154,7 +148,7 @@ Page {
     }
 
     Connections {
-        target: _api
+        target: appWindow.api
         onLoginSuccess: pageStack.replace(Qt.resolvedUrl("SubscribedPage.qml"))
         onLoginFailed: {}
     }

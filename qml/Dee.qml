@@ -99,6 +99,8 @@ ApplicationWindow {
         id: _api
     }
 
+    property alias api: _api
+
     Notification {
         id: systemNotification
         appName: "Dee"

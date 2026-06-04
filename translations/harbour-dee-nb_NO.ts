@@ -4,40 +4,40 @@
 <context>
     <name>CommunitiesPage</name>
     <message>
-        <source>Communities</source>
-        <translation>Nettsamfunn</translation>
-    </message>
-    <message>
-        <source>Refresh</source>
-        <translation>Last på nytt</translation>
-    </message>
-    <message>
-        <source>Pull down to refresh</source>
-        <translation>Dra ned for å oppdatere</translation>
-    </message>
-    <message>
-        <source>Load more</source>
-        <translation>Last inn mer</translation>
+        <source>Go to community</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Subscribed</source>
-        <translation>Abonnerer</translation>
+        <translation type="unfinished">Følger</translation>
     </message>
     <message>
-        <source>Settings</source>
-        <translation>Innstillinger</translation>
+        <source>Refresh</source>
+        <translation type="unfinished">Last på nytt</translation>
     </message>
     <message>
         <source>No subscribed communities</source>
-        <translation>Ingen fulgte samfunn</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pull down to refresh</source>
+        <translation type="unfinished">Dra ned for å oppdatere</translation>
+    </message>
+    <message>
+        <source>Communities</source>
+        <translation type="unfinished">Nettsamfunn</translation>
+    </message>
+    <message>
+        <source>Loading more…</source>
+        <translation type="unfinished">Laster inn mer…</translation>
     </message>
     <message>
         <source>subscribers</source>
-        <translation>følgere</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>posts</source>
-        <translation>innlegg</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -123,6 +123,25 @@
     </message>
     <message>
         <source>%1 new notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>GoToCommunityDialog</name>
+    <message>
+        <source>Go to community</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter a community name or full handle (e.g. &quot;lemmy&quot; or &quot;lemmy@lemmy.world&quot;)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Go</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Community not found. Check the name and try again.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -431,6 +450,14 @@
     </message>
     <message>
         <source>Inbox</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unsubscribe</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Subscribe</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
