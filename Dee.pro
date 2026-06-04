@@ -100,4 +100,5 @@ TRANSLATIONS += \
                 translations/harbour-dee-fi.ts \
                 translations/harbour-dee-it.ts \
                 translations/harbour-dee-nb_NO.ts \
-                translations/harbour-dee-nl.ts
+                translations/harbour-dee-nl.ts \
+                translations/harbour-dee-sv.ts
