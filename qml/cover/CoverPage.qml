@@ -14,9 +14,9 @@ CoverBackground {
 
         anchors {
             left: parent.left
-            leftMargin: Theme.paddingSmall
+            leftMargin: Theme.paddingLarge
             right: parent.right
-            rightMargin: Theme.paddingSmall
+            rightMargin: Theme.paddingLarge
             verticalCenter: parent.verticalCenter
         }
 
