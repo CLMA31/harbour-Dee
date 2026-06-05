@@ -13,6 +13,18 @@ Page {
             api.listNotifications();
     }
 
+    function formatAuthor(actorId) {
+        if (!actorId)
+            return "";
+        var parts = actorId.split("/u/");
+        if (parts.length < 2)
+            return actorId;
+        var username = parts[1];
+        var urlParts = actorId.split("://");
+        var domain = urlParts.length >= 2 ? urlParts[1].split("/")[0] : "";
+        return domain ? username + "@" + domain : username;
+    }
+
     Connections {
         target: api
         onNewNotificationsReceived: {}
@@ -66,6 +78,25 @@ Page {
             onClicked: {
                 if (isUnread)
                     api.markNotificationsRead(notif.id, notif.type);
+                if (notifType === "CommentReply" || notifType === "CommentMention" || notifType === "PostMention") {
+                    var post = notif.post || {};
+                    var community = notif.community || {};
+                    var creator = notif.creator || {};
+                    pageStack.animatorPush(Qt.resolvedUrl("PostPage.qml"), {
+                        "api": api,
+                        "community": community.name || "",
+                        "postId": post.id || 0,
+                        "postTitle": post.name || "",
+                        "postBody": post.body || "",
+                        "postUrl": post.url || "",
+                        "postAuthor": creator.actor_id || "",
+                        "postScore": 0,
+                        "postDate": post.published || "",
+                        "postComments": 0,
+                        "postMyVote": 0,
+                        "postLocked": post.locked || false
+                    });
+                }
             }
 
             Rectangle {
@@ -126,10 +157,29 @@ Page {
                     visible: text.length > 0
                 }
 
-                Label {
-                    text: notif.published ? Format.formatDate(notif.published, Formatter.DurationElapsed) : ""
-                    font.pixelSize: Theme.fontSizeExtraSmall
-                    color: Theme.secondaryColor
+                Row {
+                    width: parent.width
+                    spacing: Theme.paddingSmall
+
+                    Label {
+                        text: formatAuthor((notif.creator || {}).actor_id || "")
+                        font.pixelSize: Theme.fontSizeExtraSmall
+                        color: delegate.highlighted ? Theme.highlightColor : Theme.secondaryHighlightColor
+                        visible: text.length > 0
+                    }
+
+                    Label {
+                        text: "·"
+                        font.pixelSize: Theme.fontSizeExtraSmall
+                        color: delegate.highlighted ? Theme.highlightColor : Theme.secondaryColor
+                        visible: formatAuthor((notif.creator || {}).actor_id || "").length > 0
+                    }
+
+                    Label {
+                        text: notif.published ? Format.formatDate(notif.published, Formatter.DurationElapsed) : ""
+                        font.pixelSize: Theme.fontSizeExtraSmall
+                        color: delegate.highlighted ? Theme.highlightColor : Theme.secondaryColor
+                    }
                 }
             }
         }
