@@ -128,19 +128,20 @@ Page {
                 onClicked: pageStack.animatorPush(Qt.resolvedUrl("InboxPage.qml"), {
                     "api": api
                 })
-                visible: api.loggedIn
             }
 
             MenuItem {
-                text: communityId > 0 ? qsTr("Home") : qsTr("Communities")
-                onClicked: {
-                    if (communityId > 0)
-                        pageStack.animatorPush(Qt.resolvedUrl("SubscribedPage.qml"));
-                    else
-                        pageStack.animatorPush(Qt.resolvedUrl("CommunitiesPage.qml"), {
-                            "api": api
-                        });
-                }
+                text: qsTr("Home")
+                visible: communityId > 0
+                onClicked: pageStack.animatorPush(Qt.resolvedUrl("SubscribedPage.qml"))
+            }
+
+            MenuItem {
+                text: qsTr("Communities")
+                onClicked: pageStack.animatorPush(Qt.resolvedUrl("CommunitiesPage.qml"), {
+                    "api": api
+                })
+                visible: communityId === 0
             }
 
             MenuItem {

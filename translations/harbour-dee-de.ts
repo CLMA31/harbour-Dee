@@ -35,10 +35,6 @@
         <source>posts</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Home</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>CoverPage</name>
@@ -185,6 +181,10 @@
     </message>
     <message>
         <source>Notification</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Home</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

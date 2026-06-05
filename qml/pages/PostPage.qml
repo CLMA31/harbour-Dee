@@ -98,11 +98,6 @@ Page {
             }
 
             MenuItem {
-                text: qsTr("Refresh")
-                onClicked: refresh()
-            }
-
-            MenuItem {
                 enabled: !postLocked
                 text: qsTr("Reply")
                 onClicked: pageStack.push(Qt.resolvedUrl("ReplyPage.qml"), {
@@ -111,6 +106,11 @@ Page {
                     "parentId": 0,
                     "previewText": qsTr("In reply to \"%1\"").arg(previewText(postTitle))
                 })
+            }
+
+            MenuItem {
+                text: qsTr("Refresh")
+                onClicked: refresh()
             }
         }
 

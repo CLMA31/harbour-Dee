@@ -37,11 +37,6 @@ Page {
             }
 
             MenuItem {
-                text: qsTr("Home")
-                onClicked: pageStack.animatorPush(Qt.resolvedUrl("SubscribedPage.qml"))
-            }
-
-            MenuItem {
                 text: qsTr("Refresh")
                 onClicked: api.listCommunities(JSON.stringify({
                     "type_": "Subscribed",

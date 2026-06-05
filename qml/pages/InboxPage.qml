@@ -38,6 +38,11 @@ Page {
 
         PullDownMenu {
             MenuItem {
+                text: qsTr("Home")
+                onClicked: pageStack.animatorPush(Qt.resolvedUrl("SubscribedPage.qml"))
+            }
+
+            MenuItem {
                 text: qsTr("Mark all as read")
                 enabled: api ? api.unreadCount > 0 : false
                 onClicked: api.markNotificationsRead(-1)
