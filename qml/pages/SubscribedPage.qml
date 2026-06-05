@@ -378,9 +378,7 @@ Page {
         target: api
         onRequestFinished: {
             if (method === "likePost" || method === "getPost") {
-                Utils.applyPostViewResult(result, page, appWindow);
-            } else if (method === "likeComment" || method === "createComment") {
-                refresh();
+                Utils.applyPostViewResult(result, page, appWindow, api);
             } else if (method === "getCommunity") {
                 var cv = result.community_view;
                 if (cv) {

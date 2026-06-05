@@ -153,9 +153,11 @@ public:
   Q_INVOKABLE void loadMorePosts();
   Q_INVOKABLE void getPost(int postId);
   Q_INVOKABLE void likePost(int postId, int score);
+  Q_INVOKABLE void updatePostInModel(int postId, const QJsonObject &postView);
   Q_INVOKABLE void createPost(const QString &jsonParams);
   Q_INVOKABLE void listComments(const QString &jsonParams = QString());
   Q_INVOKABLE void likeComment(int commentId, int score);
+  Q_INVOKABLE void updateCommentVote(int commentId, int myVote, int score);
   Q_INVOKABLE void createComment(int postId, const QString &content,
                                  int parentId = 0);
   Q_INVOKABLE void loadMoreComments();

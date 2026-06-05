@@ -43,3 +43,15 @@ void PostsModel::append(const QJsonArray &newPosts) {
   }
   endInsertRows();
 }
+
+void PostsModel::updatePost(int postId, const QJsonObject &postView) {
+  for (int i = 0; i < m_posts.size(); ++i) {
+    QJsonObject post = m_posts.at(i)[QStringLiteral("post")].toObject();
+    if (post[QStringLiteral("id")].toInt() == postId) {
+      m_posts[i] = postView;
+      QModelIndex idx = index(i);
+      emit dataChanged(idx, idx, {Qt::UserRole});
+      return;
+    }
+  }
+}

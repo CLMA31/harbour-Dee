@@ -440,7 +440,9 @@ Page {
         onRequestFinished: {
             if (method === "likePost" || method === "getPost") {
                 Utils.applyPostViewResult(result, page, appWindow);
-            } else if (method === "likeComment" || method === "createComment") {
+            } else if (method === "likeComment") {
+                Utils.applyCommentViewResult(result, api);
+            } else if (method === "createComment") {
                 refresh();
             }
         }

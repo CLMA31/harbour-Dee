@@ -19,6 +19,7 @@ public:
   // Custom operations
   void clear();
   void append(const QJsonArray &newPosts);
+  Q_INVOKABLE void updatePost(int postId, const QJsonObject &postView);
 
 private:
   QList<QJsonObject> m_posts;

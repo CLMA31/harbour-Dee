@@ -635,6 +635,22 @@ void LemmyAPI::likeComment(int commentId, int score) {
                             Q_ARG(QString, params));
 }
 
+void LemmyAPI::updateCommentVote(int commentId, int myVote, int score) {
+  for (int i = 0; i < m_comments.size(); ++i) {
+    QVariantMap entry = m_comments[i].toMap();
+    QJsonObject cd = entry.value(QStringLiteral("commentData")).toJsonObject();
+    if (cd.value(QStringLiteral("id")).toInt() == commentId) {
+      QJsonObject counts = entry.value(QStringLiteral("counts")).toJsonObject();
+      counts[QStringLiteral("score")] = score;
+      entry[QStringLiteral("counts")] = QVariant::fromValue(counts);
+      entry[QStringLiteral("myVote")] = myVote;
+      m_comments[i] = entry;
+      emit commentsChanged();
+      return;
+    }
+  }
+}
+
 void LemmyAPI::createComment(int postId, const QString &content, int parentId) {
   setBusy(true);
   QJsonObject obj;
@@ -680,6 +696,11 @@ void LemmyAPI::likePost(int postId, int score) {
       QStringLiteral("{\"post_id\":%1,\"score\":%2}").arg(postId).arg(score);
   QMetaObject::invokeMethod(m_worker, "doLikePost", Qt::QueuedConnection,
                             Q_ARG(QString, params));
+}
+
+void LemmyAPI::updatePostInModel(int postId, const QJsonObject &postView) {
+  if (m_posts)
+    m_posts->updatePost(postId, postView);
 }
 
 void LemmyAPI::createPost(const QString &jsonParams) {
