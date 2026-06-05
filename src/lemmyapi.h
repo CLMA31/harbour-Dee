@@ -40,6 +40,7 @@ public slots:
   void doListPosts(const QString &jsonParams);
   void doGetPost(const QString &jsonParams);
   void doLikePost(const QString &jsonParams);
+  void doCreatePost(const QString &jsonParams);
   void doListComments(const QString &jsonParams);
   void doLikeComment(const QString &jsonParams);
   void doCreateComment(const QString &jsonParams);
@@ -59,6 +60,7 @@ signals:
   void listPostsFinished(const QString &json);
   void getPostFinished(const QString &json);
   void likePostFinished(const QString &json);
+  void createPostFinished(const QString &json);
   void listCommentsFinished(const QString &json);
   void likeCommentFinished(const QString &json);
   void createCommentFinished(const QString &json);
@@ -151,6 +153,7 @@ public:
   Q_INVOKABLE void loadMorePosts();
   Q_INVOKABLE void getPost(int postId);
   Q_INVOKABLE void likePost(int postId, int score);
+  Q_INVOKABLE void createPost(const QString &jsonParams);
   Q_INVOKABLE void listComments(const QString &jsonParams = QString());
   Q_INVOKABLE void likeComment(int commentId, int score);
   Q_INVOKABLE void createComment(int postId, const QString &content,
@@ -203,6 +206,7 @@ private slots:
   void onListPostsFinished(const QString &json);
   void onGetPostFinished(const QString &json);
   void onLikePostFinished(const QString &json);
+  void onCreatePostFinished(const QString &json);
   void onListCommentsFinished(const QString &json);
   void onLikeCommentFinished(const QString &json);
   void onListCommunitiesFinished(const QString &json);

@@ -17,7 +17,7 @@ use lemmy_client::lemmy_api_common::{
         GetPersonDetails, GetPersonMentions, GetReplies, Login, MarkCommentReplyAsRead,
         MarkPersonMentionAsRead,
     },
-    post::{CreatePostLike, GetPost, GetPosts},
+    post::{CreatePost, CreatePostLike, GetPost, GetPosts},
     private_message::{GetPrivateMessages, MarkPrivateMessageAsRead},
     site::Search,
 };
@@ -475,6 +475,27 @@ pub unsafe extern "C" fn lemmy_get_post(
         None => return to_c_string(r#"{"error":"params required"}"#),
     };
     let res = runtime().block_on(h.client.get_post(params));
+    result_to_c(res)
+}
+
+/// Create a post. `json_params` is a JSON-serialised `CreatePost`.
+#[no_mangle]
+pub unsafe extern "C" fn lemmy_create_post(
+    handle: *mut LemmyClientHandle,
+    json_params: *const c_char,
+) -> *mut c_char {
+    if handle.is_null() {
+        return to_c_string(r#"{"error":"null handle"}"#);
+    }
+    let h = &*handle;
+    let params: CreatePost = match cstr_to_str(json_params) {
+        Some(s) => match serde_json::from_str(s) {
+            Ok(p) => p,
+            Err(e) => return to_c_string(&format!(r#"{{"error":"bad params: {}"}}"#, e)),
+        },
+        None => return to_c_string(r#"{"error":"params required"}"#),
+    };
+    let res = runtime().block_on(h.client.create_post(params));
     result_to_c(res)
 }
 

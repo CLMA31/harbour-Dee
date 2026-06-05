@@ -9,6 +9,8 @@ Page {
     property string pageTitle: ""
     property string communitySubscribed: "NotSubscribed"
     property string communityHandle: ""
+    property bool postingRestrictedToMods: false
+    property bool isCommunityModerator: false
     property int postMyVote: 0
     property int postComments: 0
     property int postScore: 0
@@ -124,10 +126,22 @@ Page {
             }
 
             MenuItem {
+                text: qsTr("Create post")
+                visible: communityId > 0
+                enabled: !postingRestrictedToMods || isCommunityModerator
+                onClicked: pageStack.animatorPush(Qt.resolvedUrl("NewPostPage.qml"), {
+                    "api": api,
+                    "communityId": communityId,
+                    "communityName": communityHandle
+                })
+            }
+
+            MenuItem {
                 text: qsTr("Inbox") + (api.unreadCount > 0 ? " (" + api.unreadCount + ")" : "")
                 onClicked: pageStack.animatorPush(Qt.resolvedUrl("InboxPage.qml"), {
                     "api": api
                 })
+                visible: communityId === 0
             }
 
             MenuItem {
@@ -404,12 +418,37 @@ Page {
                     if (community) {
                         pageTitle = community.title || community.name;
                         communityHandle = resolveCommunityHandle(community.actor_id || "");
+                        postingRestrictedToMods = community.posting_restricted_to_mods || false;
+                    }
+                    var myPersonId = api.siteInfo.my_user ? api.siteInfo.my_user.local_user_view.person.id : -1;
+                    var mods = result.moderators || [];
+                    isCommunityModerator = false;
+                    for (var i = 0; i < mods.length; i++) {
+                        if (mods[i].moderator && mods[i].moderator.id === myPersonId) {
+                            isCommunityModerator = true;
+                            break;
+                        }
                     }
                 }
             } else if (method === "followCommunity") {
                 var cv = result.community_view;
-                if (cv)
+                if (cv) {
                     communitySubscribed = cv.subscribed || "NotSubscribed";
+                    var community = cv.community;
+                    if (community)
+                        postingRestrictedToMods = community.posting_restricted_to_mods || false;
+                    var myPersonId = api.siteInfo.my_user ? api.siteInfo.my_user.local_user_view.person.id : -1;
+                    var mods = result.moderators || [];
+                    isCommunityModerator = false;
+                    for (var i = 0; i < mods.length; i++) {
+                        if (mods[i].moderator && mods[i].moderator.id === myPersonId) {
+                            isCommunityModerator = true;
+                            break;
+                        }
+                    }
+                }
+            } else if (method === "createPost") {
+                refresh();
             }
         }
     }

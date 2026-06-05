@@ -114,6 +114,10 @@ void LemmyWorker::doLikePost(const QString &jsonParams) {
   emit likePostFinished(callRust(m_handle, lemmy_like_post, jsonParams));
 }
 
+void LemmyWorker::doCreatePost(const QString &jsonParams) {
+  emit createPostFinished(callRust(m_handle, lemmy_create_post, jsonParams));
+}
+
 void LemmyWorker::doListComments(const QString &jsonParams) {
   emit listCommentsFinished(
       callRust(m_handle, lemmy_list_comments, jsonParams));
@@ -260,6 +264,8 @@ LemmyAPI::LemmyAPI(QObject *parent)
           &LemmyAPI::onGetPostFinished);
   connect(m_worker, &LemmyWorker::likePostFinished, this,
           &LemmyAPI::onLikePostFinished);
+  connect(m_worker, &LemmyWorker::createPostFinished, this,
+          &LemmyAPI::onCreatePostFinished);
   connect(m_worker, &LemmyWorker::listCommentsFinished, this,
           &LemmyAPI::onListCommentsFinished);
   connect(m_worker, &LemmyWorker::likeCommentFinished, this,
@@ -667,6 +673,12 @@ void LemmyAPI::likePost(int postId, int score) {
                             Q_ARG(QString, params));
 }
 
+void LemmyAPI::createPost(const QString &jsonParams) {
+  setBusy(true);
+  QMetaObject::invokeMethod(m_worker, "doCreatePost", Qt::QueuedConnection,
+                            Q_ARG(QString, jsonParams));
+}
+
 void LemmyAPI::getCommunity(const QString &jsonParams) {
   setBusy(true);
   QMetaObject::invokeMethod(m_worker, "doGetCommunity", Qt::QueuedConnection,
@@ -935,6 +947,18 @@ void LemmyAPI::onLikePostFinished(const QString &json) {
   }
   setBusy(false);
   emit requestFinished(QStringLiteral("likePost"), obj);
+}
+
+void LemmyAPI::onCreatePostFinished(const QString &json) {
+  QJsonObject obj = parseJson(json);
+  if (obj.contains(QStringLiteral("error"))) {
+    setError(obj[QStringLiteral("error")].toString());
+    setBusy(false);
+    emit requestFailed(QStringLiteral("createPost"), m_error);
+    return;
+  }
+  setBusy(false);
+  emit requestFinished(QStringLiteral("createPost"), obj);
 }
 
 void LemmyAPI::onListCommentsFinished(const QString &json) {

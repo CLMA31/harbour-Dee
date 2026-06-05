@@ -243,6 +243,49 @@
     </message>
 </context>
 <context>
+    <name>NewPostPage</name>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Post title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>URL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>optional</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Link (leave empty for a text post)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Body</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Write your post…</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Creating…</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create post</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>PostPage</name>
     <message>
         <source>Refresh</source>
@@ -458,6 +501,10 @@
     </message>
     <message>
         <source>Home</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create post</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
