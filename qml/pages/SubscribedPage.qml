@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 import harbour.dee 1.0
+import "../lib/Utils.js" as Utils
 
 Page {
     id: page
@@ -20,16 +21,16 @@ Page {
         return communitySubscribed === "Subscribed";
     }
 
-    function resolveCommunityHandle(actorId) {
-        if (!actorId)
-            return "";
-        var parts = actorId.split("/c/");
-        if (parts.length < 2)
-            return actorId;
-        var name = parts[1];
-        var urlParts = actorId.split("://");
-        var domain = urlParts.length >= 2 ? urlParts[1].split("/")[0] : "";
-        return domain ? name + "@" + domain : name;
+    function updateModeratorStatus(result) {
+        var myPersonId = api.siteInfo.my_user ? api.siteInfo.my_user.local_user_view.person.id : -1;
+        var mods = result.moderators || [];
+        isCommunityModerator = false;
+        for (var i = 0; i < mods.length; i++) {
+            if (mods[i].moderator && mods[i].moderator.id === myPersonId) {
+                isCommunityModerator = true;
+                break;
+            }
+        }
     }
 
     function refresh() {
@@ -183,32 +184,9 @@ Page {
             description: communityId > 0 ? communityHandle : ""
         }
 
-        footer: Column {
-            width: parent.width
-            visible: api.busy && listView.count > 0
-
-            Item {
-                width: parent.width
-                height: Theme.paddingLarge
-            }
-
-            BusyIndicator {
-                anchors.horizontalCenter: parent.horizontalCenter
-                size: BusyIndicatorSize.Small
-                running: api.busy
-            }
-
-            Label {
-                anchors.horizontalCenter: parent.horizontalCenter
-                text: qsTr("Loading more…")
-                font.pixelSize: Theme.fontSizeExtraSmall
-                color: Theme.secondaryColor
-            }
-
-            Item {
-                width: parent.width
-                height: Theme.paddingLarge
-            }
+        footer: LoadingFooter {
+            busy: api.busy
+            itemCount: listView.count
         }
 
         delegate: ListItem {
@@ -400,14 +378,7 @@ Page {
         target: api
         onRequestFinished: {
             if (method === "likePost" || method === "getPost") {
-                var pv = result.post_view;
-                postMyVote = pv.my_vote ? pv.my_vote : 0;
-                postComments = pv.counts.comments;
-                postScore = pv.counts.score;
-                postTitle = pv.post.name;
-                appWindow.postTitle = postTitle;
-                appWindow.postScore = postScore;
-                appWindow.postComments = postComments;
+                Utils.applyPostViewResult(result, page, appWindow);
             } else if (method === "likeComment" || method === "createComment") {
                 refresh();
             } else if (method === "getCommunity") {
@@ -417,18 +388,10 @@ Page {
                     var community = cv.community;
                     if (community) {
                         pageTitle = community.title || community.name;
-                        communityHandle = resolveCommunityHandle(community.actor_id || "");
+                        communityHandle = Utils.resolveCommunityHandle(community.actor_id || "");
                         postingRestrictedToMods = community.posting_restricted_to_mods || false;
                     }
-                    var myPersonId = api.siteInfo.my_user ? api.siteInfo.my_user.local_user_view.person.id : -1;
-                    var mods = result.moderators || [];
-                    isCommunityModerator = false;
-                    for (var i = 0; i < mods.length; i++) {
-                        if (mods[i].moderator && mods[i].moderator.id === myPersonId) {
-                            isCommunityModerator = true;
-                            break;
-                        }
-                    }
+                    updateModeratorStatus(result);
                 }
             } else if (method === "followCommunity") {
                 var cv = result.community_view;
@@ -437,15 +400,7 @@ Page {
                     var community = cv.community;
                     if (community)
                         postingRestrictedToMods = community.posting_restricted_to_mods || false;
-                    var myPersonId = api.siteInfo.my_user ? api.siteInfo.my_user.local_user_view.person.id : -1;
-                    var mods = result.moderators || [];
-                    isCommunityModerator = false;
-                    for (var i = 0; i < mods.length; i++) {
-                        if (mods[i].moderator && mods[i].moderator.id === myPersonId) {
-                            isCommunityModerator = true;
-                            break;
-                        }
-                    }
+                    updateModeratorStatus(result);
                 }
             } else if (method === "createPost") {
                 refresh();

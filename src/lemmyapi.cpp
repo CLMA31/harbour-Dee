@@ -442,6 +442,37 @@ QJsonObject LemmyAPI::parseJson(const QString &json) {
   return doc.object();
 }
 
+void LemmyAPI::invokeWorker(const char *method, const QString &jsonParams) {
+  setBusy(true);
+  QMetaObject::invokeMethod(m_worker, method, Qt::QueuedConnection,
+                            Q_ARG(QString, jsonParams));
+}
+
+void LemmyAPI::handleSimpleResponse(const QString &json,
+                                    const QString &methodName) {
+  QJsonObject obj = parseJson(json);
+  if (obj.contains(QStringLiteral("error"))) {
+    setError(obj[QStringLiteral("error")].toString());
+    setBusy(false);
+    emit requestFailed(methodName, m_error);
+    return;
+  }
+  setBusy(false);
+  emit requestFinished(methodName, obj);
+}
+
+void LemmyAPI::loadMoreHelper(int &page, bool &loadingFlag, QJsonObject &filter,
+                              const char *workerMethod) {
+  setBusy(true);
+  page++;
+  loadingFlag = true;
+  QJsonObject params = filter;
+  params["page"] = page;
+  QString paramsStr = QJsonDocument(params).toJson(QJsonDocument::Compact);
+  QMetaObject::invokeMethod(m_worker, workerMethod, Qt::QueuedConnection,
+                            Q_ARG(QString, paramsStr));
+}
+
 void LemmyAPI::setBusy(bool busy) {
   if (m_busy != busy) {
     m_busy = busy;
@@ -560,39 +591,17 @@ void LemmyAPI::listPosts(const QString &jsonParams) {
 }
 
 void LemmyAPI::loadMorePosts() {
-  setBusy(true);
-  m_postsPage++;
-  m_loadingMore = true;
-  // Build params: stored filter + page
-  QJsonObject params = m_postsFilter;
-  params["page"] = m_postsPage;
-  QString paramsStr = QJsonDocument(params).toJson(QJsonDocument::Compact);
-  QMetaObject::invokeMethod(m_worker, "doListPosts", Qt::QueuedConnection,
-                            Q_ARG(QString, paramsStr));
+  loadMoreHelper(m_postsPage, m_loadingMore, m_postsFilter, "doListPosts");
 }
 
 void LemmyAPI::loadMoreCommunities() {
-  setBusy(true);
-  m_communitiesPage++;
-  m_loadingMoreCommunities = true;
-  // Build params: stored filter + page
-  QJsonObject params = m_communitiesFilter;
-  params["page"] = m_communitiesPage;
-  QString paramsStr = QJsonDocument(params).toJson(QJsonDocument::Compact);
-  QMetaObject::invokeMethod(m_worker, "doListCommunities", Qt::QueuedConnection,
-                            Q_ARG(QString, paramsStr));
+  loadMoreHelper(m_communitiesPage, m_loadingMoreCommunities,
+                 m_communitiesFilter, "doListCommunities");
 }
 
 void LemmyAPI::loadMoreComments() {
-  setBusy(true);
-  m_commentsPage++;
-  m_loadingMoreComments = true;
-  // Build params: stored filter + page
-  QJsonObject params = m_commentsFilter;
-  params["page"] = m_commentsPage;
-  QString paramsStr = QJsonDocument(params).toJson(QJsonDocument::Compact);
-  QMetaObject::invokeMethod(m_worker, "doListComments", Qt::QueuedConnection,
-                            Q_ARG(QString, paramsStr));
+  loadMoreHelper(m_commentsPage, m_loadingMoreComments, m_commentsFilter,
+                 "doListComments");
 }
 
 void LemmyAPI::listComments(const QString &jsonParams) {
@@ -674,33 +683,23 @@ void LemmyAPI::likePost(int postId, int score) {
 }
 
 void LemmyAPI::createPost(const QString &jsonParams) {
-  setBusy(true);
-  QMetaObject::invokeMethod(m_worker, "doCreatePost", Qt::QueuedConnection,
-                            Q_ARG(QString, jsonParams));
+  invokeWorker("doCreatePost", jsonParams);
 }
 
 void LemmyAPI::getCommunity(const QString &jsonParams) {
-  setBusy(true);
-  QMetaObject::invokeMethod(m_worker, "doGetCommunity", Qt::QueuedConnection,
-                            Q_ARG(QString, jsonParams));
+  invokeWorker("doGetCommunity", jsonParams);
 }
 
 void LemmyAPI::getPerson(const QString &jsonParams) {
-  setBusy(true);
-  QMetaObject::invokeMethod(m_worker, "doGetPerson", Qt::QueuedConnection,
-                            Q_ARG(QString, jsonParams));
+  invokeWorker("doGetPerson", jsonParams);
 }
 
 void LemmyAPI::search(const QString &jsonParams) {
-  setBusy(true);
-  QMetaObject::invokeMethod(m_worker, "doSearch", Qt::QueuedConnection,
-                            Q_ARG(QString, jsonParams));
+  invokeWorker("doSearch", jsonParams);
 }
 
 void LemmyAPI::followCommunity(const QString &jsonParams) {
-  setBusy(true);
-  QMetaObject::invokeMethod(m_worker, "doFollowCommunity", Qt::QueuedConnection,
-                            Q_ARG(QString, jsonParams));
+  invokeWorker("doFollowCommunity", jsonParams);
 }
 
 void LemmyAPI::listNotifications(bool unreadOnly, int limit, int page) {
@@ -926,39 +925,15 @@ void LemmyAPI::onListPostsFinished(const QString &json) {
 }
 
 void LemmyAPI::onGetPostFinished(const QString &json) {
-  QJsonObject obj = parseJson(json);
-  if (obj.contains(QStringLiteral("error"))) {
-    setError(obj[QStringLiteral("error")].toString());
-    setBusy(false);
-    emit requestFailed(QStringLiteral("getPost"), m_error);
-    return;
-  }
-  setBusy(false);
-  emit requestFinished(QStringLiteral("getPost"), obj);
+  handleSimpleResponse(json, QStringLiteral("getPost"));
 }
 
 void LemmyAPI::onLikePostFinished(const QString &json) {
-  QJsonObject obj = parseJson(json);
-  if (obj.contains(QStringLiteral("error"))) {
-    setError(obj[QStringLiteral("error")].toString());
-    setBusy(false);
-    emit requestFailed(QStringLiteral("likePost"), m_error);
-    return;
-  }
-  setBusy(false);
-  emit requestFinished(QStringLiteral("likePost"), obj);
+  handleSimpleResponse(json, QStringLiteral("likePost"));
 }
 
 void LemmyAPI::onCreatePostFinished(const QString &json) {
-  QJsonObject obj = parseJson(json);
-  if (obj.contains(QStringLiteral("error"))) {
-    setError(obj[QStringLiteral("error")].toString());
-    setBusy(false);
-    emit requestFailed(QStringLiteral("createPost"), m_error);
-    return;
-  }
-  setBusy(false);
-  emit requestFinished(QStringLiteral("createPost"), obj);
+  handleSimpleResponse(json, QStringLiteral("createPost"));
 }
 
 void LemmyAPI::onListCommentsFinished(const QString &json) {
@@ -993,27 +968,11 @@ void LemmyAPI::onListCommentsFinished(const QString &json) {
 }
 
 void LemmyAPI::onLikeCommentFinished(const QString &json) {
-  QJsonObject obj = parseJson(json);
-  if (obj.contains(QStringLiteral("error"))) {
-    setError(obj[QStringLiteral("error")].toString());
-    setBusy(false);
-    emit requestFailed(QStringLiteral("likeComment"), m_error);
-    return;
-  }
-  setBusy(false);
-  emit requestFinished(QStringLiteral("likeComment"), obj);
+  handleSimpleResponse(json, QStringLiteral("likeComment"));
 }
 
 void LemmyAPI::onCreateCommentFinished(const QString &json) {
-  QJsonObject obj = parseJson(json);
-  if (obj.contains(QStringLiteral("error"))) {
-    setError(obj[QStringLiteral("error")].toString());
-    setBusy(false);
-    emit requestFailed(QStringLiteral("createComment"), m_error);
-    return;
-  }
-  setBusy(false);
-  emit requestFinished(QStringLiteral("createComment"), obj);
+  handleSimpleResponse(json, QStringLiteral("createComment"));
 }
 
 void LemmyAPI::onListCommunitiesFinished(const QString &json) {
@@ -1039,49 +998,17 @@ void LemmyAPI::onListCommunitiesFinished(const QString &json) {
 }
 
 void LemmyAPI::onGetCommunityFinished(const QString &json) {
-  QJsonObject obj = parseJson(json);
-  if (obj.contains(QStringLiteral("error"))) {
-    setError(obj[QStringLiteral("error")].toString());
-    setBusy(false);
-    emit requestFailed(QStringLiteral("getCommunity"), m_error);
-    return;
-  }
-  setBusy(false);
-  emit requestFinished(QStringLiteral("getCommunity"), obj);
+  handleSimpleResponse(json, QStringLiteral("getCommunity"));
 }
 
 void LemmyAPI::onGetPersonFinished(const QString &json) {
-  QJsonObject obj = parseJson(json);
-  if (obj.contains(QStringLiteral("error"))) {
-    setError(obj[QStringLiteral("error")].toString());
-    setBusy(false);
-    emit requestFailed(QStringLiteral("getPerson"), m_error);
-    return;
-  }
-  setBusy(false);
-  emit requestFinished(QStringLiteral("getPerson"), obj);
+  handleSimpleResponse(json, QStringLiteral("getPerson"));
 }
 
 void LemmyAPI::onSearchFinished(const QString &json) {
-  QJsonObject obj = parseJson(json);
-  if (obj.contains(QStringLiteral("error"))) {
-    setError(obj[QStringLiteral("error")].toString());
-    setBusy(false);
-    emit requestFailed(QStringLiteral("search"), m_error);
-    return;
-  }
-  setBusy(false);
-  emit requestFinished(QStringLiteral("search"), obj);
+  handleSimpleResponse(json, QStringLiteral("search"));
 }
 
 void LemmyAPI::onFollowCommunityFinished(const QString &json) {
-  QJsonObject obj = parseJson(json);
-  if (obj.contains(QStringLiteral("error"))) {
-    setError(obj[QStringLiteral("error")].toString());
-    setBusy(false);
-    emit requestFailed(QStringLiteral("followCommunity"), m_error);
-    return;
-  }
-  setBusy(false);
-  emit requestFinished(QStringLiteral("followCommunity"), obj);
+  handleSimpleResponse(json, QStringLiteral("followCommunity"));
 }

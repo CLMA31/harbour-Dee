@@ -4,13 +4,16 @@
 #include <QEventLoop>
 #include <QSettings>
 
-using namespace Sailfish::Secrets;
-
 SecureStorage::SecureStorage(QObject *parent)
     : QObject(parent), m_collectionName(QStringLiteral("Dee")),
       m_initialized(false), m_cacheLoaded(false) {}
 
 void SecureStorage::initialize() { ensureCollection(); }
+
+Secret::Identifier SecureStorage::makeIdentifier(const QString &name) const {
+  return Secret::Identifier(name, m_collectionName,
+                            SecretManager::DefaultEncryptedStoragePluginName);
+}
 
 void SecureStorage::ensureCollection() {
   CreateCollectionRequest *request = new CreateCollectionRequest(this);
@@ -51,9 +54,7 @@ void SecureStorage::storeSecret(const QString &name, const QString &value) {
   // First delete any existing secret with this name (to allow updates)
   DeleteSecretRequest *deleteRequest = new DeleteSecretRequest(this);
   deleteRequest->setManager(&m_secretManager);
-  deleteRequest->setIdentifier(
-      Secret::Identifier(name, m_collectionName,
-                         SecretManager::DefaultEncryptedStoragePluginName));
+  deleteRequest->setIdentifier(makeIdentifier(name));
   deleteRequest->setUserInteractionMode(SecretManager::SystemInteraction);
 
   connect(deleteRequest, &DeleteSecretRequest::statusChanged, this,
@@ -62,9 +63,7 @@ void SecureStorage::storeSecret(const QString &name, const QString &value) {
               deleteRequest->deleteLater();
 
               // Now store the new secret
-              Secret secret(Secret::Identifier(
-                  name, m_collectionName,
-                  SecretManager::DefaultEncryptedStoragePluginName));
+              Secret secret(makeIdentifier(name));
               secret.setData(value.toUtf8());
               secret.setType(Secret::TypeBlob);
 
@@ -98,9 +97,7 @@ void SecureStorage::storeSecret(const QString &name, const QString &value) {
 QString SecureStorage::getSecret(const QString &name) const {
   StoredSecretRequest request;
   request.setManager(const_cast<SecretManager *>(&m_secretManager));
-  request.setIdentifier(
-      Secret::Identifier(name, m_collectionName,
-                         SecretManager::DefaultEncryptedStoragePluginName));
+  request.setIdentifier(makeIdentifier(name));
   request.setUserInteractionMode(SecretManager::SystemInteraction);
 
   // Use event loop for synchronous retrieval
@@ -128,9 +125,7 @@ QString SecureStorage::getSecret(const QString &name) const {
 void SecureStorage::deleteSecret(const QString &name) {
   DeleteSecretRequest *request = new DeleteSecretRequest(this);
   request->setManager(&m_secretManager);
-  request->setIdentifier(
-      Secret::Identifier(name, m_collectionName,
-                         SecretManager::DefaultEncryptedStoragePluginName));
+  request->setIdentifier(makeIdentifier(name));
   request->setUserInteractionMode(SecretManager::SystemInteraction);
 
   connect(request, &DeleteSecretRequest::statusChanged, this, [request]() {

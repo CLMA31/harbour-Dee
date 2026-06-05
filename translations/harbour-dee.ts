@@ -24,10 +24,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Loading more…</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>subscribers</source>
         <translation type="unfinished"></translation>
     </message>
@@ -196,6 +192,13 @@
     </message>
     <message>
         <source>Login succeeded but no token received</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>LoadingFooter</name>
+    <message>
+        <source>Loading more…</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -453,10 +456,6 @@
     </message>
     <message>
         <source>Pull down to refresh</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Loading more…</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

@@ -24,10 +24,6 @@
         <translation type="unfinished">Nettsamfunn</translation>
     </message>
     <message>
-        <source>Loading more…</source>
-        <translation type="unfinished">Laster inn mer…</translation>
-    </message>
-    <message>
         <source>subscribers</source>
         <translation type="unfinished"></translation>
     </message>
@@ -197,6 +193,13 @@
     <message>
         <source>Login succeeded but no token received</source>
         <translation>Vellykket innlogging, men ingen token ble mottatt</translation>
+    </message>
+</context>
+<context>
+    <name>LoadingFooter</name>
+    <message>
+        <source>Loading more…</source>
+        <translation type="unfinished">Laster inn mer…</translation>
     </message>
 </context>
 <context>
@@ -454,10 +457,6 @@
     <message>
         <source>Pull down to refresh</source>
         <translation>Dra ned for å oppdatere</translation>
-    </message>
-    <message>
-        <source>Loading more…</source>
-        <translation>Laster inn mer…</translation>
     </message>
     <message>
         <source>Upvote</source>

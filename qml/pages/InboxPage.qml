@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
+import "../lib/Utils.js" as Utils
 
 Page {
     id: page
@@ -11,18 +12,6 @@ Page {
     Component.onCompleted: {
         if (api && api.loggedIn)
             api.listNotifications();
-    }
-
-    function formatAuthor(actorId) {
-        if (!actorId)
-            return "";
-        var parts = actorId.split("/u/");
-        if (parts.length < 2)
-            return actorId;
-        var username = parts[1];
-        var urlParts = actorId.split("://");
-        var domain = urlParts.length >= 2 ? urlParts[1].split("/")[0] : "";
-        return domain ? username + "@" + domain : username;
     }
 
     Connections {
@@ -167,7 +156,7 @@ Page {
                     spacing: Theme.paddingSmall
 
                     Label {
-                        text: formatAuthor((notif.creator || {}).actor_id || "")
+                        text: Utils.formatAuthor((notif.creator || {}).actor_id || "")
                         font.pixelSize: Theme.fontSizeExtraSmall
                         color: delegate.highlighted ? Theme.highlightColor : Theme.secondaryHighlightColor
                         visible: text.length > 0
@@ -177,7 +166,7 @@ Page {
                         text: "·"
                         font.pixelSize: Theme.fontSizeExtraSmall
                         color: delegate.highlighted ? Theme.highlightColor : Theme.secondaryColor
-                        visible: formatAuthor((notif.creator || {}).actor_id || "").length > 0
+                        visible: Utils.formatAuthor((notif.creator || {}).actor_id || "").length > 0
                     }
 
                     Label {

@@ -228,6 +228,10 @@ private:
   QJsonObject parseJson(const QString &json);
   void appendCommunities(const QJsonArray &newCommunities);
   void buildCommentTree(const QJsonArray &comments);
+  void invokeWorker(const char *method, const QString &jsonParams);
+  void handleSimpleResponse(const QString &json, const QString &methodName);
+  void loadMoreHelper(int &page, bool &loadingFlag, QJsonObject &filter,
+                      const char *workerMethod);
 
   // Persisted state
   QSettings *m_settings;

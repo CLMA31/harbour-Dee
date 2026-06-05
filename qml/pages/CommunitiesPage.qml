@@ -63,32 +63,9 @@ Page {
             title: qsTr("Communities")
         }
 
-        footer: Column {
-            width: parent.width
-            visible: api && api.busy && listView.count > 0
-
-            Item {
-                width: parent.width
-                height: Theme.paddingLarge
-            }
-
-            BusyIndicator {
-                anchors.horizontalCenter: parent.horizontalCenter
-                size: BusyIndicatorSize.Small
-                running: api && api.busy
-            }
-
-            Label {
-                anchors.horizontalCenter: parent.horizontalCenter
-                text: qsTr("Loading more…")
-                font.pixelSize: Theme.fontSizeExtraSmall
-                color: Theme.secondaryColor
-            }
-
-            Item {
-                width: parent.width
-                height: Theme.paddingLarge
-            }
+        footer: LoadingFooter {
+            busy: api ? api.busy : false
+            itemCount: listView.count
         }
 
         delegate: BackgroundItem {

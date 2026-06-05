@@ -75,6 +75,89 @@ fn result_to_c<T: serde::Serialize>(
 }
 
 // ---------------------------------------------------------------------------
+// API call boilerplate reduction macro
+// ---------------------------------------------------------------------------
+//
+// api_call!(handle, json_params, ParamsType, client_method)          – required
+// api_call!(handle, json_params, ParamsType, default, client_method) – optional
+// api_call!(no_params, handle, client_method)                        – no-params
+macro_rules! api_call {
+    ($handle:ident, $json_params:ident, $ty:ty, $method:ident) => {{
+        if $handle.is_null() {
+            return to_c_string(r#"{"error":"null handle"}"#);
+        }
+        let h = &*$handle;
+        let params: $ty = match cstr_to_str($json_params) {
+            Some(s) => match serde_json::from_str(s) {
+                Ok(p) => p,
+                Err(e) => return to_c_string(&format!(r#"{{"error":"bad params: {}"}}"#, e)),
+            },
+            None => return to_c_string(r#"{"error":"params required"}"#),
+        };
+        result_to_c(runtime().block_on(h.client.$method(params)))
+    }};
+    ($handle:ident, $json_params:ident, $ty:ty, default, $method:ident) => {{
+        if $handle.is_null() {
+            return to_c_string(r#"{"error":"null handle"}"#);
+        }
+        let h = &*$handle;
+        let params: $ty = match cstr_to_str($json_params) {
+            Some(s) => match serde_json::from_str(s) {
+                Ok(p) => p,
+                Err(e) => return to_c_string(&format!(r#"{{"error":"bad params: {}"}}"#, e)),
+            },
+            None => <$ty>::default(),
+        };
+        result_to_c(runtime().block_on(h.client.$method(params)))
+    }};
+    (no_params, $handle:ident, $method:ident) => {{
+        if $handle.is_null() {
+            return to_c_string(r#"{"error":"null handle"}"#);
+        }
+        let h = &*$handle;
+        result_to_c(runtime().block_on(h.client.$method(())))
+    }};
+}
+
+// ---------------------------------------------------------------------------
+// Notification enrichment helper
+// ---------------------------------------------------------------------------
+
+fn enrich_notifications<T: serde::Serialize>(
+    items: &[T],
+    type_str: &str,
+    read: impl Fn(&T) -> bool,
+    id: impl Fn(&T) -> serde_json::Value,
+    published: impl Fn(&T) -> serde_json::Value,
+) -> Vec<serde_json::Value> {
+    items
+        .iter()
+        .map(|item| {
+            let mut n = serde_json::to_value(item).unwrap_or_default();
+            if let Some(obj) = n.as_object_mut() {
+                obj.insert("type".to_string(), serde_json::json!(type_str));
+                obj.insert("unread".to_string(), serde_json::json!(!read(item)));
+                obj.insert("id".to_string(), id(item));
+                obj.insert("published".to_string(), published(item));
+            }
+            n
+        })
+        .collect()
+}
+
+macro_rules! mark_read {
+    ($h:ident, $ty:ty, $nid:ident, $key:literal, $method:ident) => {{
+        let req: $ty = match serde_json::from_value(
+            serde_json::json!({$key: $nid, "read": true}),
+        ) {
+            Ok(r) => r,
+            Err(e) => return to_c_string(&format!(r#"{{"error":"bad params: {}"}}"#, e)),
+        };
+        result_to_c(runtime().block_on($h.client.$method(req)))
+    }};
+}
+
+// ---------------------------------------------------------------------------
 // Lifecycle
 // ---------------------------------------------------------------------------
 
@@ -195,69 +278,33 @@ pub unsafe extern "C" fn lemmy_list_notifications(
     let mut notifications: Vec<serde_json::Value> = Vec::new();
 
     if let Ok(ref replies) = replies_res {
-        for reply in &replies.replies {
-            let mut n = serde_json::to_value(reply).unwrap_or_default();
-            if let Some(obj) = n.as_object_mut() {
-                obj.insert("type".to_string(), serde_json::json!("CommentReply"));
-                obj.insert(
-                    "unread".to_string(),
-                    serde_json::json!(!reply.comment_reply.read),
-                );
-                obj.insert(
-                    "id".to_string(),
-                    serde_json::to_value(reply.comment_reply.id).unwrap_or_default(),
-                );
-                obj.insert(
-                    "published".to_string(),
-                    serde_json::to_value(reply.comment_reply.published).unwrap_or_default(),
-                );
-            }
-            notifications.push(n);
-        }
+        notifications.extend(enrich_notifications(
+            &replies.replies,
+            "CommentReply",
+            |r| r.comment_reply.read,
+            |r| serde_json::to_value(r.comment_reply.id).unwrap_or_default(),
+            |r| serde_json::to_value(r.comment_reply.published).unwrap_or_default(),
+        ));
     }
 
     if let Ok(ref mentions) = mentions_res {
-        for mention in &mentions.mentions {
-            let mut n = serde_json::to_value(mention).unwrap_or_default();
-            if let Some(obj) = n.as_object_mut() {
-                obj.insert("type".to_string(), serde_json::json!("CommentMention"));
-                obj.insert(
-                    "unread".to_string(),
-                    serde_json::json!(!mention.person_mention.read),
-                );
-                obj.insert(
-                    "id".to_string(),
-                    serde_json::to_value(mention.person_mention.id).unwrap_or_default(),
-                );
-                obj.insert(
-                    "published".to_string(),
-                    serde_json::to_value(mention.person_mention.published).unwrap_or_default(),
-                );
-            }
-            notifications.push(n);
-        }
+        notifications.extend(enrich_notifications(
+            &mentions.mentions,
+            "CommentMention",
+            |m| m.person_mention.read,
+            |m| serde_json::to_value(m.person_mention.id).unwrap_or_default(),
+            |m| serde_json::to_value(m.person_mention.published).unwrap_or_default(),
+        ));
     }
 
     if let Ok(ref pms) = pms_res {
-        for pm in &pms.private_messages {
-            let mut n = serde_json::to_value(pm).unwrap_or_default();
-            if let Some(obj) = n.as_object_mut() {
-                obj.insert("type".to_string(), serde_json::json!("PrivateMessage"));
-                obj.insert(
-                    "unread".to_string(),
-                    serde_json::json!(!pm.private_message.read),
-                );
-                obj.insert(
-                    "id".to_string(),
-                    serde_json::to_value(pm.private_message.id).unwrap_or_default(),
-                );
-                obj.insert(
-                    "published".to_string(),
-                    serde_json::to_value(pm.private_message.published).unwrap_or_default(),
-                );
-            }
-            notifications.push(n);
-        }
+        notifications.extend(enrich_notifications(
+            &pms.private_messages,
+            "PrivateMessage",
+            |pm| pm.private_message.read,
+            |pm| serde_json::to_value(pm.private_message.id).unwrap_or_default(),
+            |pm| serde_json::to_value(pm.private_message.published).unwrap_or_default(),
+        ));
     }
 
     notifications.sort_by(|a, b| {
@@ -324,33 +371,27 @@ pub unsafe extern "C" fn lemmy_mark_notifications_read(
         .unwrap_or("");
 
     match notification_type {
-        "CommentReply" => {
-            let req: MarkCommentReplyAsRead = match serde_json::from_value(
-                serde_json::json!({"comment_reply_id": notification_id, "read": true}),
-            ) {
-                Ok(r) => r,
-                Err(e) => return to_c_string(&format!(r#"{{"error":"bad params: {}"}}"#, e)),
-            };
-            result_to_c(runtime().block_on(h.client.mark_reply_as_read(req)))
-        }
-        "CommentMention" => {
-            let req: MarkPersonMentionAsRead = match serde_json::from_value(
-                serde_json::json!({"person_mention_id": notification_id, "read": true}),
-            ) {
-                Ok(r) => r,
-                Err(e) => return to_c_string(&format!(r#"{{"error":"bad params: {}"}}"#, e)),
-            };
-            result_to_c(runtime().block_on(h.client.mark_mention_as_read(req)))
-        }
-        "PrivateMessage" => {
-            let req: MarkPrivateMessageAsRead = match serde_json::from_value(
-                serde_json::json!({"private_message_id": notification_id, "read": true}),
-            ) {
-                Ok(r) => r,
-                Err(e) => return to_c_string(&format!(r#"{{"error":"bad params: {}"}}"#, e)),
-            };
-            result_to_c(runtime().block_on(h.client.mark_private_message_as_read(req)))
-        }
+        "CommentReply" => mark_read!(
+            h,
+            MarkCommentReplyAsRead,
+            notification_id,
+            "comment_reply_id",
+            mark_reply_as_read
+        ),
+        "CommentMention" => mark_read!(
+            h,
+            MarkPersonMentionAsRead,
+            notification_id,
+            "person_mention_id",
+            mark_mention_as_read
+        ),
+        "PrivateMessage" => mark_read!(
+            h,
+            MarkPrivateMessageAsRead,
+            notification_id,
+            "private_message_id",
+            mark_private_message_as_read
+        ),
         _ => result_to_c(runtime().block_on(h.client.mark_all_notifications_as_read(()))),
     }
 }
@@ -359,12 +400,7 @@ pub unsafe extern "C" fn lemmy_mark_notifications_read(
 /// Uses the lemmy-client crate's `unread_count` method.
 #[no_mangle]
 pub unsafe extern "C" fn lemmy_unread_count(handle: *mut LemmyClientHandle) -> *mut c_char {
-    if handle.is_null() {
-        return to_c_string(r#"{"error":"null handle"}"#);
-    }
-    let h = &*handle;
-    let res = runtime().block_on(h.client.unread_count(()));
-    result_to_c(res)
+    api_call!(no_params, handle, unread_count)
 }
 
 // ---------------------------------------------------------------------------
@@ -408,12 +444,7 @@ pub unsafe extern "C" fn lemmy_login(
 /// Log out (invalidates the JWT on the server). Returns JSON.
 #[no_mangle]
 pub unsafe extern "C" fn lemmy_logout(handle: *mut LemmyClientHandle) -> *mut c_char {
-    if handle.is_null() {
-        return to_c_string(r#"{"error":"null handle"}"#);
-    }
-    let h = &*handle;
-    let res = runtime().block_on(h.client.logout(()));
-    result_to_c(res)
+    api_call!(no_params, handle, logout)
 }
 
 // ---------------------------------------------------------------------------
@@ -423,12 +454,7 @@ pub unsafe extern "C" fn lemmy_logout(handle: *mut LemmyClientHandle) -> *mut c_
 /// Get site info. Returns JSON.
 #[no_mangle]
 pub unsafe extern "C" fn lemmy_get_site(handle: *mut LemmyClientHandle) -> *mut c_char {
-    if handle.is_null() {
-        return to_c_string(r#"{"error":"null handle"}"#);
-    }
-    let h = &*handle;
-    let res = runtime().block_on(h.client.get_site(()));
-    result_to_c(res)
+    api_call!(no_params, handle, get_site)
 }
 
 // ---------------------------------------------------------------------------
@@ -442,19 +468,7 @@ pub unsafe extern "C" fn lemmy_list_posts(
     handle: *mut LemmyClientHandle,
     json_params: *const c_char,
 ) -> *mut c_char {
-    if handle.is_null() {
-        return to_c_string(r#"{"error":"null handle"}"#);
-    }
-    let h = &*handle;
-    let params: GetPosts = match cstr_to_str(json_params) {
-        Some(s) => match serde_json::from_str(s) {
-            Ok(p) => p,
-            Err(e) => return to_c_string(&format!(r#"{{"error":"bad params: {}"}}"#, e)),
-        },
-        None => GetPosts::default(),
-    };
-    let res = runtime().block_on(h.client.list_posts(params));
-    result_to_c(res)
+    api_call!(handle, json_params, GetPosts, default, list_posts)
 }
 
 /// Get a single post. `json_params` is a JSON-serialised `GetPost`.
@@ -463,19 +477,7 @@ pub unsafe extern "C" fn lemmy_get_post(
     handle: *mut LemmyClientHandle,
     json_params: *const c_char,
 ) -> *mut c_char {
-    if handle.is_null() {
-        return to_c_string(r#"{"error":"null handle"}"#);
-    }
-    let h = &*handle;
-    let params: GetPost = match cstr_to_str(json_params) {
-        Some(s) => match serde_json::from_str(s) {
-            Ok(p) => p,
-            Err(e) => return to_c_string(&format!(r#"{{"error":"bad params: {}"}}"#, e)),
-        },
-        None => return to_c_string(r#"{"error":"params required"}"#),
-    };
-    let res = runtime().block_on(h.client.get_post(params));
-    result_to_c(res)
+    api_call!(handle, json_params, GetPost, get_post)
 }
 
 /// Create a post. `json_params` is a JSON-serialised `CreatePost`.
@@ -484,19 +486,7 @@ pub unsafe extern "C" fn lemmy_create_post(
     handle: *mut LemmyClientHandle,
     json_params: *const c_char,
 ) -> *mut c_char {
-    if handle.is_null() {
-        return to_c_string(r#"{"error":"null handle"}"#);
-    }
-    let h = &*handle;
-    let params: CreatePost = match cstr_to_str(json_params) {
-        Some(s) => match serde_json::from_str(s) {
-            Ok(p) => p,
-            Err(e) => return to_c_string(&format!(r#"{{"error":"bad params: {}"}}"#, e)),
-        },
-        None => return to_c_string(r#"{"error":"params required"}"#),
-    };
-    let res = runtime().block_on(h.client.create_post(params));
-    result_to_c(res)
+    api_call!(handle, json_params, CreatePost, create_post)
 }
 
 /// Vote on a post. `json_params` is a JSON-serialised `CreatePostLike`.
@@ -505,19 +495,7 @@ pub unsafe extern "C" fn lemmy_like_post(
     handle: *mut LemmyClientHandle,
     json_params: *const c_char,
 ) -> *mut c_char {
-    if handle.is_null() {
-        return to_c_string(r#"{"error":"null handle"}"#);
-    }
-    let h = &*handle;
-    let params: CreatePostLike = match cstr_to_str(json_params) {
-        Some(s) => match serde_json::from_str(s) {
-            Ok(p) => p,
-            Err(e) => return to_c_string(&format!(r#"{{"error":"bad params: {}"}}"#, e)),
-        },
-        None => return to_c_string(r#"{"error":"params required"}"#),
-    };
-    let res = runtime().block_on(h.client.like_post(params));
-    result_to_c(res)
+    api_call!(handle, json_params, CreatePostLike, like_post)
 }
 
 // ---------------------------------------------------------------------------
@@ -530,19 +508,7 @@ pub unsafe extern "C" fn lemmy_list_comments(
     handle: *mut LemmyClientHandle,
     json_params: *const c_char,
 ) -> *mut c_char {
-    if handle.is_null() {
-        return to_c_string(r#"{"error":"null handle"}"#);
-    }
-    let h = &*handle;
-    let params: GetComments = match cstr_to_str(json_params) {
-        Some(s) => match serde_json::from_str(s) {
-            Ok(p) => p,
-            Err(e) => return to_c_string(&format!(r#"{{"error":"bad params: {}"}}"#, e)),
-        },
-        None => GetComments::default(),
-    };
-    let res = runtime().block_on(h.client.list_comments(params));
-    result_to_c(res)
+    api_call!(handle, json_params, GetComments, default, list_comments)
 }
 
 /// Vote on a comment. `json_params` is a JSON-serialised `CreateCommentLike`.
@@ -551,19 +517,7 @@ pub unsafe extern "C" fn lemmy_like_comment(
     handle: *mut LemmyClientHandle,
     json_params: *const c_char,
 ) -> *mut c_char {
-    if handle.is_null() {
-        return to_c_string(r#"{"error":"null handle"}"#);
-    }
-    let h = &*handle;
-    let params: CreateCommentLike = match cstr_to_str(json_params) {
-        Some(s) => match serde_json::from_str(s) {
-            Ok(p) => p,
-            Err(e) => return to_c_string(&format!(r#"{{"error":"bad params: {}"}}"#, e)),
-        },
-        None => return to_c_string(r#"{"error":"params required"}"#),
-    };
-    let res = runtime().block_on(h.client.like_comment(params));
-    result_to_c(res)
+    api_call!(handle, json_params, CreateCommentLike, like_comment)
 }
 
 /// Create a comment. `json_params` is a JSON-serialised `CreateComment`.
@@ -572,19 +526,7 @@ pub unsafe extern "C" fn lemmy_create_comment(
     handle: *mut LemmyClientHandle,
     json_params: *const c_char,
 ) -> *mut c_char {
-    if handle.is_null() {
-        return to_c_string(r#"{"error":"null handle"}"#);
-    }
-    let h = &*handle;
-    let params: CreateComment = match cstr_to_str(json_params) {
-        Some(s) => match serde_json::from_str(s) {
-            Ok(p) => p,
-            Err(e) => return to_c_string(&format!(r#"{{"error":"bad params: {}"}}"#, e)),
-        },
-        None => return to_c_string(r#"{"error":"params required"}"#),
-    };
-    let res = runtime().block_on(h.client.create_comment(params));
-    result_to_c(res)
+    api_call!(handle, json_params, CreateComment, create_comment)
 }
 
 // ---------------------------------------------------------------------------
@@ -597,19 +539,13 @@ pub unsafe extern "C" fn lemmy_list_communities(
     handle: *mut LemmyClientHandle,
     json_params: *const c_char,
 ) -> *mut c_char {
-    if handle.is_null() {
-        return to_c_string(r#"{"error":"null handle"}"#);
-    }
-    let h = &*handle;
-    let params: ListCommunities = match cstr_to_str(json_params) {
-        Some(s) => match serde_json::from_str(s) {
-            Ok(p) => p,
-            Err(e) => return to_c_string(&format!(r#"{{"error":"bad params: {}"}}"#, e)),
-        },
-        None => ListCommunities::default(),
-    };
-    let res = runtime().block_on(h.client.list_communities(params));
-    result_to_c(res)
+    api_call!(
+        handle,
+        json_params,
+        ListCommunities,
+        default,
+        list_communities
+    )
 }
 
 /// Get a single community. `json_params` is a JSON-serialised `GetCommunity`.
@@ -618,19 +554,7 @@ pub unsafe extern "C" fn lemmy_get_community(
     handle: *mut LemmyClientHandle,
     json_params: *const c_char,
 ) -> *mut c_char {
-    if handle.is_null() {
-        return to_c_string(r#"{"error":"null handle"}"#);
-    }
-    let h = &*handle;
-    let params: GetCommunity = match cstr_to_str(json_params) {
-        Some(s) => match serde_json::from_str(s) {
-            Ok(p) => p,
-            Err(e) => return to_c_string(&format!(r#"{{"error":"bad params: {}"}}"#, e)),
-        },
-        None => return to_c_string(r#"{"error":"params required"}"#),
-    };
-    let res = runtime().block_on(h.client.get_community(params));
-    result_to_c(res)
+    api_call!(handle, json_params, GetCommunity, get_community)
 }
 
 // ---------------------------------------------------------------------------
@@ -643,19 +567,7 @@ pub unsafe extern "C" fn lemmy_get_person(
     handle: *mut LemmyClientHandle,
     json_params: *const c_char,
 ) -> *mut c_char {
-    if handle.is_null() {
-        return to_c_string(r#"{"error":"null handle"}"#);
-    }
-    let h = &*handle;
-    let params: GetPersonDetails = match cstr_to_str(json_params) {
-        Some(s) => match serde_json::from_str(s) {
-            Ok(p) => p,
-            Err(e) => return to_c_string(&format!(r#"{{"error":"bad params: {}"}}"#, e)),
-        },
-        None => GetPersonDetails::default(),
-    };
-    let res = runtime().block_on(h.client.get_person(params));
-    result_to_c(res)
+    api_call!(handle, json_params, GetPersonDetails, default, get_person)
 }
 
 // ---------------------------------------------------------------------------
@@ -668,19 +580,7 @@ pub unsafe extern "C" fn lemmy_search(
     handle: *mut LemmyClientHandle,
     json_params: *const c_char,
 ) -> *mut c_char {
-    if handle.is_null() {
-        return to_c_string(r#"{"error":"null handle"}"#);
-    }
-    let h = &*handle;
-    let params: Search = match cstr_to_str(json_params) {
-        Some(s) => match serde_json::from_str(s) {
-            Ok(p) => p,
-            Err(e) => return to_c_string(&format!(r#"{{"error":"bad params: {}"}}"#, e)),
-        },
-        None => return to_c_string(r#"{"error":"params required"}"#),
-    };
-    let res = runtime().block_on(h.client.search(params));
-    result_to_c(res)
+    api_call!(handle, json_params, Search, search)
 }
 
 /// Follow/unfollow a community. `json_params` is a JSON-serialised object with
@@ -690,17 +590,5 @@ pub unsafe extern "C" fn lemmy_follow_community(
     handle: *mut LemmyClientHandle,
     json_params: *const c_char,
 ) -> *mut c_char {
-    if handle.is_null() {
-        return to_c_string(r#"{"error":"null handle"}"#);
-    }
-    let h = &*handle;
-    let params: FollowCommunity = match cstr_to_str(json_params) {
-        Some(s) => match serde_json::from_str(s) {
-            Ok(p) => p,
-            Err(e) => return to_c_string(&format!(r#"{{"error":"bad params: {}"}}"#, e)),
-        },
-        None => return to_c_string(r#"{"error":"params required"}"#),
-    };
-    let res = runtime().block_on(h.client.follow_community(params));
-    result_to_c(res)
+    api_call!(handle, json_params, FollowCommunity, follow_community)
 }

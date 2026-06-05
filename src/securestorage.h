@@ -11,6 +11,8 @@
 #include <Sailfish/Secrets/storedsecretrequest.h>
 #include <Sailfish/Secrets/storesecretrequest.h>
 
+using namespace Sailfish::Secrets;
+
 class SecureStorage : public QObject {
   Q_OBJECT
 
@@ -33,6 +35,7 @@ private:
   void storeSecret(const QString &name, const QString &value);
   QString getSecret(const QString &name) const;
   void deleteSecret(const QString &name);
+  Secret::Identifier makeIdentifier(const QString &name) const;
 
   Sailfish::Secrets::SecretManager m_secretManager;
   QString m_collectionName;

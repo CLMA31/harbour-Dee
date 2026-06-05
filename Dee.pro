@@ -20,10 +20,12 @@ HEADERS += src/lemmyapi.h \
 
 DISTFILES += qml/Dee.qml \
     qml/cover/CoverPage.qml \
+    qml/lib/Utils.js \
     qml/pages/LoginPage.qml \
     qml/pages/CommunitiesPage.qml \
     qml/pages/GoToCommunityDialog.qml \
     qml/pages/InboxPage.qml \
+    qml/pages/LoadingFooter.qml \
     qml/pages/NewPostPage.qml \
     qml/pages/PostPage.qml \
     qml/pages/PostWebView.qml \

@@ -24,10 +24,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Loading more…</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>subscribers</source>
         <translation type="unfinished"></translation>
     </message>
@@ -197,6 +193,13 @@
     <message>
         <source>Login succeeded but no token received</source>
         <translation>Anmeldung erfolgreich, aber kein Token empfangen</translation>
+    </message>
+</context>
+<context>
+    <name>LoadingFooter</name>
+    <message>
+        <source>Loading more…</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -470,10 +473,6 @@
     <message>
         <source>Undo downvote</source>
         <translation>Herunterwählen rückgängig machen</translation>
-    </message>
-    <message>
-        <source>Loading more…</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Settings</source>

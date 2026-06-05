@@ -2,6 +2,7 @@ import QtQuick 2.6
 import Sailfish.Share 1.0
 import Sailfish.Silica 1.0
 import harbour.dee 1.0
+import "../lib/Utils.js" as Utils
 
 Page {
     id: page
@@ -39,18 +40,6 @@ Page {
             return "";
 
         return text.trim().substring(0, 200);
-    }
-
-    function formatAuthor(actorId) {
-        if (!actorId)
-            return "";
-        var parts = actorId.split("/u/");
-        if (parts.length < 2)
-            return actorId;
-        var username = parts[1];
-        var urlParts = actorId.split("://");
-        var domain = urlParts.length >= 2 ? urlParts[1].split("/")[0] : "";
-        return domain ? username + "@" + domain : username;
     }
 
     Component.onCompleted: {
@@ -257,7 +246,7 @@ Page {
                     }
 
                     Label {
-                        text: formatAuthor(postAuthor)
+                        text: Utils.formatAuthor(postAuthor)
                         font.pixelSize: Theme.fontSizeExtraSmall
                         color: Theme.secondaryHighlightColor
                         width: parent.width
@@ -358,7 +347,7 @@ Page {
                                 spacing: Theme.paddingSmall
 
                                 Label {
-                                    text: formatAuthor((modelData.creator || {}).actor_id || "")
+                                    text: Utils.formatAuthor((modelData.creator || {}).actor_id || "")
                                     font.pixelSize: Theme.fontSizeExtraSmall
                                     color: commentBg.highlighted ? Theme.highlightColor : Theme.secondaryHighlightColor
                                 }
@@ -450,14 +439,7 @@ Page {
         target: api
         onRequestFinished: {
             if (method === "likePost" || method === "getPost") {
-                var pv = result.post_view;
-                postMyVote = pv.my_vote ? pv.my_vote : 0;
-                postComments = pv.counts.comments;
-                postScore = pv.counts.score;
-                postTitle = pv.post.name;
-                appWindow.postTitle = postTitle;
-                appWindow.postScore = postScore;
-                appWindow.postComments = postComments;
+                Utils.applyPostViewResult(result, page, appWindow);
             } else if (method === "likeComment" || method === "createComment") {
                 refresh();
             }

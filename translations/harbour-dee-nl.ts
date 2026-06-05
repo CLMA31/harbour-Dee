@@ -24,10 +24,6 @@
         <translation type="unfinished">Gemeenschappen</translation>
     </message>
     <message>
-        <source>Loading more…</source>
-        <translation type="unfinished">Meer aan het laden…</translation>
-    </message>
-    <message>
         <source>subscribers</source>
         <translation type="unfinished"></translation>
     </message>
@@ -197,6 +193,13 @@
     <message>
         <source>Login succeeded but no token received</source>
         <translation>Succesvol aangemeld, maar geen token ontvangen</translation>
+    </message>
+</context>
+<context>
+    <name>LoadingFooter</name>
+    <message>
+        <source>Loading more…</source>
+        <translation type="unfinished">Meer aan het laden…</translation>
     </message>
 </context>
 <context>
@@ -454,10 +457,6 @@
     <message>
         <source>Pull down to refresh</source>
         <translation>Trek omlaag om te verversen</translation>
-    </message>
-    <message>
-        <source>Loading more…</source>
-        <translation>Meer aan het laden…</translation>
     </message>
     <message>
         <source>Upvote</source>

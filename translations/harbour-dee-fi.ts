@@ -24,10 +24,6 @@
         <translation type="unfinished">Yhteisöt</translation>
     </message>
     <message>
-        <source>Loading more…</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>subscribers</source>
         <translation type="unfinished"></translation>
     </message>
@@ -197,6 +193,13 @@
     <message>
         <source>Login succeeded but no token received</source>
         <translation>Kirjautuminen onnistui, mutta tunnistetta ei vastaanotettu</translation>
+    </message>
+</context>
+<context>
+    <name>LoadingFooter</name>
+    <message>
+        <source>Loading more…</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -454,10 +457,6 @@
     <message>
         <source>Pull down to refresh</source>
         <translation type="unfinished">Päivitä vetämällä alaspäin</translation>
-    </message>
-    <message>
-        <source>Loading more…</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Upvote</source>

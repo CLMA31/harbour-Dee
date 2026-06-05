@@ -24,10 +24,6 @@
         <translation type="unfinished">Kogukonnad</translation>
     </message>
     <message>
-        <source>Loading more…</source>
-        <translation type="unfinished">Laadin veel…</translation>
-    </message>
-    <message>
         <source>subscribers</source>
         <translation type="unfinished"></translation>
     </message>
@@ -197,6 +193,13 @@
     <message>
         <source>Login succeeded but no token received</source>
         <translation>Sisselogimine õnnestus, aga tunnusluba polnud võimalik laadida</translation>
+    </message>
+</context>
+<context>
+    <name>LoadingFooter</name>
+    <message>
+        <source>Loading more…</source>
+        <translation type="unfinished">Laadin veel…</translation>
     </message>
 </context>
 <context>
@@ -454,10 +457,6 @@
     <message>
         <source>Pull down to refresh</source>
         <translation>Värskendamiseks viipa ülevalt alla</translation>
-    </message>
-    <message>
-        <source>Loading more…</source>
-        <translation>Laadin veel…</translation>
     </message>
     <message>
         <source>Upvote</source>

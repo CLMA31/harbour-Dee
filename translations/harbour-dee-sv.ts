@@ -24,10 +24,6 @@
         <translation type="unfinished">Gemenskaper</translation>
     </message>
     <message>
-        <source>Loading more…</source>
-        <translation type="unfinished">Läser in mer…</translation>
-    </message>
-    <message>
         <source>subscribers</source>
         <translation type="unfinished"></translation>
     </message>
@@ -197,6 +193,13 @@
     <message>
         <source>Login succeeded but no token received</source>
         <translation>Inloggningen lyckades, men ingen token mottogs.</translation>
+    </message>
+</context>
+<context>
+    <name>LoadingFooter</name>
+    <message>
+        <source>Loading more…</source>
+        <translation type="unfinished">Läser in mer…</translation>
     </message>
 </context>
 <context>
@@ -454,10 +457,6 @@
     <message>
         <source>Pull down to refresh</source>
         <translation>Dra neråt för att uppdatera</translation>
-    </message>
-    <message>
-        <source>Loading more…</source>
-        <translation>Läser in mer…</translation>
     </message>
     <message>
         <source>Upvote</source>
