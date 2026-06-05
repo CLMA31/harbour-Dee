@@ -55,6 +55,7 @@ Page {
 
     Component.onCompleted: {
         appWindow.commentSort = api.commentSort;
+        api.getPost(postId);
         loadComments();
         appWindow.postTitle = postTitle;
         appWindow.postScore = postScore;
@@ -472,7 +473,7 @@ Page {
             {
                 "type": "text/x-url",
                 "linkTitle": postTitle,
-                "status": "https://" + api.instanceUrl + "/post/" + postId.toString()
+                "status": api.instanceUrl + "/post/" + postId.toString()
             }
         ]
     }

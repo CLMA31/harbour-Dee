@@ -9,6 +9,10 @@ Page {
     property string pageTitle: ""
     property string communitySubscribed: "NotSubscribed"
     property string communityHandle: ""
+    property int postMyVote: 0
+    property int postComments: 0
+    property int postScore: 0
+    property string postTitle: ""
 
     function isSubscribed() {
         return communitySubscribed === "Subscribed";
