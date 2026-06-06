@@ -13,6 +13,7 @@ use std::sync::{Arc, OnceLock, RwLock};
 use lemmy_client::lemmy_api_common::{
     comment::{CreateComment, CreateCommentLike, GetComments},
     community::{FollowCommunity, GetCommunity, ListCommunities},
+    lemmy_db_schema::ListingType,
     person::{
         GetPersonDetails, GetPersonMentions, GetReplies, Login, MarkCommentReplyAsRead,
         MarkPersonMentionAsRead,
@@ -108,6 +109,21 @@ macro_rules! api_call {
             },
             None => <$ty>::default(),
         };
+        result_to_c(runtime().block_on(h.client.$method(params)))
+    }};
+    ($handle:ident, $json_params:ident, $ty:ty, default, fixup $closure:expr, $method:ident) => {{
+        if $handle.is_null() {
+            return to_c_string(r#"{"error":"null handle"}"#);
+        }
+        let h = &*$handle;
+        let mut params: $ty = match cstr_to_str($json_params) {
+            Some(s) => match serde_json::from_str(s) {
+                Ok(p) => p,
+                Err(e) => return to_c_string(&format!(r#"{{"error":"bad params: {}"}}"#, e)),
+            },
+            None => <$ty>::default(),
+        };
+        $closure(&mut params);
         result_to_c(runtime().block_on(h.client.$method(params)))
     }};
     (no_params, $handle:ident, $method:ident) => {{
@@ -503,12 +519,20 @@ pub unsafe extern "C" fn lemmy_like_post(
 // ---------------------------------------------------------------------------
 
 /// List comments. `json_params` is a JSON-serialised `GetComments`.
+/// The `type_` field is always forced to `All`.
 #[no_mangle]
 pub unsafe extern "C" fn lemmy_list_comments(
     handle: *mut LemmyClientHandle,
     json_params: *const c_char,
 ) -> *mut c_char {
-    api_call!(handle, json_params, GetComments, default, list_comments)
+    api_call!(
+        handle,
+        json_params,
+        GetComments,
+        default,
+        fixup |p: &mut GetComments| { p.type_ = Some(ListingType::All); },
+        list_comments
+    )
 }
 
 /// Vote on a comment. `json_params` is a JSON-serialised `CreateCommentLike`.
