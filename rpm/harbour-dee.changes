@@ -1,3 +1,9 @@
+* Sat Jun 06 2026 Andrea Scarpino <andrea@scarpino.dev> 0.0.9-1
+- Allow to post to communities
+- Retrieve federated comments
+- Fix default action on notifications
+- Make upvotes/downvotes more reactive
+
 * Fri Jun 05 2026 Andrea Scarpino <andrea@scarpino.dev> 0.0.8-1
 - Improve inbox and allow to go to the topic
 - Review menu items
