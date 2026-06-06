@@ -5,31 +5,31 @@
     <name>CommunitiesPage</name>
     <message>
         <source>Go to community</source>
-        <translation type="unfinished"></translation>
+        <translation>Gå til nettfellesskap</translation>
     </message>
     <message>
         <source>Refresh</source>
-        <translation type="unfinished">Last på nytt</translation>
+        <translation>Last på nytt</translation>
     </message>
     <message>
         <source>No subscribed communities</source>
-        <translation type="unfinished"></translation>
+        <translation>Ingen fulgte nettfellesskap</translation>
     </message>
     <message>
         <source>Pull down to refresh</source>
-        <translation type="unfinished">Dra ned for å oppdatere</translation>
+        <translation>Dra ned for å oppdatere</translation>
     </message>
     <message>
         <source>Communities</source>
-        <translation type="unfinished">Nettsamfunn</translation>
+        <translation>Nettfellesskap</translation>
     </message>
     <message>
         <source>subscribers</source>
-        <translation type="unfinished"></translation>
+        <translation>abonnementer</translation>
     </message>
     <message>
         <source>posts</source>
-        <translation type="unfinished"></translation>
+        <translation>innlegg</translation>
     </message>
 </context>
 <context>
@@ -55,7 +55,7 @@
     <name>Dee</name>
     <message>
         <source>Hot</source>
-        <translation type="unfinished"></translation>
+        <translation>Populært</translation>
     </message>
     <message>
         <source>Active</source>
@@ -79,7 +79,7 @@
     </message>
     <message>
         <source>Top Day</source>
-        <translation type="unfinished"></translation>
+        <translation>Populært i dag</translation>
     </message>
     <message>
         <source>Top Week</source>
@@ -95,15 +95,15 @@
     </message>
     <message>
         <source>Top All Time</source>
-        <translation type="unfinished"></translation>
+        <translation>Mest populære gjennom tidene</translation>
     </message>
     <message>
         <source>Top</source>
-        <translation type="unfinished"></translation>
+        <translation>Mest populært</translation>
     </message>
     <message>
         <source>Old</source>
-        <translation type="unfinished"></translation>
+        <translation>Gammelt</translation>
     </message>
     <message>
         <source>New messages</source>
@@ -122,66 +122,66 @@
     <name>GoToCommunityDialog</name>
     <message>
         <source>Go to community</source>
-        <translation type="unfinished"></translation>
+        <translation>Gå til nettfellesskap</translation>
     </message>
     <message>
         <source>Enter a community name or full handle (e.g. &quot;lemmy&quot; or &quot;lemmy@lemmy.world&quot;)</source>
-        <translation type="unfinished"></translation>
+        <translation>Oppgi navn på nettfellesskap eller fullt brukernavn (f.eks. &quot;lemmy&quot; eller &quot;lemmy@lemmy.world&quot;)</translation>
     </message>
     <message>
         <source>Go</source>
-        <translation type="unfinished"></translation>
+        <translation>Gå</translation>
     </message>
     <message>
         <source>Community not found. Check the name and try again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nettfellesskapet ble ikke funnet. Sjekk navnet og prøv igjen.</translation>
     </message>
 </context>
 <context>
     <name>InboxPage</name>
     <message>
         <source>Mark all as read</source>
-        <translation type="unfinished"></translation>
+        <translation>Marker alt som lest</translation>
     </message>
     <message>
         <source>Refresh</source>
-        <translation type="unfinished">Last på nytt</translation>
+        <translation>Last på nytt</translation>
     </message>
     <message>
         <source>Inbox (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Innboks (%1)</translation>
     </message>
     <message>
         <source>Inbox</source>
-        <translation type="unfinished"></translation>
+        <translation>Innboks</translation>
     </message>
     <message>
         <source>No notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Ingen varsler</translation>
     </message>
     <message>
         <source>Pull down to refresh</source>
-        <translation type="unfinished">Dra ned for å oppdatere</translation>
+        <translation>Dra ned for å oppdatere</translation>
     </message>
     <message>
         <source>Reply to your comment</source>
-        <translation type="unfinished"></translation>
+        <translation>Svar på din kommentar</translation>
     </message>
     <message>
         <source>You were mentioned</source>
-        <translation type="unfinished"></translation>
+        <translation>Du ble nevnt</translation>
     </message>
     <message>
         <source>Private message</source>
-        <translation type="unfinished"></translation>
+        <translation>Privat melding</translation>
     </message>
     <message>
         <source>Notification</source>
-        <translation type="unfinished"></translation>
+        <translation>Varsel</translation>
     </message>
     <message>
         <source>Home</source>
-        <translation type="unfinished"></translation>
+        <translation>Hjem</translation>
     </message>
 </context>
 <context>
@@ -340,7 +340,7 @@
     </message>
     <message>
         <source>Sort</source>
-        <translation type="unfinished">Sortere</translation>
+        <translation>Sortere</translation>
     </message>
     <message>
         <source>Sort comments</source>
@@ -409,35 +409,35 @@
     </message>
     <message>
         <source>Notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Varsler</translation>
     </message>
     <message>
         <source>Background checking</source>
-        <translation type="unfinished"></translation>
+        <translation>Sjekker i bakgrunnen</translation>
     </message>
     <message>
         <source>Poll for new notifications while the app is running</source>
-        <translation type="unfinished"></translation>
+        <translation>Sjekk etter nye varsler mens appen kjører</translation>
     </message>
     <message>
         <source>Check interval</source>
-        <translation type="unfinished"></translation>
+        <translation>Sjekkintervall</translation>
     </message>
     <message>
         <source>5 minutes</source>
-        <translation type="unfinished"></translation>
+        <translation>5 minutter</translation>
     </message>
     <message>
         <source>15 minutes</source>
-        <translation type="unfinished"></translation>
+        <translation>15 minutter</translation>
     </message>
     <message>
         <source>30 minutes</source>
-        <translation type="unfinished"></translation>
+        <translation>30 minutter</translation>
     </message>
     <message>
         <source>1 hour</source>
-        <translation type="unfinished"></translation>
+        <translation>1 time</translation>
     </message>
 </context>
 <context>
@@ -488,19 +488,19 @@
     </message>
     <message>
         <source>Inbox</source>
-        <translation type="unfinished"></translation>
+        <translation>Innboks</translation>
     </message>
     <message>
         <source>Unsubscribe</source>
-        <translation type="unfinished"></translation>
+        <translation>Avslutt abonnement</translation>
     </message>
     <message>
         <source>Subscribe</source>
-        <translation type="unfinished"></translation>
+        <translation>Abonner</translation>
     </message>
     <message>
         <source>Home</source>
-        <translation type="unfinished"></translation>
+        <translation>Hjem</translation>
     </message>
     <message>
         <source>Create post</source>
