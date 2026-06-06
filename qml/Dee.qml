@@ -106,13 +106,24 @@ ApplicationWindow {
         appName: "Dee"
         icon: "harbour-dee"
         category: "x-harbour.dee.notification"
+        summary: qsTr("New messages")
+        remoteActions: [
+            {
+                "name": "default"
+            }
+        ]
+        onClicked: {
+            appWindow.activate();
+            pageStack.animatorPush(Qt.resolvedUrl("InboxPage.qml"), {
+                "api": api
+            });
+        }
     }
 
     Connections {
         target: _api
         onNewNotificationsReceived: {
-            systemNotification.summary = qsTr("New notifications");
-            systemNotification.body = count === 1 ? qsTr("1 new notification") : qsTr("%1 new notifications").arg(count);
+            systemNotification.body = count === 1 ? qsTr("1 unread message") : qsTr("%1 unread messages").arg(count);
             systemNotification.publish();
         }
     }

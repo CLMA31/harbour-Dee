@@ -106,15 +106,15 @@
         <translation>Gammal</translation>
     </message>
     <message>
-        <source>New notifications</source>
+        <source>New messages</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>1 new notification</source>
+        <source>1 unread message</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>%1 new notifications</source>
+        <source>%1 unread messages</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
