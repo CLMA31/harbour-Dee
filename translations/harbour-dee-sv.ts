@@ -5,31 +5,31 @@
     <name>CommunitiesPage</name>
     <message>
         <source>Go to community</source>
-        <translation type="unfinished"></translation>
+        <translation>Gå till gemenskapen</translation>
     </message>
     <message>
         <source>Refresh</source>
-        <translation type="unfinished">Uppdatera</translation>
+        <translation>UppdateraUppdatera</translation>
     </message>
     <message>
         <source>No subscribed communities</source>
-        <translation type="unfinished"></translation>
+        <translation>Inga prenumererade gemenskaper</translation>
     </message>
     <message>
         <source>Pull down to refresh</source>
-        <translation type="unfinished">Dra neråt för att uppdatera</translation>
+        <translation>Dra neråt för att uppdatera</translation>
     </message>
     <message>
         <source>Communities</source>
-        <translation type="unfinished">Gemenskaper</translation>
+        <translation>Gemenskaper</translation>
     </message>
     <message>
         <source>subscribers</source>
-        <translation type="unfinished"></translation>
+        <translation>prenumeranter</translation>
     </message>
     <message>
         <source>posts</source>
-        <translation type="unfinished"></translation>
+        <translation>inlägg</translation>
     </message>
 </context>
 <context>
@@ -107,81 +107,81 @@
     </message>
     <message>
         <source>New messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Nya meddelanden</translation>
     </message>
     <message>
         <source>1 unread message</source>
-        <translation type="unfinished"></translation>
+        <translation>1 oläst meddelande</translation>
     </message>
     <message>
         <source>%1 unread messages</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 olästa meddelanden</translation>
     </message>
 </context>
 <context>
     <name>GoToCommunityDialog</name>
     <message>
         <source>Go to community</source>
-        <translation type="unfinished"></translation>
+        <translation>Gå till gemenskapen</translation>
     </message>
     <message>
         <source>Enter a community name or full handle (e.g. &quot;lemmy&quot; or &quot;lemmy@lemmy.world&quot;)</source>
-        <translation type="unfinished"></translation>
+        <translation>Ange ett gemenskapsnamn eller fullt användarnamn (t.ex. &quot;lemmy&quot; eller &quot;lemmy@lemmy.world&quot;)</translation>
     </message>
     <message>
         <source>Go</source>
-        <translation type="unfinished"></translation>
+        <translation>Gå</translation>
     </message>
     <message>
         <source>Community not found. Check the name and try again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Gemenskapen hittades inte. Kolla namnet och försök igen.</translation>
     </message>
 </context>
 <context>
     <name>InboxPage</name>
     <message>
         <source>Mark all as read</source>
-        <translation type="unfinished"></translation>
+        <translation>Markera allt som läst</translation>
     </message>
     <message>
         <source>Refresh</source>
-        <translation type="unfinished">Uppdatera</translation>
+        <translation>Uppdatera</translation>
     </message>
     <message>
         <source>Inbox (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Inkorg (%1)</translation>
     </message>
     <message>
         <source>Inbox</source>
-        <translation type="unfinished"></translation>
+        <translation>Inkorg</translation>
     </message>
     <message>
         <source>No notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Inga aviseringar</translation>
     </message>
     <message>
         <source>Pull down to refresh</source>
-        <translation type="unfinished">Dra neråt för att uppdatera</translation>
+        <translation>Dra neråt för att uppdatera</translation>
     </message>
     <message>
         <source>Reply to your comment</source>
-        <translation type="unfinished"></translation>
+        <translation>Svar till din kommentar</translation>
     </message>
     <message>
         <source>You were mentioned</source>
-        <translation type="unfinished"></translation>
+        <translation>Du har nämnts</translation>
     </message>
     <message>
         <source>Private message</source>
-        <translation type="unfinished"></translation>
+        <translation>Privat meddelande</translation>
     </message>
     <message>
         <source>Notification</source>
-        <translation type="unfinished"></translation>
+        <translation>Avisering</translation>
     </message>
     <message>
         <source>Home</source>
-        <translation type="unfinished"></translation>
+        <translation>Hem</translation>
     </message>
 </context>
 <context>
@@ -199,7 +199,7 @@
     <name>LoadingFooter</name>
     <message>
         <source>Loading more…</source>
-        <translation type="unfinished">Läser in mer…</translation>
+        <translation>Läser in mer…</translation>
     </message>
 </context>
 <context>
@@ -242,50 +242,50 @@
     </message>
     <message>
         <source>Signing in…</source>
-        <translation>Loggar in...</translation>
+        <translation>Loggar in…</translation>
     </message>
 </context>
 <context>
     <name>NewPostPage</name>
     <message>
         <source>Title</source>
-        <translation type="unfinished"></translation>
+        <translation>Titel</translation>
     </message>
     <message>
         <source>Post title</source>
-        <translation type="unfinished"></translation>
+        <translation>Inläggstitel</translation>
     </message>
     <message>
         <source>URL</source>
-        <translation type="unfinished"></translation>
+        <translation>URL</translation>
     </message>
     <message>
         <source>optional</source>
-        <translation type="unfinished"></translation>
+        <translation>valfritt</translation>
     </message>
     <message>
         <source>Link (leave empty for a text post)</source>
-        <translation type="unfinished"></translation>
+        <translation>Länk (lämnas tom för textinlägg)</translation>
     </message>
     <message>
         <source>Body</source>
-        <translation type="unfinished"></translation>
+        <translation>Brödtext</translation>
     </message>
     <message>
         <source>Write your post…</source>
-        <translation type="unfinished"></translation>
+        <translation>Skriv ditt inlägg…</translation>
     </message>
     <message>
         <source>Creating…</source>
-        <translation type="unfinished"></translation>
+        <translation>Skapar…</translation>
     </message>
     <message>
         <source>Create</source>
-        <translation type="unfinished"></translation>
+        <translation>Skapa</translation>
     </message>
     <message>
         <source>Create post</source>
-        <translation type="unfinished"></translation>
+        <translation>Skapa inlägg</translation>
     </message>
 </context>
 <context>
@@ -409,35 +409,35 @@
     </message>
     <message>
         <source>Notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Aviseringar</translation>
     </message>
     <message>
         <source>Background checking</source>
-        <translation type="unfinished"></translation>
+        <translation>Bakgrundskontroll</translation>
     </message>
     <message>
         <source>Poll for new notifications while the app is running</source>
-        <translation type="unfinished"></translation>
+        <translation>Enkät för nya aviseringar medan appen körs</translation>
     </message>
     <message>
         <source>Check interval</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontrollintervall</translation>
     </message>
     <message>
         <source>5 minutes</source>
-        <translation type="unfinished"></translation>
+        <translation>5 minuter</translation>
     </message>
     <message>
         <source>15 minutes</source>
-        <translation type="unfinished"></translation>
+        <translation>15 minuter</translation>
     </message>
     <message>
         <source>30 minutes</source>
-        <translation type="unfinished"></translation>
+        <translation>30 minuter</translation>
     </message>
     <message>
         <source>1 hour</source>
-        <translation type="unfinished"></translation>
+        <translation>1 timma</translation>
     </message>
 </context>
 <context>
@@ -488,23 +488,23 @@
     </message>
     <message>
         <source>Inbox</source>
-        <translation type="unfinished"></translation>
+        <translation>Inkorg</translation>
     </message>
     <message>
         <source>Unsubscribe</source>
-        <translation type="unfinished"></translation>
+        <translation>Avsluta prenumeration</translation>
     </message>
     <message>
         <source>Subscribe</source>
-        <translation type="unfinished"></translation>
+        <translation>Prenumerera</translation>
     </message>
     <message>
         <source>Home</source>
-        <translation type="unfinished"></translation>
+        <translation>Hem</translation>
     </message>
     <message>
         <source>Create post</source>
-        <translation type="unfinished"></translation>
+        <translation>Skapa inlägg</translation>
     </message>
 </context>
 </TS>
