@@ -107,15 +107,15 @@
     </message>
     <message>
         <source>New messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Nye meldinger</translation>
     </message>
     <message>
         <source>1 unread message</source>
-        <translation type="unfinished"></translation>
+        <translation>1 ulest melding</translation>
     </message>
     <message>
         <source>%1 unread messages</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 uleste meldinger</translation>
     </message>
 </context>
 <context>
@@ -199,7 +199,7 @@
     <name>LoadingFooter</name>
     <message>
         <source>Loading more…</source>
-        <translation type="unfinished">Laster inn mer…</translation>
+        <translation>Laster inn mer…</translation>
     </message>
 </context>
 <context>
@@ -249,43 +249,43 @@
     <name>NewPostPage</name>
     <message>
         <source>Title</source>
-        <translation type="unfinished"></translation>
+        <translation>Tittel</translation>
     </message>
     <message>
         <source>Post title</source>
-        <translation type="unfinished"></translation>
+        <translation>Innleggstittel</translation>
     </message>
     <message>
         <source>URL</source>
-        <translation type="unfinished"></translation>
+        <translation>URL</translation>
     </message>
     <message>
         <source>optional</source>
-        <translation type="unfinished"></translation>
+        <translation>valgfritt</translation>
     </message>
     <message>
         <source>Link (leave empty for a text post)</source>
-        <translation type="unfinished"></translation>
+        <translation>Lenke (la stå tom for et tekstinnlegg)</translation>
     </message>
     <message>
         <source>Body</source>
-        <translation type="unfinished"></translation>
+        <translation>Brødtekst</translation>
     </message>
     <message>
         <source>Write your post…</source>
-        <translation type="unfinished"></translation>
+        <translation>Skriv ditt innlegg…</translation>
     </message>
     <message>
         <source>Creating…</source>
-        <translation type="unfinished"></translation>
+        <translation>Oppretter…</translation>
     </message>
     <message>
         <source>Create</source>
-        <translation type="unfinished"></translation>
+        <translation>Opprett</translation>
     </message>
     <message>
         <source>Create post</source>
-        <translation type="unfinished"></translation>
+        <translation>Opprett innlegg</translation>
     </message>
 </context>
 <context>
@@ -504,7 +504,7 @@
     </message>
     <message>
         <source>Create post</source>
-        <translation type="unfinished"></translation>
+        <translation>Opprett innlegg</translation>
     </message>
 </context>
 </TS>
