@@ -5,23 +5,23 @@
     <name>CommunitiesPage</name>
     <message>
         <source>Go to community</source>
-        <translation type="unfinished"></translation>
+        <translation>Siirry yhteisöihin</translation>
     </message>
     <message>
         <source>Refresh</source>
-        <translation type="unfinished">Päivitä</translation>
+        <translation>Päivitä</translation>
     </message>
     <message>
         <source>No subscribed communities</source>
-        <translation type="unfinished"></translation>
+        <translation>Ei tilattuja yhteisöjä</translation>
     </message>
     <message>
         <source>Pull down to refresh</source>
-        <translation type="unfinished">Päivitä vetämällä alaspäin</translation>
+        <translation>Päivitä vetämällä alaspäin</translation>
     </message>
     <message>
         <source>Communities</source>
-        <translation type="unfinished">Yhteisöt</translation>
+        <translation>Yhteisöt</translation>
     </message>
     <message>
         <source>subscribers</source>
@@ -29,37 +29,37 @@
     </message>
     <message>
         <source>posts</source>
-        <translation type="unfinished"></translation>
+        <translation>julkaisut</translation>
     </message>
 </context>
 <context>
     <name>CoverPage</name>
     <message>
         <source>comment</source>
-        <translation type="unfinished"></translation>
+        <translation>kommentoi</translation>
     </message>
     <message>
         <source>comments</source>
-        <translation type="unfinished">kommentit</translation>
+        <translation>kommentit</translation>
     </message>
     <message>
         <source>point</source>
-        <translation type="unfinished"></translation>
+        <translation>piste</translation>
     </message>
     <message>
         <source>points</source>
-        <translation type="unfinished"></translation>
+        <translation>pisteet</translation>
     </message>
 </context>
 <context>
     <name>Dee</name>
     <message>
         <source>Hot</source>
-        <translation type="unfinished"></translation>
+        <translation>Suosittu</translation>
     </message>
     <message>
         <source>Active</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktiivinen</translation>
     </message>
     <message>
         <source>Controversial</source>
@@ -67,117 +67,117 @@
     </message>
     <message>
         <source>New</source>
-        <translation type="unfinished"></translation>
+        <translation>Uusi</translation>
     </message>
     <message>
         <source>Most Comments</source>
-        <translation type="unfinished"></translation>
+        <translation>Eniten kommentteja</translation>
     </message>
     <message>
         <source>New Comments</source>
-        <translation type="unfinished"></translation>
+        <translation>Uusia kommentteja</translation>
     </message>
     <message>
         <source>Top Day</source>
-        <translation type="unfinished"></translation>
+        <translation>Parhaat tänään</translation>
     </message>
     <message>
         <source>Top Week</source>
-        <translation type="unfinished"></translation>
+        <translation>Parhaat tällä viikolla</translation>
     </message>
     <message>
         <source>Top Month</source>
-        <translation type="unfinished"></translation>
+        <translation>Parhaat tässä kuussa</translation>
     </message>
     <message>
         <source>Top Year</source>
-        <translation type="unfinished"></translation>
+        <translation>Parhaat tänä vuonna</translation>
     </message>
     <message>
         <source>Top All Time</source>
-        <translation type="unfinished"></translation>
+        <translation>Kaikkien aikojen parhaat</translation>
     </message>
     <message>
         <source>Top</source>
-        <translation type="unfinished"></translation>
+        <translation>Parhaat</translation>
     </message>
     <message>
         <source>Old</source>
-        <translation type="unfinished"></translation>
+        <translation>Vanhat</translation>
     </message>
     <message>
         <source>New messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Uusia viestejä</translation>
     </message>
     <message>
         <source>1 unread message</source>
-        <translation type="unfinished"></translation>
+        <translation>1 lukematon viesti</translation>
     </message>
     <message>
         <source>%1 unread messages</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 lukematon viesti</translation>
     </message>
 </context>
 <context>
     <name>GoToCommunityDialog</name>
     <message>
         <source>Go to community</source>
-        <translation type="unfinished"></translation>
+        <translation>Mene yhteisöön</translation>
     </message>
     <message>
         <source>Enter a community name or full handle (e.g. &quot;lemmy&quot; or &quot;lemmy@lemmy.world&quot;)</source>
-        <translation type="unfinished"></translation>
+        <translation>Kirjoita yhteisön nimi tai koko osoite (esim. &quot;lemmy&quot; tai &quot;lemmy@lemmy.world&quot;)</translation>
     </message>
     <message>
         <source>Go</source>
-        <translation type="unfinished"></translation>
+        <translation>Siirry</translation>
     </message>
     <message>
         <source>Community not found. Check the name and try again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Yhteisöä ei löytynyt. Tarkasta nimi ja yritä uudelleen.</translation>
     </message>
 </context>
 <context>
     <name>InboxPage</name>
     <message>
         <source>Mark all as read</source>
-        <translation type="unfinished"></translation>
+        <translation>Merkkaa kaikki luetuksi</translation>
     </message>
     <message>
         <source>Refresh</source>
-        <translation type="unfinished">Päivitä</translation>
+        <translation>Päivitä</translation>
     </message>
     <message>
         <source>Inbox (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Postilaatikko (%1)</translation>
     </message>
     <message>
         <source>Inbox</source>
-        <translation type="unfinished"></translation>
+        <translation>Postilaatikko</translation>
     </message>
     <message>
         <source>No notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Ei ilmoituksia</translation>
     </message>
     <message>
         <source>Pull down to refresh</source>
-        <translation type="unfinished">Päivitä vetämällä alaspäin</translation>
+        <translation>Päivitä vetämällä alaspäin</translation>
     </message>
     <message>
         <source>Reply to your comment</source>
-        <translation type="unfinished"></translation>
+        <translation>Vastaus kommenttiisi</translation>
     </message>
     <message>
         <source>You were mentioned</source>
-        <translation type="unfinished"></translation>
+        <translation>Sinut mainittiin</translation>
     </message>
     <message>
         <source>Private message</source>
-        <translation type="unfinished"></translation>
+        <translation>Yksityisviesti</translation>
     </message>
     <message>
         <source>Notification</source>
-        <translation type="unfinished"></translation>
+        <translation>Ilmoitus</translation>
     </message>
     <message>
         <source>Home</source>
@@ -199,7 +199,7 @@
     <name>LoadingFooter</name>
     <message>
         <source>Loading more…</source>
-        <translation type="unfinished"></translation>
+        <translation>Lataa lisää…</translation>
     </message>
 </context>
 <context>
@@ -214,7 +214,7 @@
     </message>
     <message>
         <source>Sign in</source>
-        <translation type="unfinished"></translation>
+        <translation>Kirjaudu sisään</translation>
     </message>
     <message>
         <source>Instance</source>
@@ -230,42 +230,42 @@
     </message>
     <message>
         <source>Two-factor authentication</source>
-        <translation type="unfinished"></translation>
+        <translation>Kaksivaiheinen tunnistautuminen</translation>
     </message>
     <message>
         <source>Authentication code</source>
-        <translation type="unfinished"></translation>
+        <translation>Tunnistautumiskoodi</translation>
     </message>
     <message>
         <source>6-digit code</source>
-        <translation type="unfinished"></translation>
+        <translation>6-numeroinen koodi</translation>
     </message>
     <message>
         <source>Signing in…</source>
-        <translation type="unfinished"></translation>
+        <translation>Kirjautuu sisään…</translation>
     </message>
 </context>
 <context>
     <name>NewPostPage</name>
     <message>
         <source>Title</source>
-        <translation type="unfinished"></translation>
+        <translation>Otsikko</translation>
     </message>
     <message>
         <source>Post title</source>
-        <translation type="unfinished"></translation>
+        <translation>Julkaisun otsikko</translation>
     </message>
     <message>
         <source>URL</source>
-        <translation type="unfinished"></translation>
+        <translation>URL</translation>
     </message>
     <message>
         <source>optional</source>
-        <translation type="unfinished"></translation>
+        <translation>vapaaehtoinen</translation>
     </message>
     <message>
         <source>Link (leave empty for a text post)</source>
-        <translation type="unfinished"></translation>
+        <translation>Linkki (jätä tyhjäksi julkaisun tekstille)</translation>
     </message>
     <message>
         <source>Body</source>
@@ -273,26 +273,26 @@
     </message>
     <message>
         <source>Write your post…</source>
-        <translation type="unfinished"></translation>
+        <translation>Kirjoita julkaisusi…</translation>
     </message>
     <message>
         <source>Creating…</source>
-        <translation type="unfinished"></translation>
+        <translation>Luodaan…</translation>
     </message>
     <message>
         <source>Create</source>
-        <translation type="unfinished"></translation>
+        <translation>Luo</translation>
     </message>
     <message>
         <source>Create post</source>
-        <translation type="unfinished"></translation>
+        <translation>Luo julkaisu</translation>
     </message>
 </context>
 <context>
     <name>PostPage</name>
     <message>
         <source>Refresh</source>
-        <translation type="unfinished">Päivitä</translation>
+        <translation>Päivitä</translation>
     </message>
     <message>
         <source>Comments</source>
@@ -316,7 +316,7 @@
     </message>
     <message>
         <source>Reply</source>
-        <translation type="unfinished"></translation>
+        <translation>Vastaa</translation>
     </message>
     <message>
         <source>In reply to &quot;%1&quot;</source>
@@ -324,15 +324,15 @@
     </message>
     <message>
         <source>No comments yet.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ei kommentteja vielä.</translation>
     </message>
     <message>
         <source>Load more comments</source>
-        <translation type="unfinished"></translation>
+        <translation>Lataa lisää kommentteja</translation>
     </message>
     <message>
         <source>Share link to post</source>
-        <translation type="unfinished"></translation>
+        <translation>Jaa linkki julkaisuun</translation>
     </message>
     <message>
         <source>Share</source>
@@ -340,60 +340,60 @@
     </message>
     <message>
         <source>Sort</source>
-        <translation type="unfinished"></translation>
+        <translation>Järjestä</translation>
     </message>
     <message>
         <source>Sort comments</source>
-        <translation type="unfinished"></translation>
+        <translation>Järjestä kommentit</translation>
     </message>
 </context>
 <context>
     <name>PostWebView</name>
     <message>
         <source>Share url</source>
-        <translation type="unfinished"></translation>
+        <translation>Jaa url</translation>
     </message>
 </context>
 <context>
     <name>ReplyPage</name>
     <message>
         <source>Reply to comment</source>
-        <translation type="unfinished"></translation>
+        <translation>Vastaa kommenttiin</translation>
     </message>
     <message>
         <source>Reply to post</source>
-        <translation type="unfinished"></translation>
+        <translation>Vastaa julkaisuun</translation>
     </message>
     <message>
         <source>Reply</source>
-        <translation type="unfinished"></translation>
+        <translation>Vastaa</translation>
     </message>
     <message>
         <source>Write your comment…</source>
-        <translation type="unfinished"></translation>
+        <translation>Kirjoita kommentti…</translation>
     </message>
     <message>
         <source>Posting…</source>
-        <translation type="unfinished"></translation>
+        <translation>Julkaisee…</translation>
     </message>
     <message>
         <source>Post comment</source>
-        <translation type="unfinished"></translation>
+        <translation>Julkaise kommentti</translation>
     </message>
 </context>
 <context>
     <name>SettingsPage</name>
     <message>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Asetukset</translation>
     </message>
     <message>
         <source>Account</source>
-        <translation type="unfinished"></translation>
+        <translation>Käyttäjätili</translation>
     </message>
     <message>
         <source>Username</source>
-        <translation type="unfinished"></translation>
+        <translation>Käyttäjänimi</translation>
     </message>
     <message>
         <source>Instance</source>
@@ -401,43 +401,43 @@
     </message>
     <message>
         <source>Sign out</source>
-        <translation type="unfinished"></translation>
+        <translation>Kirjaudu ulos</translation>
     </message>
     <message>
         <source>Logging out</source>
-        <translation type="unfinished"></translation>
+        <translation>Kirjautuu ulos</translation>
     </message>
     <message>
         <source>Notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Ilmoitukset</translation>
     </message>
     <message>
         <source>Background checking</source>
-        <translation type="unfinished"></translation>
+        <translation>Taustalla tarkistaminen</translation>
     </message>
     <message>
         <source>Poll for new notifications while the app is running</source>
-        <translation type="unfinished"></translation>
+        <translation>Tarkista uudet ilmoitukset, kun sovellus on käynnissä</translation>
     </message>
     <message>
         <source>Check interval</source>
-        <translation type="unfinished"></translation>
+        <translation>Päivitysväli</translation>
     </message>
     <message>
         <source>5 minutes</source>
-        <translation type="unfinished"></translation>
+        <translation>5 minuuttia</translation>
     </message>
     <message>
         <source>15 minutes</source>
-        <translation type="unfinished"></translation>
+        <translation>15 minuuttia</translation>
     </message>
     <message>
         <source>30 minutes</source>
-        <translation type="unfinished"></translation>
+        <translation>30 minuuttia</translation>
     </message>
     <message>
         <source>1 hour</source>
-        <translation type="unfinished"></translation>
+        <translation>1 tunti</translation>
     </message>
 </context>
 <context>
@@ -452,7 +452,7 @@
     </message>
     <message>
         <source>No posts</source>
-        <translation type="unfinished"></translation>
+        <translation>Ei julkaisuja</translation>
     </message>
     <message>
         <source>Pull down to refresh</source>
@@ -476,35 +476,35 @@
     </message>
     <message>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Asetukset</translation>
     </message>
     <message>
         <source>Sort</source>
-        <translation type="unfinished"></translation>
+        <translation>Järjestä</translation>
     </message>
     <message>
         <source>Sort posts</source>
-        <translation type="unfinished"></translation>
+        <translation>Järjestä julkaisut</translation>
     </message>
     <message>
         <source>Inbox</source>
-        <translation type="unfinished"></translation>
+        <translation>Postilaatikko</translation>
     </message>
     <message>
         <source>Unsubscribe</source>
-        <translation type="unfinished"></translation>
+        <translation>Peru tilaus</translation>
     </message>
     <message>
         <source>Subscribe</source>
-        <translation type="unfinished"></translation>
+        <translation>Tilaa</translation>
     </message>
     <message>
         <source>Home</source>
-        <translation type="unfinished"></translation>
+        <translation>Kotinäkymä</translation>
     </message>
     <message>
         <source>Create post</source>
-        <translation type="unfinished"></translation>
+        <translation>Luo julkaisu</translation>
     </message>
 </context>
 </TS>
