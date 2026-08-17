@@ -181,7 +181,7 @@
     </message>
     <message>
         <source>Home</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Kotinäkymä</translation>
     </message>
 </context>
 <context>

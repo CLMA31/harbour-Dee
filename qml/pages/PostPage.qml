@@ -21,6 +21,8 @@ Page {
     property int postMyVote
     property bool postLocked
     readonly property var threadColors: [Theme.highlightColor, Theme.secondaryHighlightColor, Theme.primaryColor, Theme.secondaryColor]
+    property var collapsedIds: ({})
+    property var visibleComments: []
 
     function loadComments() {
         api.listComments(JSON.stringify({
@@ -40,6 +42,47 @@ Page {
             return "";
 
         return text.trim().substring(0, 200);
+    }
+
+    function rebuildVisible() {
+        var out = [];
+        var collapsedDepths = [];
+
+        if (api) {
+            var n = api.comments.length;
+            for (var i = 0; i < n; i++) {
+                var entry = api.comments[i];
+                var depth = entry.depth;
+
+                while (collapsedDepths.length > 0 && collapsedDepths[collapsedDepths.length - 1] >= depth)
+                    collapsedDepths.pop();
+
+                if (collapsedDepths.length > 0)
+                    continue;
+
+                entry.hasChildren = i + 1 < n && api.comments[i + 1].depth > depth;
+                out.push(entry);
+
+                if (collapsedIds[entry.commentData.id])
+                    collapsedDepths.push(depth);
+            }
+        }
+
+        visibleComments = out;
+    }
+
+    function toggleComment(id) {
+        var copy = {};
+        for (var k in collapsedIds)
+            copy[k] = collapsedIds[k];
+
+        if (copy[id])
+            delete copy[id];
+        else
+            copy[id] = true;
+
+        collapsedIds = copy;
+        rebuildVisible();
     }
 
     Component.onCompleted: {
@@ -293,7 +336,7 @@ Page {
             }
 
             Repeater {
-                model: api ? api.comments : []
+                model: visibleComments
 
                 delegate: Item {
                     id: commentItem
@@ -302,14 +345,16 @@ Page {
                     property var counts: modelData.counts
                     property int depth: modelData.depth
                     property int myVote: modelData.myVote
+                    property bool collapsed: !!collapsedIds[commentData.id]
+                    property int indent: depth > 1 ? (depth - 1) * Theme.paddingLarge + Theme.paddingSmall : 0
 
                     width: col.width
                     height: (commentMenu.active ? commentMenu.height : 0) + commentRow.height + Theme.paddingSmall * 2
 
                     Rectangle {
-                        visible: depth > 1
+                        visible: depth > 1 || collapsed
                         x: (depth - 1) * Theme.paddingLarge - Theme.paddingSmall
-                        width: 2
+                        width: collapsed ? Theme.paddingSmall : 2
                         height: parent.height
                         color: threadColors[Math.min((depth - 1) % threadColors.length, threadColors.length - 1)]
                         opacity: Math.max(0.3, 1 - (depth - 1) * 0.15)
@@ -320,12 +365,16 @@ Page {
 
                         anchors.fill: parent
                         onPressAndHold: commentMenu.open(commentBg)
+                        onClicked: {
+                            if (modelData.hasChildren)
+                                toggleComment(commentData.id);
+                        }
                     }
 
                     Row {
                         id: commentRow
 
-                        x: depth > 1 ? (depth - 1) * Theme.paddingLarge + Theme.paddingSmall : 0
+                        x: indent + (collapsed && depth === 1 ? Theme.paddingSmall : 0)
                         width: col.width - x
                         y: Theme.paddingSmall
                         spacing: 0
@@ -437,6 +486,7 @@ Page {
 
     Connections {
         target: api
+        onCommentsChanged: rebuildVisible()
         onRequestFinished: {
             if (method === "likePost" || method === "getPost") {
                 Utils.applyPostViewResult(result, page, appWindow);
