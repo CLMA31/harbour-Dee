@@ -39,7 +39,6 @@ private:
 
   Sailfish::Secrets::SecretManager m_secretManager;
   QString m_collectionName;
-  bool m_initialized;
 
   // Cache for synchronous access (loaded at init)
   mutable QString m_cachedAccessToken;

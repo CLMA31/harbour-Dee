@@ -1,12 +1,10 @@
 #include "securestorage.h"
-#include <QCoreApplication>
 #include <QDebug>
 #include <QEventLoop>
-#include <QSettings>
 
 SecureStorage::SecureStorage(QObject *parent)
     : QObject(parent), m_collectionName(QStringLiteral("Dee")),
-      m_initialized(false), m_cacheLoaded(false) {}
+      m_cacheLoaded(false) {}
 
 void SecureStorage::initialize() { ensureCollection(); }
 
@@ -33,7 +31,6 @@ void SecureStorage::ensureCollection() {
               if (request->result().code() == Result::Succeeded ||
                   request->result().errorCode() ==
                       Result::CollectionAlreadyExistsError) {
-                m_initialized = true;
                 // Load cached credentials
                 m_cachedAccessToken = getSecret(QStringLiteral("accessToken"));
                 m_cacheLoaded = true;
