@@ -6,7 +6,7 @@ Name:       harbour-dee
 # << macros
 
 Summary:    A Lemmy client
-Version:    0.0.10
+Version:    0.0.11
 Release:    1
 License:    LICENSE
 URL:        https://github.com/ilpianista/harbour-dee

@@ -1,3 +1,8 @@
+* Wed Aug 26 2026 Andrea Scarpino <andrea@scarpino.dev> 0.0.11-1
+- Allow to collapse threads.
+- Show a separator between comments and likes in the threads view.
+- Dutch translation update.
+
 * Fri Aug 14 2026 Andrea Scarpino <andrea@scarpino.dev> 0.0.10-1
 - Translations update
 
