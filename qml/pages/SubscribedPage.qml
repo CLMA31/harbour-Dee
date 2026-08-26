@@ -310,6 +310,12 @@ Page {
                         }
                     }
 
+                    Label {
+                        text: "·"
+                        font.pixelSize: Theme.fontSizeExtraSmall
+                        color: delegate.highlighted ? Theme.highlightColor : Theme.secondaryColor
+                    }
+
                     Row {
                         visible: counts.comments > 0
                         spacing: Theme.paddingSmall
@@ -327,6 +333,13 @@ Page {
                             anchors.verticalCenter: parent.verticalCenter
                             opacity: 0.7
                         }
+                    }
+
+                    Label {
+                        visible: counts.comments > 0
+                        text: "·"
+                        font.pixelSize: Theme.fontSizeExtraSmall
+                        color: delegate.highlighted ? Theme.highlightColor : Theme.secondaryColor
                     }
 
                     Label {
