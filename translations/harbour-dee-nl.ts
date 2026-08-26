@@ -5,42 +5,42 @@
     <name>CommunitiesPage</name>
     <message>
         <source>Go to community</source>
-        <translation type="unfinished"></translation>
+        <translation>Naar gemeenschap gaan</translation>
     </message>
     <message>
         <source>Refresh</source>
-        <translation type="unfinished">Verversen</translation>
+        <translation>Vernieuwen</translation>
     </message>
     <message>
         <source>No subscribed communities</source>
-        <translation type="unfinished"></translation>
+        <translation>Geen geabonneerde gemeenschappen</translation>
     </message>
     <message>
         <source>Pull down to refresh</source>
-        <translation type="unfinished">Trek omlaag om te verversen</translation>
+        <translation>Trek omlaag om te vernieuwen</translation>
     </message>
     <message>
         <source>Communities</source>
-        <translation type="unfinished">Gemeenschappen</translation>
+        <translation>Gemeenschappen</translation>
     </message>
     <message>
         <source>subscribers</source>
-        <translation type="unfinished"></translation>
+        <translation>abonnees</translation>
     </message>
     <message>
         <source>posts</source>
-        <translation type="unfinished"></translation>
+        <translation>posts</translation>
     </message>
 </context>
 <context>
     <name>CoverPage</name>
     <message>
         <source>comment</source>
-        <translation>opmerking</translation>
+        <translation>reactie</translation>
     </message>
     <message>
         <source>comments</source>
-        <translation>opmerkingen</translation>
+        <translation>reacties</translation>
     </message>
     <message>
         <source>point</source>
@@ -55,140 +55,140 @@
     <name>Dee</name>
     <message>
         <source>Hot</source>
-        <translation type="unfinished"></translation>
+        <translation>Heet</translation>
     </message>
     <message>
         <source>Active</source>
-        <translation type="unfinished"></translation>
+        <translation>Actief</translation>
     </message>
     <message>
         <source>Controversial</source>
-        <translation type="unfinished"></translation>
+        <translation>Controversieel</translation>
     </message>
     <message>
         <source>New</source>
-        <translation type="unfinished"></translation>
+        <translation>Nieuw</translation>
     </message>
     <message>
         <source>Most Comments</source>
-        <translation type="unfinished"></translation>
+        <translation>Meeste reacties</translation>
     </message>
     <message>
         <source>New Comments</source>
-        <translation type="unfinished"></translation>
+        <translation>Nieuwe reacties</translation>
     </message>
     <message>
         <source>Top Day</source>
-        <translation type="unfinished"></translation>
+        <translation>Populair vandaag</translation>
     </message>
     <message>
         <source>Top Week</source>
-        <translation type="unfinished"></translation>
+        <translation>Populair deze week</translation>
     </message>
     <message>
         <source>Top Month</source>
-        <translation type="unfinished"></translation>
+        <translation>Populair deze maand</translation>
     </message>
     <message>
         <source>Top Year</source>
-        <translation type="unfinished"></translation>
+        <translation>Populair dit jaar</translation>
     </message>
     <message>
         <source>Top All Time</source>
-        <translation type="unfinished"></translation>
+        <translation>Populairst aller tijden</translation>
     </message>
     <message>
         <source>Top</source>
-        <translation type="unfinished"></translation>
+        <translation>Populair</translation>
     </message>
     <message>
         <source>Old</source>
-        <translation type="unfinished"></translation>
+        <translation>Oud</translation>
     </message>
     <message>
         <source>New messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Nieuwe berichten</translation>
     </message>
     <message>
         <source>1 unread message</source>
-        <translation type="unfinished"></translation>
+        <translation>1 ongelezen bericht</translation>
     </message>
     <message>
         <source>%1 unread messages</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 ongelezen berichten</translation>
     </message>
 </context>
 <context>
     <name>GoToCommunityDialog</name>
     <message>
         <source>Go to community</source>
-        <translation type="unfinished"></translation>
+        <translation>Naar gemeenschap gaan</translation>
     </message>
     <message>
         <source>Enter a community name or full handle (e.g. &quot;lemmy&quot; or &quot;lemmy@lemmy.world&quot;)</source>
-        <translation type="unfinished"></translation>
+        <translation>Voer de naam van een gemeenschap of een volledige gebruikersnaam in (bv. ‘lemmy’ of ‘lemmy@lemmy.world’)</translation>
     </message>
     <message>
         <source>Go</source>
-        <translation type="unfinished"></translation>
+        <translation>Gaan</translation>
     </message>
     <message>
         <source>Community not found. Check the name and try again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Gemeenschap niet gevonden. Controleer de naam en probeer het opnieuw.</translation>
     </message>
 </context>
 <context>
     <name>InboxPage</name>
     <message>
         <source>Mark all as read</source>
-        <translation type="unfinished"></translation>
+        <translation>Alles markeren als gelezen</translation>
     </message>
     <message>
         <source>Refresh</source>
-        <translation type="unfinished">Verversen</translation>
+        <translation>Vernieuwen</translation>
     </message>
     <message>
         <source>Inbox (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Postvak IN (%1)</translation>
     </message>
     <message>
         <source>Inbox</source>
-        <translation type="unfinished"></translation>
+        <translation>Postvak IN</translation>
     </message>
     <message>
         <source>No notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Geen meldingen</translation>
     </message>
     <message>
         <source>Pull down to refresh</source>
-        <translation type="unfinished">Trek omlaag om te verversen</translation>
+        <translation>Trek omlaag om te vernieuwen</translation>
     </message>
     <message>
         <source>Reply to your comment</source>
-        <translation type="unfinished"></translation>
+        <translation>Antwoord op je reactie</translation>
     </message>
     <message>
         <source>You were mentioned</source>
-        <translation type="unfinished"></translation>
+        <translation>Je bent vermeld</translation>
     </message>
     <message>
         <source>Private message</source>
-        <translation type="unfinished"></translation>
+        <translation>Privébericht</translation>
     </message>
     <message>
         <source>Notification</source>
-        <translation type="unfinished"></translation>
+        <translation>Melding</translation>
     </message>
     <message>
         <source>Home</source>
-        <translation type="unfinished"></translation>
+        <translation>Thuis</translation>
     </message>
 </context>
 <context>
     <name>LemmyAPI</name>
     <message>
         <source>Please fill in all fields</source>
-        <translation>Gelieve alle velden in te vullen</translation>
+        <translation>Vul alle velden in</translation>
     </message>
     <message>
         <source>Login succeeded but no token received</source>
@@ -199,7 +199,7 @@
     <name>LoadingFooter</name>
     <message>
         <source>Loading more…</source>
-        <translation type="unfinished">Meer aan het laden…</translation>
+        <translation>Meer aan het laden…</translation>
     </message>
 </context>
 <context>
@@ -210,7 +210,7 @@
     </message>
     <message>
         <source>Email or Username</source>
-        <translation>E-mail of Gebruikersnaam</translation>
+        <translation>E-mailadres of gebruikersnaam</translation>
     </message>
     <message>
         <source>Sign in</source>
@@ -222,7 +222,7 @@
     </message>
     <message>
         <source>Instance URL</source>
-        <translation>Instantie URL</translation>
+        <translation>Instantie-URL</translation>
     </message>
     <message>
         <source>Credentials</source>
@@ -249,54 +249,54 @@
     <name>NewPostPage</name>
     <message>
         <source>Title</source>
-        <translation type="unfinished"></translation>
+        <translation>Titel</translation>
     </message>
     <message>
         <source>Post title</source>
-        <translation type="unfinished"></translation>
+        <translation>Titel van post</translation>
     </message>
     <message>
         <source>URL</source>
-        <translation type="unfinished"></translation>
+        <translation>URL</translation>
     </message>
     <message>
         <source>optional</source>
-        <translation type="unfinished"></translation>
+        <translation>optioneel</translation>
     </message>
     <message>
         <source>Link (leave empty for a text post)</source>
-        <translation type="unfinished"></translation>
+        <translation>Koppeling (laat leeg voor een tekstpost)</translation>
     </message>
     <message>
         <source>Body</source>
-        <translation type="unfinished"></translation>
+        <translation>Body</translation>
     </message>
     <message>
         <source>Write your post…</source>
-        <translation type="unfinished"></translation>
+        <translation>Schrijf je post…</translation>
     </message>
     <message>
         <source>Creating…</source>
-        <translation type="unfinished"></translation>
+        <translation>Bezig met aanmaken…</translation>
     </message>
     <message>
         <source>Create</source>
-        <translation type="unfinished"></translation>
+        <translation>Aanmaken</translation>
     </message>
     <message>
         <source>Create post</source>
-        <translation type="unfinished"></translation>
+        <translation>Post aanmaken</translation>
     </message>
 </context>
 <context>
     <name>PostPage</name>
     <message>
         <source>Refresh</source>
-        <translation>Verversen</translation>
+        <translation>Vernieuwen</translation>
     </message>
     <message>
         <source>Comments</source>
-        <translation>Opmerkingen</translation>
+        <translation>Reacties</translation>
     </message>
     <message>
         <source>Upvote</source>
@@ -320,15 +320,15 @@
     </message>
     <message>
         <source>In reply to &quot;%1&quot;</source>
-        <translation>Als antwoord op &quot;%1&quot;</translation>
+        <translation>Als antwoord op ‘%1’</translation>
     </message>
     <message>
         <source>No comments yet.</source>
-        <translation>Nog geen opmerkingen.</translation>
+        <translation>Nog geen reacties.</translation>
     </message>
     <message>
         <source>Load more comments</source>
-        <translation>Meer opmerkingen laden</translation>
+        <translation>Meer reacties laden</translation>
     </message>
     <message>
         <source>Share link to post</source>
@@ -340,11 +340,11 @@
     </message>
     <message>
         <source>Sort</source>
-        <translation type="unfinished"></translation>
+        <translation>Sorteren</translation>
     </message>
     <message>
         <source>Sort comments</source>
-        <translation type="unfinished"></translation>
+        <translation>Reacties sorteren</translation>
     </message>
 </context>
 <context>
@@ -358,7 +358,7 @@
     <name>ReplyPage</name>
     <message>
         <source>Reply to comment</source>
-        <translation>Opmerking beantwoorden</translation>
+        <translation>Reactie beantwoorden</translation>
     </message>
     <message>
         <source>Reply to post</source>
@@ -370,7 +370,7 @@
     </message>
     <message>
         <source>Write your comment…</source>
-        <translation>Schrijf je opmerkingen…</translation>
+        <translation>Schrijf je reactie…</translation>
     </message>
     <message>
         <source>Posting…</source>
@@ -378,7 +378,7 @@
     </message>
     <message>
         <source>Post comment</source>
-        <translation>Opmerking indienen</translation>
+        <translation>Reactie indienen</translation>
     </message>
 </context>
 <context>
@@ -405,39 +405,39 @@
     </message>
     <message>
         <source>Logging out</source>
-        <translation type="unfinished"></translation>
+        <translation>Bezig met afmelden</translation>
     </message>
     <message>
         <source>Notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Meldingen</translation>
     </message>
     <message>
         <source>Background checking</source>
-        <translation type="unfinished"></translation>
+        <translation>Controlen op de achtergrond</translation>
     </message>
     <message>
         <source>Poll for new notifications while the app is running</source>
-        <translation type="unfinished"></translation>
+        <translation>Controleer op nieuwe meldingen terwijl de app draait</translation>
     </message>
     <message>
         <source>Check interval</source>
-        <translation type="unfinished"></translation>
+        <translation>Controle-interval</translation>
     </message>
     <message>
         <source>5 minutes</source>
-        <translation type="unfinished"></translation>
+        <translation>5 minuten</translation>
     </message>
     <message>
         <source>15 minutes</source>
-        <translation type="unfinished"></translation>
+        <translation>15 minuten</translation>
     </message>
     <message>
         <source>30 minutes</source>
-        <translation type="unfinished"></translation>
+        <translation>30 minuten</translation>
     </message>
     <message>
         <source>1 hour</source>
-        <translation type="unfinished"></translation>
+        <translation>1 uur</translation>
     </message>
 </context>
 <context>
@@ -448,7 +448,7 @@
     </message>
     <message>
         <source>Refresh</source>
-        <translation>Verversen</translation>
+        <translation>Vernieuwen</translation>
     </message>
     <message>
         <source>No posts</source>
@@ -456,7 +456,7 @@
     </message>
     <message>
         <source>Pull down to refresh</source>
-        <translation>Trek omlaag om te verversen</translation>
+        <translation>Trek omlaag om te vernieuwen</translation>
     </message>
     <message>
         <source>Upvote</source>
@@ -480,31 +480,31 @@
     </message>
     <message>
         <source>Sort</source>
-        <translation type="unfinished"></translation>
+        <translation>Sorteren</translation>
     </message>
     <message>
         <source>Sort posts</source>
-        <translation type="unfinished"></translation>
+        <translation>Posts sorteren</translation>
     </message>
     <message>
         <source>Inbox</source>
-        <translation type="unfinished"></translation>
+        <translation>Postvak IN</translation>
     </message>
     <message>
         <source>Unsubscribe</source>
-        <translation type="unfinished"></translation>
+        <translation>Abonnement opzeggen</translation>
     </message>
     <message>
         <source>Subscribe</source>
-        <translation type="unfinished"></translation>
+        <translation>Abonneren</translation>
     </message>
     <message>
         <source>Home</source>
-        <translation type="unfinished"></translation>
+        <translation>Thuis</translation>
     </message>
     <message>
         <source>Create post</source>
-        <translation type="unfinished"></translation>
+        <translation>Post aanmaken</translation>
     </message>
 </context>
 </TS>
