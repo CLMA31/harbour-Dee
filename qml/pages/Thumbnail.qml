@@ -32,6 +32,11 @@ Image {
     MouseArea {
         anchors.fill: parent
         enabled: thumbnail.enabled && !!imageUrl
+
+        onPressed: {
+            mouse.accepted = true
+        }
+
         onClicked: thumbnail.clicked()
     }
 
